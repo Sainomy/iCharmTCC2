@@ -8,9 +8,9 @@ export default function App() {
   const images = [
     require("./assets/icon.png"),
     require("./assets/splash.png"),
-    require("./assets/login.png"),
-    require("./assets/register.png"),
-    require("./assets/forget.png"),
+    require("./assets/logo.png"),
+    require("./assets/register1.png"),
+    require("./assets/forget1.png"),
   ];
 
   // Ignore firebase v9 AsyncStorage warning

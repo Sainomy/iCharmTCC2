@@ -9,13 +9,7 @@ export default (props) => {
       name={props.icon}
       style={{ marginBottom: -7 }}
       size={24}
-      color={
-        props.focused
-          ? isDarkmode
-            ? themeColor.white100
-            : themeColor.primary
-          : "rgb(143, 155, 179)"
-      }
+      color={props.focused ? (isDarkmode ? "#D76348" : "#D76348") : "#E8A998"}
     />
   );
 };

@@ -19,8 +19,8 @@ import {
 export default function ({ navigation }) {
   const { isDarkmode, setTheme } = useTheme();
   const auth = getAuth();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("simonycogoy@gmail.com");
+  const [password, setPassword] = useState("121212");
   const [loading, setLoading] = useState(false);
 
   async function login() {
@@ -56,10 +56,10 @@ export default function ({ navigation }) {
             <Image
               resizeMode="contain"
               style={{
-                height: 220,
-                width: 220,
+                height: 280,
+                width: 280,
               }}
-              source={require("../../../assets/login1.png")}
+              source={require("../../../assets/logo.png")}
             />
           </View>
           <View

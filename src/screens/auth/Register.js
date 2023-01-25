@@ -21,15 +21,19 @@ import {
 } from "react-native-rapi-ui";
 import DatePicker from "react-native-datepicker";
 import { firestore } from "../../../firebase";
+import RNPickerSelect from "react-native-picker-select";
 
 export default function ({ navigation }) {
   const { isDarkmode, setTheme } = useTheme();
   const auth = getAuth();
+  const [nome, setNome] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [date, setData] = useState("");
+  const [data, setData] = useState("");
   const [numero, setNumero] = useState("");
+  const [categoria, setCategoria] = useState("");
   const [loading, setLoading] = useState(false);
+  const [urlfoto, setUrlfoto] = useState(null);
 
   async function register() {
     await createUserWithEmailAndPassword(auth, email, password)
@@ -40,10 +44,13 @@ export default function ({ navigation }) {
           .doc(auth.currentUser.uid);
         reference.set({
           id: auth.currentUser.uid,
+          nome: nome,
           email: email,
           // password: password,
           numero: numero,
-          date: date,
+          categoria: categoria,
+          data: data,
+          urlfoto: urlfoto,
         });
         console.log("Registered with:", user.email);
       })
@@ -74,12 +81,12 @@ export default function ({ navigation }) {
             }}
           >
             <Image
-              resizeMode="contain"
+              resizeMode="cover"
               style={{
-                height: 220,
-                width: 220,
+                height: 240,
+                width: 330,
               }}
-              source={require("../../../assets/registrer1.png")}
+              source={require("../../../assets/register1.png")}
             />
           </View>
           <View
@@ -91,7 +98,7 @@ export default function ({ navigation }) {
             }}
           >
             <Text
-              fontWeight="bold"
+              fontWeight="semibold"
               size="h3"
               style={{
                 alignSelf: "center",
@@ -100,7 +107,19 @@ export default function ({ navigation }) {
             >
               C A D A S T R E - S E
             </Text>
-            <Text>E-mail</Text>
+            <Text>Nome</Text>
+            <TextInput
+              containerStyle={{ marginTop: 15 }}
+              placeholder="Digite seu nome"
+              value={nome}
+              autoCapitalize="none"
+              autoCompleteType="off"
+              autoCorrect={false}
+              keyboardType="text"
+              onChangeText={(text) => setNome(text)}
+            />
+
+            <Text style={{ marginTop: 15 }}>E-mail</Text>
             <TextInput
               containerStyle={{ marginTop: 15 }}
               placeholder="Digite seu e-mail"
@@ -125,13 +144,14 @@ export default function ({ navigation }) {
             />
             <Text style={{ marginVertical: 15 }}>Data de Nascimento</Text>
             <DatePicker
-              date={date}
+              date={data}
               mode="date"
               placeholder="Selecione sua data"
               format="MM/DD/YYYY"
+              useNativeDriver="false"
               confirmBtnText="Confirma"
               cancelBtnText="Cancela"
-              onDateChange={(date) => setData(date, "setData")}
+              onDateChange={(data) => setData(data, "setData")}
               customStyles={{
                 dateInput: {
                   borderWidth: 0,
@@ -150,6 +170,20 @@ export default function ({ navigation }) {
               onChangeText={setNumero}
               value={numero}
               autoCorrect={false}
+            />
+            <Text style={{ marginTop: 15, marginVertical: 15 }}>Categoria</Text>
+            <RNPickerSelect
+              value={categoria}
+              onValueChange={(categoria) => setCategoria(categoria)}
+              items={[
+                { label: "Maquiagem", value: "Maquiagem" },
+                { label: "Cabelo", value: "Cabelo" },
+                { label: "Unhas", value: "Unhas" },
+                { label: "Depilação", value: "Depilação" },
+                { label: "Limpeza de pele", value: "Limpeza de pele" },
+              ]}
+              style={{ inputAndroid: { color: "black" } }}
+              useNativeAndroidPickerStyle={false}
             />
 
             <Button

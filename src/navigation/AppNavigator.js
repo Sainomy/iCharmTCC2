@@ -9,10 +9,14 @@ import TabBarIcon from "../components/utils/TabBarIcon";
 import TabBarText from "../components/utils/TabBarText";
 //Screens
 import Home from "../screens/Home";
-import SecondScreen from "../screens/SecondScreen";
-import About from "../screens/About";
+import AddServico from "../screens/AddServico";
+import Agenda from "../screens/Agenda";
 import Profile from "../screens/Profile";
 import Loading from "../screens/utils/Loading";
+import ListarServico from "../screens/ListarServico";
+import TelaServico from "../screens/TelaServico";
+import Welcome from "../screens/layout/Welcome";
+import Endereco from "../screens/Endereco";
 // Auth screens
 import Login from "../screens/auth/Login";
 import Register from "../screens/auth/Register";
@@ -57,7 +61,11 @@ const Main = () => {
       }}
     >
       <MainStack.Screen name="MainTabs" component={MainTabs} />
-      <MainStack.Screen name="SecondScreen" component={SecondScreen} />
+      <MainStack.Screen name="AddServico" component={AddServico} />
+      <MainStack.Screen name="ListarServico" component={ListarServico} />
+      <MainStack.Screen name="TelaServico" component={TelaServico} />
+      <MainStack.Screen name="Welcome" component={Welcome} />
+      <MainStack.Screen name="Endereco" component={Endereco} />
     </MainStack.Navigator>
   );
 };
@@ -70,7 +78,7 @@ const MainTabs = () => {
       screenOptions={{
         headerShown: false,
         tabBarStyle: {
-          borderTopColor: isDarkmode ? themeColor.dark100 : "#c0c0c0",
+          borderTopColor: isDarkmode ? themeColor.dark100 : "#E6E6E6",
           backgroundColor: isDarkmode ? themeColor.dark200 : "#ffffff",
         },
       }}
@@ -101,14 +109,14 @@ const MainTabs = () => {
         }}
       />
       <Tabs.Screen
-        name="About"
-        component={About}
+        name="Agenda"
+        component={Agenda}
         options={{
           tabBarLabel: ({ focused }) => (
-            <TabBarText focused={focused} title="About" />
+            <TabBarText focused={focused} title="Agenda" />
           ),
           tabBarIcon: ({ focused }) => (
-            <TabBarIcon focused={focused} icon={"ios-information-circle"} />
+            <TabBarIcon focused={focused} icon={"md-calendar-outline"} />
           ),
         }}
       />
