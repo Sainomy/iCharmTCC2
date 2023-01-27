@@ -21,9 +21,9 @@ import {
   TextInput,
 } from "react-native-rapi-ui";
 import { Ionicons } from "@expo/vector-icons";
-import { Servico } from "../../model/Servico";
+import { Servico } from "../../../model/Servico";
 import { TextInputMask } from "react-native-masked-text";
-import { auth, firestore, storage } from "../../firebase";
+import { auth, firestore, storage } from "../../../firebase";
 import { getStorage, uploadBytes } from "firebase/storage";
 import * as ImagePicker from "expo-image-picker";
 
@@ -178,7 +178,7 @@ export default function SecondScreen({ navigation }) {
       <TopNav
         middleContent={
           <Image
-            source={require("../../assets/nome.png")}
+            source={require("../../../assets/nome.png")}
             style={{ width: 110, height: 110 }}
             resizeMode="contain"
           />

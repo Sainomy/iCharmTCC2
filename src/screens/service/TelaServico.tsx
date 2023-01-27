@@ -5,12 +5,12 @@ import { View, StyleSheet, Image, Alert, Pressable } from "react-native";
 // import firebase from "firebase/compat/app";
 // import "firebase/compat/storage";
 // const app = firebase.initializeApp(firebaseConfig);
-import { auth, firestore, storage } from "../../firebase";
+import { auth, firestore, storage } from "../../../firebase";
 //import { doc, getDoc } from "firebase/firestore";
 import { getStorage, uploadBytes } from "firebase/storage"; //access the storage database
 import * as ImagePicker from "expo-image-picker";
-import { Usuario } from "../../model/Usuario";
-import { Servico } from "../../model/Servico";
+import { Usuario } from "../../../model/Usuario";
+import { Servico } from "../../../model/Servico";
 import { Colors } from "react-native/Libraries/NewAppScreen";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { Layout, TopNav, Button, Text,useTheme ,themeColor} from "react-native-rapi-ui";
@@ -168,7 +168,7 @@ export default function TelaServico({navigation} ) {
       <TopNav
         middleContent={
           <Image
-            source={require("../../assets/nome.png")}
+            source={require("../../../assets/nome.png")}
             style={{ width: 110, height: 110 }}
             resizeMode="contain"
           />
@@ -190,7 +190,7 @@ export default function TelaServico({navigation} ) {
             )}
             {pickedImagePath === "" && (
               <Image
-                source={require("../../assets/usuario.png")}
+                source={require("../../../assets/usuario.png")}
                 style={styles.image}
               />
             )}

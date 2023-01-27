@@ -2,11 +2,10 @@
 export class Endereco {
     public id : string;
     public cep: string;
-    public pais : string;
-    public password: string;
+    public rua: string;
+    public bairro: string;
     public cidade : string;
     public uf: string;
-    public logadouro: string;
     public numero: string;
     public complemento: string;
     public lat: string;
@@ -16,11 +15,11 @@ export class Endereco {
     constructor(obj?: Partial<Endereco>) {
         if (obj) {
             this.id = obj.id
-            this.pais = obj.pais
-            this.cidade = obj.cidade
             this.cep = obj.cep
+            this.rua = obj.rua
+            this.bairro = obj.bairro
+            this.cidade = obj.cidade
             this.uf = obj.uf
-            this.logadouro = obj.logadouro
             this.numero = obj.numero
             this.complemento = obj.complemento
             this.lat = obj.lat
@@ -33,10 +32,10 @@ export class Endereco {
         const Objeto = `{
             "id": "${this.id}",
             "cep": "${this.cep}",
-            "pais": "${this.pais}",
+            "rua": "${this.rua}",
+            "bairro": "${this.bairro}",
             "cidade": "${this.cidade}"
             "uf": "${this.uf}"
-            "logadouro": "${this.logadouro}"
             "numero": "${this.numero}"
             "complemento": "${this.complemento}"
             "lat": "${this.lat}"

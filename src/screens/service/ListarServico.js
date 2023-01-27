@@ -12,7 +12,7 @@ import {
 import { Layout, Text, TopNav, useTheme } from "react-native-rapi-ui";
 import { Ionicons } from "@expo/vector-icons";
 
-import { auth, firestore } from "../../firebase";
+import { auth, firestore } from "../../../firebase";
 import { ScrollView } from "react-native-gesture-handler";
 
 export default function ListarServico({ navigation }) {
@@ -47,7 +47,14 @@ export default function ListarServico({ navigation }) {
       // Flat List Item
       // coloca alinhamento em linha justificado flex-start
       <View style={styles.alinhamentoLinha}>
-        <Image style={styles.image} source={{ uri: item.urlfoto }} />
+        <TouchableOpacity
+          activeOpacity={0.7}
+          onPress={() =>
+            navigation.navigate("TelaServico", { servicoID: item.id })
+          }
+        >
+          <Image style={styles.image} source={{ uri: item.urlfoto }} />
+        </TouchableOpacity>
 
         {/* // coloca alinhamento em coluna justificado flex-start */}
         <View style={styles.alinhamentoColuna}>
@@ -58,10 +65,6 @@ export default function ListarServico({ navigation }) {
           {/* <Text>
           {defaultRating} / {Math.max.apply(null, maxRating)}
     </Text>*/}
-          <TouchableOpacity
-            activeOpacity={0.7}
-            onPress={() => alert(defaultRating)}
-          ></TouchableOpacity>
         </View>
 
         {/* fecha alinhamento linhas */}
@@ -92,8 +95,8 @@ export default function ListarServico({ navigation }) {
                 }}
                 source={
                   item <= defaultRating
-                    ? require("../../assets/star.png")
-                    : require("../../assets/st.png")
+                    ? require("../../../assets/star.png")
+                    : require("../../../assets/st.png")
                 }
               />
             </TouchableOpacity>
@@ -109,7 +112,7 @@ export default function ListarServico({ navigation }) {
         style={{ flex: 1 }}
         middleContent={
           <Image
-            source={require("../../assets/nome.png")}
+            source={require("../../../assets/nome.png")}
             style={{ width: 110, height: 110 }}
             resizeMode="contain"
           />

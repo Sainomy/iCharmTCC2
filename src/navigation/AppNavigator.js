@@ -9,12 +9,12 @@ import TabBarIcon from "../components/utils/TabBarIcon";
 import TabBarText from "../components/utils/TabBarText";
 //Screens
 import Home from "../screens/Home";
-import AddServico from "../screens/AddServico";
+import AddServico from "../screens/service/AddServico";
 import Agenda from "../screens/Agenda";
 import Profile from "../screens/Profile";
 import Loading from "../screens/utils/Loading";
-import ListarServico from "../screens/ListarServico";
-import TelaServico from "../screens/TelaServico";
+import ListarServico from "../screens/service/ListarServico";
+import TelaServico from "../screens/service/TelaServico";
 import Welcome from "../screens/layout/Welcome";
 import Endereco from "../screens/Endereco";
 // Auth screens
@@ -45,6 +45,7 @@ const Auth = () => {
         headerShown: false,
       }}
     >
+      <AuthStack.Screen name="Welcome" component={Welcome} />
       <AuthStack.Screen name="Login" component={Login} />
       <AuthStack.Screen name="Register" component={Register} />
       <AuthStack.Screen name="ForgetPassword" component={ForgetPassword} />
@@ -64,7 +65,6 @@ const Main = () => {
       <MainStack.Screen name="AddServico" component={AddServico} />
       <MainStack.Screen name="ListarServico" component={ListarServico} />
       <MainStack.Screen name="TelaServico" component={TelaServico} />
-      <MainStack.Screen name="Welcome" component={Welcome} />
       <MainStack.Screen name="Endereco" component={Endereco} />
     </MainStack.Navigator>
   );

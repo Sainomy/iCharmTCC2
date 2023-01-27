@@ -5,8 +5,8 @@ import {
   View,
   KeyboardAvoidingView,
   Image,
+  ImageBackground,
 } from "react-native";
-import { getAuth, sendPasswordResetEmail } from "firebase/auth";
 import {
   Layout,
   Text,
@@ -15,6 +15,7 @@ import {
   useTheme,
   themeColor,
 } from "react-native-rapi-ui";
+const image = require("../../../assets/welcome3.png");
 
 export default function ({ navigation }) {
   const { isDarkmode, setTheme } = useTheme();
@@ -22,51 +23,54 @@ export default function ({ navigation }) {
 
   return (
     <KeyboardAvoidingView behavior="height" enabled style={{ flex: 1 }}>
-      <Layout
-        contentContainerStyle={{
-          flex: 1,
-        }}
+      <ImageBackground
+        source={image}
+        resizeMode="cover"
+        style={{ flex: 1, justifyContent: "center", backgroundColor: "white" }}
       >
-        <Image
-          resizeMode="cover"
-          style={{
-            size: "100%",
-          }}
-          source={require("../../../assets/pagina.png")}
-        />
-
         <View
           style={{
             flex: 3,
             paddingHorizontal: 20,
             paddingBottom: 20,
+            justifyContent: "flex-end",
+
             //    backgroundColor: isDarkmode ? themeColor.dark : themeColor.white,
           }}
         >
           <Button
-            color="#EF8F86"
-            text={loading ? "Loading" : "Continue"}
+            color="#000000"
+            text={loading ? "Loading" : "E N T R A R"}
             onPress={() => {
-              login();
+              navigation.navigate("Login");
             }}
             style={{
+              marginStart: 20,
+              marginEnd: 20,
               marginTop: 20,
+              position: "end",
+              borderRadius: 40,
             }}
             disabled={loading}
           />
           <Button
-            color="#EF8F86"
-            text={loading ? "Loading" : "Continue"}
+            textStyle={{ color: "black" }}
+            color="#F8D6D4"
+            text={loading ? "Loading" : "C A D A S T R E - S E"}
             onPress={() => {
-              login();
+              navigation.navigate("Register");
             }}
             style={{
               marginTop: 20,
+              marginVertical: 40,
+              borderRadius: 40,
+              marginStart: 20,
+              marginEnd: 20,
             }}
             disabled={loading}
           />
         </View>
-      </Layout>
+      </ImageBackground>
     </KeyboardAvoidingView>
   );
 }

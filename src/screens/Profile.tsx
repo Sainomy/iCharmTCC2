@@ -19,7 +19,6 @@ import { getStorage, uploadBytes } from "firebase/storage"; //access the storage
 import * as ImagePicker from "expo-image-picker";
 import { Usuario } from "../../model/Usuario";
 import { Servico } from "../../model/Servico"
-import { Colors } from "react-native/Libraries/NewAppScreen";
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { Layout, TopNav, Button, Text} from "react-native-rapi-ui";
 
