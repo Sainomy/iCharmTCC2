@@ -20,7 +20,8 @@ import * as ImagePicker from "expo-image-picker";
 import { Usuario } from "../../model/Usuario";
 import { Servico } from "../../model/Servico"
 import Ionicons from '@expo/vector-icons/Ionicons';
-import { Layout, TopNav, Button, Text} from "react-native-rapi-ui";
+import { Layout, TopNav, Button, Text,  useTheme,
+  themeColor,} from "react-native-rapi-ui";
 
 
 // import { clickProps } from "react-native-web/dist/cjs/modules/forwardedProps";
@@ -28,6 +29,7 @@ import { Layout, TopNav, Button, Text} from "react-native-rapi-ui";
 
 
 export default function Profile({ navigation }) {
+  const { isDarkmode, setTheme } = useTheme();
   const [modalVisible, setModalVisible] = useState(false);
   const [modalListaVisible, setModalListaVisible] = useState(false);
   const [servico, setServico] = useState < Partial < Servico>> ({});

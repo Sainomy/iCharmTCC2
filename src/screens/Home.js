@@ -34,7 +34,13 @@ export default function ({ navigation }) {
             resizeMode="contain"
           />
         }
-        leftContent={<Ionicons name="menu" size={30} />}
+        leftContent={
+          <Ionicons
+            name="menu"
+            size={30}
+            color={isDarkmode ? themeColor.dark100 : "black"}
+          />
+        }
         leftAction={onOpen}
       />
       <Modalize ref={modalizeRef} snapPoint={180}>
@@ -49,10 +55,14 @@ export default function ({ navigation }) {
         >
           <TouchableOpacity
             onPress={() => {
-              navigation.navigate("Welcome");
+              if (isDarkmode) {
+                setTheme("light");
+              } else {
+                setTheme("dark");
+              }
             }}
             style={{
-              backgroundColor: "white",
+              backgroundColor: isDarkmode ? themeColor.dark100 : "white",
               borderRadius: 6,
               padding: 15,
               borderWidth: 1,
@@ -62,7 +72,9 @@ export default function ({ navigation }) {
               marginVertical: 6,
             }}
           >
-            <Text>Tela de bem-vindo</Text>
+            <Text style={isDarkmode ? themeColor.dark100 : "white"}>
+              {isDarkmode ? "Modo Claro" : "Modo Escuro"}
+            </Text>
           </TouchableOpacity>
 
           <TouchableOpacity
@@ -70,7 +82,7 @@ export default function ({ navigation }) {
               signOut(auth);
             }}
             style={{
-              backgroundColor: "white",
+              backgroundColor: isDarkmode ? themeColor.dark100 : "white",
               borderRadius: 6,
               padding: 15,
               borderWidth: 1,

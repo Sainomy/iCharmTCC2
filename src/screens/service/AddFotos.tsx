@@ -1,3 +1,5 @@
+import { useNavigation, useRoute} from "@react-navigation/core";
+
 import React, { useState, useEffect } from "react";
 import {
   View,
@@ -21,27 +23,29 @@ import {
   TextInput,
 } from "react-native-rapi-ui";
 import { Ionicons } from "@expo/vector-icons";
+import { Foto } from "../../../model/Foto";
 import { Servico } from "../../../model/Servico";
-import { TextInputMask } from "react-native-masked-text";
 import { auth, firestore, storage } from "../../../firebase";
 import { getStorage, uploadBytes } from "firebase/storage";
 import * as ImagePicker from "expo-image-picker";
 
 export default function SecondScreen({ navigation }) {
   const { isDarkmode } = useTheme();
-  const [nomecat, setNomeCat] = useState("");
-  const [descricao, setDescricao] = useState("");
-  const [valor, setValor] = useState(0);
-  const [stars, setStars] = useState(0);
-  const [inputMoeda, setInputMoeda] = useState("0");
   const [loading, setLoading] = useState(false);
-  const [urlfoto, setUrlfoto] = useState("");
+  const [urlfoto, setUrlfoto] = useState(" ");
   //const [progressPorcent, setPorgessPorcent] = useState(0);
   const [pickedImagePath, setPickedImagePath] = useState("");
-  const referenceServico = firestore
+
+  const route = useRoute();
+  
+  const {servico}=  route.params
+
+  const referenceFoto = firestore
     .collection("Usuario")
     .doc(auth.currentUser.uid)
     .collection("Servico")
+    .doc(servico.id)
+    .collection("Foto")
     .doc();
   const escolhefoto = () => {
     setLoading(false);
@@ -94,7 +98,7 @@ export default function SecondScreen({ navigation }) {
       setPickedImagePath(result.uri);
       // const storage = app.storage();
       const ref = storage.ref(
-        `imagens/servico/IMAGE-${referenceServico.id}.jpg`
+        `imagens/servico/foto/IMAGE-${referenceFoto.id}.jpg`
       );
       const img = await fetch(result.uri);
       const bytes = await img.blob();
@@ -106,7 +110,7 @@ export default function SecondScreen({ navigation }) {
         .ref(fbResult.metadata.fullPath)
         .getDownloadURL();
       //reference.update({ urlfoto: fbResult.metadata.fullPath, });
-      referenceServico.update({ urlfoto: paraDonwload });
+      referenceFoto.update({ urlfoto: paraDonwload });
       setUrlfoto(paraDonwload);
     }
     setLoading(true);
@@ -131,7 +135,7 @@ export default function SecondScreen({ navigation }) {
       setPickedImagePath(result.uri);
       //const storage = storage.storage();
       const ref = storage.ref(
-        `imagens/servico/IMAGE-${referenceServico.id}.jpg`
+        `imagens/servico/foto/IMAGE-${referenceFoto.id}.jpg`
       );
       const img = await fetch(result.uri);
       const bytes = await img.blob();
@@ -143,33 +147,30 @@ export default function SecondScreen({ navigation }) {
         .ref(fbResult.metadata.fullPath)
         .getDownloadURL();
       //reference.update({ urlfoto: fbResult.metadata.fullPath, });
-      referenceServico.update({ urlfoto: paraDonwload });
+      referenceFoto.update({ urlfoto: paraDonwload });
      
       setUrlfoto(paraDonwload);
      
     } setLoading(true);
   };
 
-  const enviarDados = () => {
+  const enviarDados = ({item}) => {
    
-    referenceServico
+    referenceFoto
       .set({
-        id: referenceServico.id,
-        nomecat: nomecat,
-        descricao: descricao,
-        valor: valor,
-        stars: stars,
+        id: referenceFoto.id,
         urlfoto: urlfoto,
       })
       .then(() => {
-        const cancelBtn: AlertButton = { text: 'Adicionar mais fotos' ,   onPress: () => {
-          navigation.navigate('AddFotos')
-          
-        }}
+        const cancelBtn: AlertButton = { text: 'Ver Serviço',
+        onPress: () => {
+            navigation.navigate('AddFotos')
+            
+          } }
         const deleteBtn: AlertButton = {
-            text: 'Ver Serviço',
+            text: 'Adicionar mais fotos',
             onPress: () => {
-              navigation.navigate('TelaServico', { servicoID: referenceServico.id })
+              navigation.navigate('TelaServico', { servicoID: item.id })
               
             }
         }
@@ -229,93 +230,6 @@ export default function SecondScreen({ navigation }) {
                       : themeColor.white,
                   }}
                 >
-                  <Text
-                    fontWeight="semibold"
-                    size="h3"
-                    style={{
-                      alignSelf: "center",
-                    }}
-                  >
-                    Criando Serviço
-                  </Text>
-                  <Text style={{ marginTop: 15 }}>Nome</Text>
-                  <TextInput
-                    style={{
-                      marginTop: 10,
-                      borderWidth: 2,
-                      padding: 10,
-                      borderRadius: 6,
-                    }}
-                    containerStyle={{ marginTop: 15 }}
-                    placeholder="Nome do serviço"
-                    value={nomecat}
-                    autoCapitalize="none"
-                    autoCompleteType="off"
-                    autoCorrect={false}
-                    keyboardType="text"
-                    onChangeText={(text) => setNomeCat(text)}
-                  />
-
-                  <Text style={{ marginTop: 15 }}>Descrição</Text>
-                  <TextInput
-                    style={{
-                      marginTop: 10,
-                      borderColor:  "#f8f8ff",
-                      borderWidth: 2,
-                      padding: 10,
-                      borderRadius: 6,
-                    }}
-                    containerStyle={{ marginTop: 15 }}
-                    multiline
-                    numberOfLines={10}
-                    placeholder="Informações sobre o serviço"
-                    value={descricao}
-                    autoCapitalize="none"
-                    autoCompleteType="off"
-                    autoCorrect={false}
-                    onChangeText={(text) => setDescricao(text)}
-                  />
-
-                  <Text style={{ marginTop: 15 }}>Valor</Text>
-                  <TextInputMask
-                    style={{
-                      marginTop: 10,
-                      borderColor:  "#f8f8ff",
-                      borderWidth: 2,
-                      padding: 10,
-                      borderRadius: 6,
-                    }}
-                    type={"money"}
-                    placeholder="Valor do serviço"
-                    keyboardType="phone-pad"
-                    value={inputMoeda}
-                    maxLength={18}
-                    onChangeText={(value) => {
-                      setInputMoeda(value);
-                      value = value.replace("R$", "");
-                      value = value.replace(".", "");
-                      value = value.replace(",", ".");
-                      setValor(Number(value));
-                    }}
-                  />
-                  <TextInput
-                    style={{
-                      marginTop: 10,
-                      borderColor:  "#f8f8ff",
-                      borderWidth: 2,
-                      padding: 10,
-                      borderRadius: 6,
-                    }}
-                    containerStyle={{ marginTop: 15 }}
-                    multiline
-                    numberOfLines={10}
-                    placeholder="Numero de estrelas"
-                    value={stars}
-                    autoCapitalize="none"
-                    keyboardType="phone-pad"
-                    autoCorrect={false}
-                    onChangeText={(number) => setStars(number)}
-                  />
 
                   <Ionicons
                     style={{ margin: 15 }}

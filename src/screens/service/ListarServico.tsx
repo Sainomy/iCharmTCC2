@@ -11,7 +11,7 @@ import {
 } from "react-native";
 import { Layout, Text, TopNav, useTheme } from "react-native-rapi-ui";
 import { Ionicons } from "@expo/vector-icons";
-
+import Stars from "../utils/Stars";
 import { auth, firestore } from "../../../firebase";
 import { ScrollView } from "react-native-gesture-handler";
 
@@ -20,7 +20,7 @@ export default function ListarServico({ navigation }) {
   const [loading, setLoading] = useState(true); // Set loading to true on component mount
   const [servicos, setServicos] = useState([]); // Initial empty array of users
   const [defaultRating, setDefaultRating] = useState(2);
-  const [maxRating, setMaxRating] = useState([1, 2, 3, 4, 5]);
+  // const [maxRating, setMaxRating] = useState([1, 2, 3, 4, 5]);
 
   useEffect(() => {
     const subscriber = firestore
@@ -61,7 +61,8 @@ export default function ListarServico({ navigation }) {
           <Text style={styles.itemStylee}>{item.nomecat}</Text>
           <Text style={styles.itemStyle}>R${item.valor} </Text>
           {/* fecha alinhamento colunas */}
-          <RatingBar />
+          {/* <Stars stars={item.stars} showNumber={true} />*/}
+          {/*  <RatingBar />*/}
           {/* <Text>
           {defaultRating} / {Math.max.apply(null, maxRating)}
     </Text>*/}
@@ -72,13 +73,14 @@ export default function ListarServico({ navigation }) {
     );
   };
 
+  const Core = () => {};
   const ItemSeparatorView = () => {
     return (
       // Flat List Item Separator
       <View style={styles.separador} />
     );
   };
-  const RatingBar = () => {
+  /*const RatingBar = () => {
     return (
       <View style={{ flexDirection: "row" }}>
         {maxRating.map((item, key) => {
@@ -104,7 +106,7 @@ export default function ListarServico({ navigation }) {
         })}
       </View>
     );
-  };
+  };*/
 
   return (
     <Layout>

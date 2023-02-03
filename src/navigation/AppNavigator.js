@@ -17,6 +17,7 @@ import ListarServico from "../screens/service/ListarServico";
 import TelaServico from "../screens/service/TelaServico";
 import Welcome from "../screens/layout/Welcome";
 import Endereco from "../screens/Endereco";
+import AddFotos from "../screens/service/AddFotos";
 // Auth screens
 import Login from "../screens/auth/Login";
 import Register from "../screens/auth/Register";
@@ -66,6 +67,7 @@ const Main = () => {
       <MainStack.Screen name="ListarServico" component={ListarServico} />
       <MainStack.Screen name="TelaServico" component={TelaServico} />
       <MainStack.Screen name="Endereco" component={Endereco} />
+      <MainStack.Screen name="AddFotos" component={AddFotos} />
     </MainStack.Navigator>
   );
 };

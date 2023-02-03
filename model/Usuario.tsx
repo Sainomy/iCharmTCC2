@@ -8,6 +8,7 @@ export class Usuario {
     public numero: string;
     public categoria: string;
     public date: string;
+    public avali: string;
         
 
     constructor(obj?: Partial<Usuario>) {
@@ -19,6 +20,7 @@ export class Usuario {
             this.numero = obj.numero
             this.categoria = obj.categoria
             this.date = obj.date
+            this.avali = obj.avali
           
         }
     }
@@ -32,6 +34,7 @@ export class Usuario {
             "numero": "${this.numero}"
             "categoria": "${this.categoria}"
             "date": "${this.date}"
+            "avali": "${this.avali}"
         }`
 
         //const fields = Object.values(this).join(', ')

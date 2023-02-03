@@ -5,6 +5,7 @@ export class Servico {
     public descricao : string;
     public valor: string;
     public urlfoto : string;
+    public stars : number;
         
 
     constructor(obj?: Partial<Servico>) {
@@ -14,6 +15,7 @@ export class Servico {
             this.descricao = obj.descricao
             this.valor = obj.valor
             this.urlfoto = obj.urlfoto
+            this.stars = obj.stars
         }
     }
 
@@ -24,6 +26,7 @@ export class Servico {
             "descricao": "${this.descricao}",
             "urlfoto": "${this.urlfoto}"
             "valor": "${this.valor},
+            "stars": "${this.stars},
         }`
 
         //const fields = Object.values(this).join(', ')
