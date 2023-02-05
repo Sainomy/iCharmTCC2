@@ -110,14 +110,14 @@ export default function ({ navigation }) {
             <Button
               color="#EF8F86"
               style={{ marginTop: 10 }}
-              text="Listar Serviços"
+              text="Serviços"
               onPress={() => {
                 navigation.navigate("ListarServico");
               }}
             />
             <Button
               color="#EF8F86"
-              text="Adicionar Serviço"
+              text="Agendamentos"
               onPress={() => {
                 navigation.navigate("AddServico");
               }}
@@ -127,7 +127,7 @@ export default function ({ navigation }) {
               }}
             />
 
-            <Button
+            {/* <Button
               text={isDarkmode ? "Modo Claro" : "Modo Escuro"}
               status={isDarkmode ? "success" : "warning"}
               onPress={() => {
@@ -150,7 +150,7 @@ export default function ({ navigation }) {
               style={{
                 marginTop: 10,
               }}
-            />
+            />*/}
           </SectionContent>
         </Section>
       </View>

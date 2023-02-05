@@ -8,6 +8,8 @@ import {
   ActivityIndicator,
   SafeAreaView,
   FlatList,
+  TextInput,
+  TouchableOpacity
 } from "react-native";
 // import firebaseConfig from "./firebase";
 // import firebase from "firebase/compat/app";
@@ -22,13 +24,15 @@ import { Servico } from "../../model/Servico"
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { Layout, TopNav, Button, Text,  useTheme,
   themeColor,} from "react-native-rapi-ui";
+import Mapa from "../../src/components/utils/Mapa"
+import MapView, { Marker } from "react-native-maps";
 
 
 // import { clickProps } from "react-native-web/dist/cjs/modules/forwardedProps";
 // import { nome } from "../screens/auth/Register";
 
 
-export default function Profile({ navigation }) {
+export default function Profile({ navigation, route}) {
   const { isDarkmode, setTheme } = useTheme();
   const [modalVisible, setModalVisible] = useState(false);
   const [modalListaVisible, setModalListaVisible] = useState(false);
@@ -40,6 +44,13 @@ export default function Profile({ navigation }) {
     title: "",
   });
   const [pickedImagePath, setPickedImagePath] = useState("");
+  const [nome, setNome] = useState(usuario.nome)
+  const [email, setEmail] = useState("");
+ // const [id, setId] = useState(route.params.id);
+  const [data, setData] = useState("");
+  const [numero, setNumero] = useState("");
+  const [categoria, setCategoria] = useState("");
+  
   useEffect(() => {
     const subscriber = firestore
       .collection("Usuario")
@@ -51,9 +62,27 @@ export default function Profile({ navigation }) {
         } else {
           setPickedImagePath(usuario.urlfoto);
         };
+       
       });
     return () => subscriber();
   }, [usuario]);
+  
+  function editTask(nome){
+    const reference = firestore
+    .collection("Usuario")
+    .doc(auth.currentUser.uid)
+    .update({
+      id: auth.currentUser.uid,
+      nome: setNome,
+      email: email,
+      numero: numero,
+      categoria: categoria,
+      data: data,
+     // urlfoto: urlfoto,
+
+    })
+    navigation.navigate("Home")
+  }
 
   const escolhefoto = () => {
     Alert.alert(
@@ -167,10 +196,27 @@ export default function Profile({ navigation }) {
             resizeMode="contain"
           />
         }
-        leftContent={<Ionicons name="menu" size={30} />}
+        leftContent={<Ionicons name="menu" size={30} color={isDarkmode ? themeColor.dark100 : "black"}/>}
       />
+     
     <View style={styles.screen}>
-    
+    <Button
+              color="#EF8F86"
+              rightContent={
+                <Ionicons
+                    name="create"
+                    size={20}
+                    color={themeColor.white}
+                />}
+              text="Editar "
+              onPress={editTask}
+              style={{
+                position: "absolute",
+                marginTop: 10,
+                backgroundColor: "#E8A998",
+                right:30,
+              }}
+            />
       <Pressable onPress={() => escolhefoto()}>
         <View style={styles.imageContainer}>
           {pickedImagePath !== "" && (
@@ -182,10 +228,34 @@ export default function Profile({ navigation }) {
               style={styles.image}
             />
           )}
-        <Text style={styles.text}>{usuario.nome}</Text>
+         {/*<TextInput
+                  style={{
+                    marginTop: 20,
+                    borderWidth: 2,
+                    padding: 10,
+                    borderRadius: 6,
+                  }}
+                  containerStyle={{ marginTop: 15 }}
+                  placeholder="Nome"
+                  value={nome}
+                  autoCapitalize="none"
+                  autoCompleteType="off"
+                  autoCorrect={false}
+                  keyboardType="text"
+                  onChangeText={(text) => setNome(text)}
+                >
+                
+                </TextInput>*/}
+        <Text style={{ fontSize: 18,
+    marginTop: 30,
+    textAlign: "right",
+    marginLeft:180,
+    }}>{usuario.nome}</Text>
+        <Text style={styles.text}>{usuario.email}</Text>
+        <Text style={styles.text}>{usuario.numero}</Text>
         </View>
         </Pressable>
-        <Button
+      {/*  <Button
               color="#EF8F86"
               text="Adicionar Serviço"
               onPress={() => {
@@ -195,10 +265,16 @@ export default function Profile({ navigation }) {
                 marginTop: 10,
                 backgroundColor: "#E8A998",
               }}
-            />
+            />*/}
             <Button
               color="#EF8F86"
               text="Adicionar Endereço"
+              rightContent={
+                <Ionicons
+                    name="locate"
+                    size={20}
+                    color={themeColor.white}
+                />}
               onPress={() => {
                 navigation.navigate("Endereco");
               }}
@@ -208,6 +284,7 @@ export default function Profile({ navigation }) {
               }}
             />
            
+           
     </View>
     </Layout>
     
@@ -216,8 +293,8 @@ export default function Profile({ navigation }) {
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
+    //justifyContent: "center",
+   // alignItems: "center",
     marginTop: 15,
   },
   buttonContainer: {
@@ -240,11 +317,14 @@ const styles = StyleSheet.create({
     borderColor: "#ef846c",
     justifyContent: "center",
     alignItems: "center",
+    position:"absolute", 
+    left:20,
   },
   text: {
-    fontSize: 18,
+    fontSize: 15,
     marginTop: 10,
-    textAlign: "center",
+    textAlign: "right",
+    marginLeft:180,
   },
     wrapper: {},
     slide1: {

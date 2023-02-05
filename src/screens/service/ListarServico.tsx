@@ -15,6 +15,7 @@ import Stars from "../utils/Stars";
 import { auth, firestore } from "../../../firebase";
 import { ScrollView } from "react-native-gesture-handler";
 
+
 export default function ListarServico({ navigation }) {
   const { isDarkmode, setTheme } = useTheme();
   const [loading, setLoading] = useState(true); // Set loading to true on component mount
@@ -73,13 +74,7 @@ export default function ListarServico({ navigation }) {
     );
   };
 
-  const Core = () => {};
-  const ItemSeparatorView = () => {
-    return (
-      // Flat List Item Separator
-      <View style={styles.separador} />
-    );
-  };
+  
   /*const RatingBar = () => {
     return (
       <View style={{ flexDirection: "row" }}>
@@ -130,7 +125,24 @@ export default function ListarServico({ navigation }) {
           //  ItemSeparatorComponent={ItemSeparatorView}
           renderItem={ItemView}
         />
+       
       </ScrollView>
+      <TouchableOpacity
+          activeOpacity={0.7}
+          onPress={() => {
+            navigation.navigate("AddServico");
+          }}
+          style={{ position: 'absolute',
+          width: 50,
+          height: 50,
+          alignItems: 'center',
+          justifyContent: 'center',
+          right: 30,
+          bottom: 30,}}>
+          <Ionicons name="add-circle" size={60} color={"#EF8F86"} style={{ 
+    width: 70,
+    height: 70,}}/>
+        </TouchableOpacity>
     </Layout>
   );
 }

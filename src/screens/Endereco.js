@@ -97,26 +97,26 @@ export default function SecondScreen({ navigation }) {
       });
   };
   return (
-    <Layout>
-      <TopNav
-        middleContent={
-          <Image
-            source={require("../../assets/nome.png")}
-            style={{ width: 110, height: 110 }}
-            resizeMode="contain"
-          />
-        }
-        leftContent={
-          <Ionicons
-            name="chevron-back"
-            size={20}
-            color={isDarkmode ? themeColor.white100 : themeColor.black}
-          />
-        }
-        leftAction={() => navigation.goBack()}
-      />
+    <KeyboardAvoidingView behavior="height" enabled style={{ flex: 1 }}>
+      <Layout>
+        <TopNav
+          middleContent={
+            <Image
+              source={require("../../assets/nome.png")}
+              style={{ width: 110, height: 110 }}
+              resizeMode="contain"
+            />
+          }
+          leftContent={
+            <Ionicons
+              name="chevron-back"
+              size={20}
+              color={isDarkmode ? themeColor.white100 : themeColor.black}
+            />
+          }
+          leftAction={() => navigation.goBack()}
+        />
 
-      <KeyboardAvoidingView behavior="height" enabled style={{ flex: 1 }}>
         <ScrollView
           contentContainerStyle={{
             flexGrow: 1,
@@ -263,7 +263,7 @@ export default function SecondScreen({ navigation }) {
                   onChangeText={(text) => setComplemento(text)}
                 />
 
-                <Text style={{ marginTop: 15 }}>Numero</Text>
+                <Text style={{ marginTop: 15 }}>Número</Text>
                 <TextInput
                   style={{
                     marginTop: 10,
@@ -272,7 +272,7 @@ export default function SecondScreen({ navigation }) {
                     borderRadius: 6,
                   }}
                   containerStyle={{ marginTop: 15 }}
-                  placeholder="Numero"
+                  placeholder="Número"
                   value={numero}
                   autoCapitalize="none"
                   autoCompleteType="off"
@@ -294,7 +294,7 @@ export default function SecondScreen({ navigation }) {
             </SectionContent>
           </Section>
         </ScrollView>
-      </KeyboardAvoidingView>
-    </Layout>
+      </Layout>
+    </KeyboardAvoidingView>
   );
 }

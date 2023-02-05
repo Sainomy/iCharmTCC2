@@ -10,11 +10,12 @@ import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import {
   Layout,
   Text,
-  TextInput,
   Button,
   useTheme,
+  TextInput,
   themeColor,
 } from "react-native-rapi-ui";
+import { Ionicons } from "@expo/vector-icons";
 
 export default function ({ navigation }) {
   const { isDarkmode, setTheme } = useTheme();
@@ -89,6 +90,9 @@ export default function ({ navigation }) {
               autoCompleteType="off"
               autoCorrect={false}
               keyboardType="email-address"
+              rightContent={
+                <Ionicons name="mail" size={20} color={themeColor.gray300} />
+              }
               onChangeText={(text) => setEmail(text)}
             />
 
@@ -101,8 +105,16 @@ export default function ({ navigation }) {
               autoCompleteType="off"
               autoCorrect={false}
               secureTextEntry={true}
+              rightContent={
+                <Ionicons
+                  name="lock-closed"
+                  size={20}
+                  color={themeColor.gray300}
+                />
+              }
               onChangeText={(text) => setPassword(text)}
             />
+
             <Button
               color="#EF8F86"
               text={loading ? "Loading" : "Continue"}

@@ -15,7 +15,7 @@ import { Foto } from "../../../model/Foto"
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { Layout, TopNav, Button, Text,useTheme ,themeColor} from "react-native-rapi-ui";
 import { Modalize } from "react-native-modalize";
-import Carousel from 'react-native-reanimated-carousel';
+import Carousel from "../../components/utils/Carousel";
 import { ScrollView } from "react-native-gesture-handler";
 
 export default function TelaServico({navigation} ) {
@@ -23,7 +23,7 @@ export default function TelaServico({navigation} ) {
   const modalizeRef = useRef(null);
   const [modalVisible, setModalVisible] = useState(false);
   const [modalListaVisible, setModalListaVisible] = useState(false);
-  const [foto, setFoto] = useState  < Foto >({});
+
   const [servico, setServico] = useState  < Servico >({});
   const [usuario, setUsuario] = useState  < Usuario > ({});
   const [itemLista, setItemLista] = useState({
@@ -31,64 +31,7 @@ export default function TelaServico({navigation} ) {
     id: "",
     title: "",
   });
-  useEffect(() => {
-    const subscriber = firestore
-    .collection("Usuario")
-    .doc(auth.currentUser.uid)
-    .collection("Servico")
-    .doc(servico.id)
-    .collection("Foto")
-    .onSnapshot((querySnapshot) => {
-        const foto = [];
-        querySnapshot.forEach((documentSnapshot) => {
-          foto.push({
-            ...documentSnapshot.data(),
-            key: documentSnapshot.id,
-          });
-        });
-        setFoto(foto);
-        
-      });
-    // Unsubscribe from events when no longer in use
-    return () => subscriber();
-  }, []);
 
- /*function Index({item}) {
-    const images = ({ item }) => {
-      return(
-        <Image style={styles.image} source={{ uri: item.urlfoto }} />
-      )
-    }
-    const width = Dimensions.get('window').width;
-    return (
-        <View style={{ flex: 1 }}>
-            <Carousel
-                loop
-                width={width}
-                height={width / 2}
-                autoPlay={true}
-                data={[...new Array(6).keys()]}
-                scrollAnimationDuration={1000}
-                onSnapToItem={(index) => console.log('current index:', index)}
-                renderItem={({ index }) => (
-                    <View
-                        style={{
-                            flex: 1,
-                            borderWidth: 1,
-                            justifyContent: 'center',
-                        }}
-                    >
-                      <Image style={styles.image} source={{ uri: item.urlfoto }} />
-                        <Text style={{ textAlign: 'center', fontSize: 30 }}>
-                            {index}
-                        </Text>
-                    </View>
-                )}
-            />
-        </View>
-    );
-}
-*/
   function onOpen() {
     modalizeRef.current?.open();
   }
@@ -244,6 +187,7 @@ export default function TelaServico({navigation} ) {
         }
         leftAction={() => navigation.goBack()}
       />
+    <Carousel />
        <Modalize ref={modalizeRef} snapPoint={180}>
         <View
           style={{
@@ -287,7 +231,7 @@ export default function TelaServico({navigation} ) {
           </TouchableOpacity>
         </View>
       </Modalize>
-      <View style={styles.screen}>
+      <ScrollView style={styles.screen}>
 
         <Pressable onPress={() => escolhefoto()}>
           <View style={styles.imageContainer}>
@@ -326,7 +270,7 @@ export default function TelaServico({navigation} ) {
           }}
         />
         
-      </View>
+      </ScrollView>
     </Layout>
   );
 }
@@ -334,8 +278,7 @@ export default function TelaServico({navigation} ) {
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
+   
     marginTop: 15,
   },
   buttonContainer: {
@@ -353,7 +296,7 @@ const styles = StyleSheet.create({
   image: {
     width: 310,
     height: 250,
-   // borderRadius: 150 / 2,
+   borderRadius: 60,
     resizeMode: "cover",
     borderColor: "#ef846c",
     justifyContent: "center",
