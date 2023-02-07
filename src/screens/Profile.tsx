@@ -44,12 +44,6 @@ export default function Profile({ navigation, route}) {
     title: "",
   });
   const [pickedImagePath, setPickedImagePath] = useState("");
-  const [nome, setNome] = useState(usuario.nome)
-  const [email, setEmail] = useState("");
- // const [id, setId] = useState(route.params.id);
-  const [data, setData] = useState("");
-  const [numero, setNumero] = useState("");
-  const [categoria, setCategoria] = useState("");
   
   useEffect(() => {
     const subscriber = firestore
@@ -67,22 +61,6 @@ export default function Profile({ navigation, route}) {
     return () => subscriber();
   }, [usuario]);
   
-  function editTask(nome){
-    const reference = firestore
-    .collection("Usuario")
-    .doc(auth.currentUser.uid)
-    .update({
-      id: auth.currentUser.uid,
-      nome: setNome,
-      email: email,
-      numero: numero,
-      categoria: categoria,
-      data: data,
-     // urlfoto: urlfoto,
-
-    })
-    navigation.navigate("Home")
-  }
 
   const escolhefoto = () => {
     Alert.alert(
@@ -187,8 +165,8 @@ export default function Profile({ navigation, route}) {
   };
 
   return (
-    <Layout>
-       <TopNav
+    <Layout >
+       <TopNav style={{position:"relative"}}
         middleContent={
           <Image
             source={require("../../assets/nome.png")}
@@ -198,9 +176,7 @@ export default function Profile({ navigation, route}) {
         }
         leftContent={<Ionicons name="menu" size={30} color={isDarkmode ? themeColor.dark100 : "black"}/>}
       />
-     
-    <View style={styles.screen}>
-    <Button
+     <Button
               color="#EF8F86"
               rightContent={
                 <Ionicons
@@ -209,64 +185,36 @@ export default function Profile({ navigation, route}) {
                     color={themeColor.white}
                 />}
               text="Editar "
-              onPress={editTask}
+              onPress={() => {
+                navigation.navigate("editProfile");
+              }}
               style={{
                 position: "absolute",
-                marginTop: 10,
+              //  marginTop: 85,
+                marginRight: 15,
                 backgroundColor: "#E8A998",
-                right:30,
+                right:1,
               }}
             />
-      <Pressable onPress={() => escolhefoto()}>
-        <View style={styles.imageContainer}>
-          {pickedImagePath !== "" && (
-            <Image source={{ uri: pickedImagePath }} style={styles.image} />
-          )}
-          {pickedImagePath === "" && (
-            <Image
-              source={require("../../assets/usuario.png")}
-              style={styles.image}
-            />
-          )}
-         {/*<TextInput
-                  style={{
-                    marginTop: 20,
-                    borderWidth: 2,
-                    padding: 10,
-                    borderRadius: 6,
-                  }}
-                  containerStyle={{ marginTop: 15 }}
-                  placeholder="Nome"
-                  value={nome}
-                  autoCapitalize="none"
-                  autoCompleteType="off"
-                  autoCorrect={false}
-                  keyboardType="text"
-                  onChangeText={(text) => setNome(text)}
-                >
-                
-                </TextInput>*/}
+    <View style={styles.screen}>
+    
+    
+    <Image
+                    source={{ uri: usuario.urlfoto }}
+                    style={styles.image}
+                    
+                  />
+          
+         
         <Text style={{ fontSize: 18,
-    marginTop: 30,
-    textAlign: "right",
-    marginLeft:180,
-    }}>{usuario.nome}</Text>
+                       marginTop: 30,
+                       textAlign: "right",
+                       marginLeft:100,}}
+                       >{usuario.nome}</Text>
         <Text style={styles.text}>{usuario.email}</Text>
         <Text style={styles.text}>{usuario.numero}</Text>
-        </View>
-        </Pressable>
-      {/*  <Button
-              color="#EF8F86"
-              text="Adicionar Serviço"
-              onPress={() => {
-                navigation.navigate("AddServico");
-              }}
-              style={{
-                marginTop: 10,
-                backgroundColor: "#E8A998",
-              }}
-            />*/}
-            <Button
+        <Text style={styles.text}>{usuario.descricao}</Text>
+        <Button
               color="#EF8F86"
               text="Adicionar Endereço"
               rightContent={
@@ -279,13 +227,11 @@ export default function Profile({ navigation, route}) {
                 navigation.navigate("Endereco");
               }}
               style={{
-                marginTop: 10,
+                marginTop: 20,
                 backgroundColor: "#E8A998",
               }}
             />
-           
-           
-    </View>
+        </View>
     </Layout>
     
   );
@@ -295,7 +241,8 @@ const styles = StyleSheet.create({
     flex: 1,
     //justifyContent: "center",
    // alignItems: "center",
-    marginTop: 15,
+   marginTop:50,
+    margin: 15,
   },
   buttonContainer: {
     width: 400,
@@ -325,6 +272,7 @@ const styles = StyleSheet.create({
     marginTop: 10,
     textAlign: "right",
     marginLeft:180,
+    position:"relative"
   },
     wrapper: {},
     slide1: {

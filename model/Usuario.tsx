@@ -6,9 +6,9 @@ export class Usuario {
     public password: string;
     public urlfoto : string;
     public numero: string;
-    public categoria: string;
+    public descricao: string;
     public date: string;
-    public avali: string;
+  
         
 
     constructor(obj?: Partial<Usuario>) {
@@ -18,9 +18,9 @@ export class Usuario {
             this.urlfoto = obj.urlfoto
             this.nome = obj.nome
             this.numero = obj.numero
-            this.categoria = obj.categoria
+            this.descricao = obj.descricao
             this.date = obj.date
-            this.avali = obj.avali
+           
           
         }
     }
@@ -32,9 +32,9 @@ export class Usuario {
             "email": "${this.email}",
             "urlfoto": "${this.urlfoto}"
             "numero": "${this.numero}"
-            "categoria": "${this.categoria}"
+            "descricao": "${this.descricao}"
             "date": "${this.date}"
-            "avali": "${this.avali}"
+           
         }`
 
         //const fields = Object.values(this).join(', ')

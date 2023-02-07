@@ -31,7 +31,6 @@ export default function ({ navigation }) {
   const [password, setPassword] = useState("");
   const [data, setData] = useState("");
   const [numero, setNumero] = useState("");
-  const [categoria, setCategoria] = useState("");
   const [loading, setLoading] = useState(false);
   const [urlfoto, setUrlfoto] = useState(null);
 
@@ -48,7 +47,6 @@ export default function ({ navigation }) {
           email: email,
           // password: password,
           numero: numero,
-          categoria: categoria,
           data: data,
           urlfoto: urlfoto,
         });
@@ -170,20 +168,6 @@ export default function ({ navigation }) {
               onChangeText={setNumero}
               value={numero}
               autoCorrect={false}
-            />
-            <Text style={{ marginTop: 15, marginVertical: 15 }}>Categoria</Text>
-            <RNPickerSelect
-              value={categoria}
-              onValueChange={(categoria) => setCategoria(categoria)}
-              items={[
-                { label: "Maquiagem", value: "Maquiagem" },
-                { label: "Cabelo", value: "Cabelo" },
-                { label: "Unhas", value: "Unhas" },
-                { label: "Depilação", value: "Depilação" },
-                { label: "Limpeza de pele", value: "Limpeza de pele" },
-              ]}
-              style={{ inputAndroid: { color: "black" } }}
-              useNativeAndroidPickerStyle={false}
             />
 
             <Button

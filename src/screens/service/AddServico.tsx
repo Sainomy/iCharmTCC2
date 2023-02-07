@@ -298,25 +298,7 @@ export default function SecondScreen({ navigation }) {
                       setValor(Number(value));
                     }}
                   />
-                  <TextInput
-                    style={{
-                      marginTop: 10,
-                      borderColor:  "#f8f8ff",
-                      borderWidth: 2,
-                      padding: 10,
-                      borderRadius: 6,
-                    }}
-                    containerStyle={{ marginTop: 15 }}
-                    multiline
-                    numberOfLines={10}
-                    placeholder="Numero de estrelas"
-                    value={stars}
-                    autoCapitalize="none"
-                    keyboardType="phone-pad"
-                    autoCorrect={false}
-                    onChangeText={(number) => setStars(number)}
-                  />
-
+                
                   <Ionicons
                     style={{ margin: 15 }}
                     name="add"

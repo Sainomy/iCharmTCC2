@@ -18,6 +18,7 @@ import TelaServico from "../screens/service/TelaServico";
 import Welcome from "../screens/layout/Welcome";
 import Endereco from "../screens/Endereco";
 import AddFotos from "../screens/service/AddFotos";
+import editProfile from "../screens/editProfile";
 // Auth screens
 import Login from "../screens/auth/Login";
 import Register from "../screens/auth/Register";
@@ -46,7 +47,7 @@ const Auth = () => {
         headerShown: false,
       }}
     >
-      <AuthStack.Screen name="Welcome" component={Welcome} />
+      {/* <AuthStack.Screen name="Welcome" component={Welcome} />*/}
       <AuthStack.Screen name="Login" component={Login} />
       <AuthStack.Screen name="Register" component={Register} />
       <AuthStack.Screen name="ForgetPassword" component={ForgetPassword} />
@@ -68,6 +69,7 @@ const Main = () => {
       <MainStack.Screen name="TelaServico" component={TelaServico} />
       <MainStack.Screen name="Endereco" component={Endereco} />
       <MainStack.Screen name="AddFotos" component={AddFotos} />
+      <MainStack.Screen name="editProfile" component={editProfile} />
     </MainStack.Navigator>
   );
 };
