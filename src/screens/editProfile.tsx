@@ -11,10 +11,13 @@ import {
   Alert,
   Modal,
   FlatList,
-  ScrollView
+  ScrollView,
+
 } from "react-native";
 import { TextInput, TopNav,  useTheme,
   themeColor, Button, Layout} from "react-native-rapi-ui";
+  import { DatePickerInput } from 'react-native-paper-dates';
+  import { SafeAreaProvider } from "react-native-safe-area-context";
 // import firebaseConfig from "./firebase";
 // import firebase from "firebase/compat/app";
 // import "firebase/compat/storage";
@@ -86,7 +89,12 @@ export default function Profile({ navigation, route}) {
       .update({
         id: reference.id,
         nome: usuario.nome,
-       
+        email: usuario.email,
+        descricao:  usuario.descricao,
+          // password: password,
+        numero:  usuario.numero,
+        data:  usuario.data,
+        urlfoto:  usuario.urlfoto,
       })
       .then(() => {
         alert("Salvo com sucesso");
@@ -181,7 +189,7 @@ export default function Profile({ navigation, route}) {
 
   return (
     <Layout>
-    <ScrollView style={{margin:20}}>
+    <ScrollView >
   
       <TopNav
         middleContent={
@@ -201,7 +209,7 @@ export default function Profile({ navigation, route}) {
         leftAction={() => navigation.goBack()}
       />
      
-
+<View style={{marginRight:20, marginLeft:20}}>
 
       <Pressable onPress={() => escolhefoto()}>
         <View style={styles.imageContainer}>
@@ -214,6 +222,12 @@ export default function Profile({ navigation, route}) {
               style={styles.image}
             />
           )}
+          <Ionicons
+            name="create"
+            size={30}
+            position="absolute"
+            color={isDarkmode ? themeColor.white100 : themeColor.black}
+          />
         </View>
       </Pressable>
       <Text>Nome</Text>
@@ -226,18 +240,17 @@ export default function Profile({ navigation, route}) {
               autoCorrect={false}
               keyboardType="text"
               onChangeText={(text) => setUsuario({ ...usuario, nome: text })}
-            />
-       <Text style={{ marginTop: 15 }}>Descrição</Text>
-            <TextInput
-              containerStyle={{ marginTop: 15 }}
-              placeholder="(opcional)"
-              value={usuario.descricao}
-              autoCapitalize="none"
-              autoCompleteType="off"
-              autoCorrect={false}
-              keyboardType="text"
-              onChangeText={(text) => setUsuario({ ...usuario, descricao: text })}
-            />
+             />
+             <Text style={{ marginTop: 15 }}>Descrição</Text>
+                  <TextInput
+                    containerStyle={{ marginTop: 15 }}
+                    multiline
+                    numberOfLines={10}
+                    placeholder="(opcional)"
+                    value={usuario.descricao}
+                    autoCorrect={false}
+                    onChangeText={(text) => setUsuario({ ...usuario, descricao: text })}
+                  />
        <Text style={{ marginTop: 15 }}>E-mail</Text>
             <TextInput
               containerStyle={{ marginTop: 15 }}
@@ -249,9 +262,6 @@ export default function Profile({ navigation, route}) {
               keyboardType="email-address"
               onChangeText={(text) => setUsuario({ ...usuario, email: text })}
             />
-
-            <Text style={{ marginVertical: 15 }}>Data de Nascimento</Text>
-           
             <Text style={{ marginTop: 15, marginVertical: 15 }}>Contato</Text>
             <TextInput
               placeholder="Digite seu número para contato"
@@ -275,7 +285,7 @@ export default function Profile({ navigation, route}) {
             //  disabled={loading===(false)}
             />
 
-
+</View>
     </ScrollView>
     </Layout>
   );
@@ -283,7 +293,8 @@ export default function Profile({ navigation, route}) {
 
 const styles = StyleSheet.create({
   imageContainer: {
-    padding: 30,
+    marginTop:20,
+    //padding: 30,
     justifyContent: "center",
     alignItems: "center",
   },

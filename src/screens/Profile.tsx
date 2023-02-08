@@ -176,7 +176,8 @@ export default function Profile({ navigation, route}) {
         }
         leftContent={<Ionicons name="menu" size={30} color={isDarkmode ? themeColor.dark100 : "black"}/>}
       />
-     <Button
+      <View style={{flex:0.03}}>
+      <Button
               color="#EF8F86"
               rightContent={
                 <Ionicons
@@ -190,30 +191,24 @@ export default function Profile({ navigation, route}) {
               }}
               style={{
                 position: "absolute",
-              //  marginTop: 85,
-                marginRight: 15,
                 backgroundColor: "#E8A998",
                 right:1,
+                margin:10,
               }}
             />
+      </View>
+    
     <View style={styles.screen}>
     
-    
-    <Image
-                    source={{ uri: usuario.urlfoto }}
-                    style={styles.image}
-                    
-                  />
-          
+    <Image source={{ uri: usuario.urlfoto }} style={styles.image}/>
          
-        <Text style={{ fontSize: 18,
-                       marginTop: 30,
-                       textAlign: "right",
-                       marginLeft:100,}}
-                       >{usuario.nome}</Text>
+        <Text style={{ fontSize: 18, marginTop: 50, textAlign: "right", marginLeft:100,}}>
+          {usuario.nome}
+          </Text>
         <Text style={styles.text}>{usuario.email}</Text>
         <Text style={styles.text}>{usuario.numero}</Text>
-        <Text style={styles.text}>{usuario.descricao}</Text>
+        <Text style={{color: "gray"}}>Sobre:</Text>
+        <Text style={styles.text2}>{usuario.descricao}</Text>
         <Button
               color="#EF8F86"
               text="Adicionar Endereço"
@@ -227,10 +222,11 @@ export default function Profile({ navigation, route}) {
                 navigation.navigate("Endereco");
               }}
               style={{
-                marginTop: 20,
+                marginTop: 5,
                 backgroundColor: "#E8A998",
               }}
             />
+             
         </View>
     </Layout>
     
@@ -241,7 +237,7 @@ const styles = StyleSheet.create({
     flex: 1,
     //justifyContent: "center",
    // alignItems: "center",
-   marginTop:50,
+   //marginTop:50,
     margin: 15,
   },
   buttonContainer: {
@@ -265,7 +261,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     position:"absolute", 
-    left:20,
+    left:10,
   },
   text: {
     fontSize: 15,
@@ -274,25 +270,11 @@ const styles = StyleSheet.create({
     marginLeft:180,
     position:"relative"
   },
-    wrapper: {},
-    slide1: {
-      flex: 1,
-      justifyContent: 'center',
-      alignItems: 'center',
-      backgroundColor: '#9DD6EB'
-    },
-    slide2: {
-      flex: 1,
-      justifyContent: 'center',
-      alignItems: 'center',
-      backgroundColor: '#97CAE5'
-    },
-    slide3: {
-      flex: 1,
-      justifyContent: 'center',
-      alignItems: 'center',
-      backgroundColor: '#92BBD9'
-    },
+  text2: {
+    fontSize: 15,
+    marginTop: 10,
+    textAlign: "right",
+  },
     texts: {
       color: '#fff',
       fontSize: 30,

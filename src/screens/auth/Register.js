@@ -20,6 +20,7 @@ import {
   themeColor,
 } from "react-native-rapi-ui";
 import DatePicker from "react-native-datepicker";
+import { DatePickerInput } from "react-native-paper-dates";
 import { firestore } from "../../../firebase";
 import RNPickerSelect from "react-native-picker-select";
 
@@ -30,6 +31,7 @@ export default function ({ navigation }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [data, setData] = useState("");
+  const [descricao, setDescricao] = useState("");
   const [numero, setNumero] = useState("");
   const [loading, setLoading] = useState(false);
   const [urlfoto, setUrlfoto] = useState(null);
@@ -45,6 +47,7 @@ export default function ({ navigation }) {
           id: auth.currentUser.uid,
           nome: nome,
           email: email,
+          descricao: descricao,
           // password: password,
           numero: numero,
           data: data,
@@ -141,24 +144,13 @@ export default function ({ navigation }) {
               onChangeText={(text) => setPassword(text)}
             />
             <Text style={{ marginVertical: 15 }}>Data de Nascimento</Text>
-            <DatePicker
-              date={data}
-              mode="date"
-              placeholder="Selecione sua data"
-              format="MM/DD/YYYY"
-              useNativeDriver="false"
-              confirmBtnText="Confirma"
-              cancelBtnText="Cancela"
-              onDateChange={(data) => setData(data, "setData")}
-              customStyles={{
-                dateInput: {
-                  borderWidth: 0,
-                  alignItems: "flex-start",
-                },
-                dateText: {
-                  color: "#C0C0C0",
-                },
-              }}
+
+            <DatePickerInput
+              backgroundColor="white"
+              locale="pt"
+              value={data}
+              onChange={(text) => setData(text)}
+              inputMode="start"
             />
 
             <Text style={{ marginTop: 15, marginVertical: 15 }}>Contato</Text>

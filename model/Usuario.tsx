@@ -7,7 +7,7 @@ export class Usuario {
     public urlfoto : string;
     public numero: string;
     public descricao: string;
-    public date: string;
+    public data: string;
   
         
 
@@ -19,7 +19,7 @@ export class Usuario {
             this.nome = obj.nome
             this.numero = obj.numero
             this.descricao = obj.descricao
-            this.date = obj.date
+            this.data = obj.data
            
           
         }
@@ -33,7 +33,7 @@ export class Usuario {
             "urlfoto": "${this.urlfoto}"
             "numero": "${this.numero}"
             "descricao": "${this.descricao}"
-            "date": "${this.date}"
+            "data": "${this.data}"
            
         }`
 
