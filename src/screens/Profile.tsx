@@ -61,109 +61,6 @@ export default function Profile({ navigation, route}) {
     return () => subscriber();
   }, [usuario]);
   
-
-  const escolhefoto = () => {
-    Alert.alert(
-      "Alert Title",
-      "My Alert Msg",
-      [
-        {
-          text: "Camera",
-          onPress: () => openCamera(),
-          style: "default",
-        },
-
-        {
-          text: "Abrir galeria",
-          onPress: () => showImagePicker(),
-          style: "cancel",
-        },
-      ],
-      {
-        cancelable: true,
-        onDismiss: () => {},
-      }
-    );
-  };
- 
-  // This function is triggered when the "Select an image" button pressed
-  const showImagePicker = async () => {
-    // Ask the user for the permission to access the media library
-    const permissionResult =
-      await ImagePicker.requestMediaLibraryPermissionsAsync();
-
-    if (permissionResult.granted === false) {
-      alert("You've refused to allow this app to access your photos!");
-      return;
-    }
-
-    const result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.All,
-      allowsEditing: true,
-      aspect: [4, 3],
-      quality: 1,
-    });
-
-    // Explore the result
-    console.log(result);
-
-    if (!result.cancelled) {
-      setPickedImagePath(result.uri);
-      // const storage = app.storage();
-      const ref = storage.ref(
-        `imagens/profile/IMAGE-${auth.currentUser.uid}.jpg`
-      );
-      const img = await fetch(result.uri);
-      const bytes = await img.blob();
-      const fbResult = await uploadBytes(ref, bytes);
-      console.log(result.uri);
-      console.log("firebase url :", fbResult.metadata.fullPath);
-      const reference = firestore
-        .collection("Usuario")
-        .doc(auth.currentUser.uid);
-      const paraDonwload = await storage
-        .ref(fbResult.metadata.fullPath)
-        .getDownloadURL();
-      //reference.update({ urlfoto: fbResult.metadata.fullPath, });
-      reference.update({ urlfoto: paraDonwload });
-    }
-  };
-
-  // This function is triggered when the "Open camera" button pressed
-  const openCamera = async () => {
-    // Ask the user for the permission to access the camera
-    const permissionResult = await ImagePicker.requestCameraPermissionsAsync();
-
-    if (permissionResult.granted === false) {
-      alert("You've refused to allow this app to access your camera!");
-      return;
-    }
-
-    const result = await ImagePicker.launchCameraAsync();
-
-    // Explore the result
-    console.log(result);
-
-    if (!result.cancelled) {
-      setPickedImagePath(result.uri);
-      //const storage = storage.storage();
-      const ref = storage.ref(`imagens/IMAGE-${auth.currentUser.uid}.jpg`);
-      const img = await fetch(result.uri);
-      const bytes = await img.blob();
-      const fbResult = await uploadBytes(ref, bytes);
-      console.log(result.uri);
-      console.log("firebase url :", fbResult.metadata.fullPath);
-      const reference = firestore
-        .collection("Usuario")
-        .doc(auth.currentUser.uid);
-      const paraDonwload = await storage
-        .ref(fbResult.metadata.fullPath)
-        .getDownloadURL();
-      //reference.update({ urlfoto: fbResult.metadata.fullPath, });
-      reference.update({ urlfoto: paraDonwload });
-    }
-  };
-
   return (
     <Layout >
        <TopNav style={{position:"relative"}}
@@ -199,15 +96,24 @@ export default function Profile({ navigation, route}) {
       </View>
     
     <View style={styles.screen}>
-    
-    <Image source={{ uri: usuario.urlfoto }} style={styles.image}/>
+     
+          {usuario.urlfoto !== null && (
+            <Image source={{ uri: usuario.urlfoto }} style={styles.image} />
+          )}
+          {usuario.urlfoto === null && (
+            <Image
+              source={require("../../assets/usuario.png")}
+              style={styles.image}
+            />
+          )}
+ {/* <Image source={{ uri: usuario.urlfoto }} style={styles.image}/>*/}
          
         <Text style={{ fontSize: 18, marginTop: 50, textAlign: "right", marginLeft:100,}}>
           {usuario.nome}
           </Text>
-        <Text style={styles.text}>{usuario.email}</Text>
         <Text style={styles.text}>{usuario.numero}</Text>
-        <Text style={{color: "gray"}}>Sobre:</Text>
+        <Text style={styles.text}>{usuario.email}</Text>
+        <Text style={{color: "gray", marginTop:20}}>Sobre:</Text>
         <Text style={styles.text2}>{usuario.descricao}</Text>
         <Button
               color="#EF8F86"
@@ -220,6 +126,23 @@ export default function Profile({ navigation, route}) {
                 />}
               onPress={() => {
                 navigation.navigate("Endereco");
+              }}
+              style={{
+                marginTop: 5,
+                backgroundColor: "#E8A998",
+              }}
+            />
+            <Button
+              color="#EF8F86"
+              text="Mapa"
+              rightContent={
+                <Ionicons
+                    name="locate"
+                    size={20}
+                    color={themeColor.white}
+                />}
+              onPress={() => {
+                navigation.navigate("Mapa");
               }}
               style={{
                 marginTop: 5,
@@ -267,13 +190,13 @@ const styles = StyleSheet.create({
     fontSize: 15,
     marginTop: 10,
     textAlign: "right",
-    marginLeft:180,
+    
     position:"relative"
   },
   text2: {
     fontSize: 15,
     marginTop: 10,
-    textAlign: "right",
+    textAlign: "left",
   },
     texts: {
       color: '#fff',

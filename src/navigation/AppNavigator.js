@@ -19,6 +19,7 @@ import Welcome from "../screens/layout/Welcome";
 import Endereco from "../screens/Endereco";
 import AddFotos from "../screens/service/AddFotos";
 import editProfile from "../screens/editProfile";
+import Mapa from "../components/utils/Mapa";
 // Auth screens
 import Login from "../screens/auth/Login";
 import Register from "../screens/auth/Register";
@@ -70,6 +71,7 @@ const Main = () => {
       <MainStack.Screen name="Endereco" component={Endereco} />
       <MainStack.Screen name="AddFotos" component={AddFotos} />
       <MainStack.Screen name="editProfile" component={editProfile} />
+      <MainStack.Screen name="Mapa" component={Mapa} />
     </MainStack.Navigator>
   );
 };

@@ -1,6 +1,7 @@
 import { useNavigation, useRoute} from "@react-navigation/core";
 import React, {  useState, useEffect, useRef } from "react";
-import { Dimensions,View, StyleSheet, Image, Alert, Pressable, TouchableOpacity, TextInput} from "react-native";
+import { Dimensions,View, StyleSheet, Image, Alert, Pressable, TouchableOpacity, TextInput,
+  FlatList,} from "react-native";
 // import firebaseConfig from "./firebase";
 // import firebase from "firebase/compat/app";
 // import "firebase/compat/storage";
@@ -17,6 +18,7 @@ import { Layout, TopNav, Button, Text,useTheme ,themeColor} from "react-native-r
 import { Modalize } from "react-native-modalize";
 import Carousel from "../../components/utils/Carousel";
 import { ScrollView } from "react-native-gesture-handler";
+//import AcModalize from "../Agendamento";
 
 export default function TelaServico({navigation} ) {
   const { isDarkmode } = useTheme();
@@ -26,15 +28,16 @@ export default function TelaServico({navigation} ) {
 
   const [servico, setServico] = useState  < Servico >({});
   const [usuario, setUsuario] = useState  < Usuario > ({});
+  const [fotos, setFotos] = useState < Foto > ({});
   const [itemLista, setItemLista] = useState({
     ...itemLista,
     id: "",
     title: "",
   });
 
-  function onOpen() {
+ { /*function onOpen() {
     modalizeRef.current?.open();
-  }
+  }*/}
   const route = useRoute();
   
   const {servicoID}=  route.params
@@ -60,6 +63,41 @@ export default function TelaServico({navigation} ) {
       });
     return () => subscriber();
   }, [servico]);
+
+  useEffect(() => {
+    const subscriber = firestore
+      .collection("Usuario")
+      .doc(auth.currentUser.uid)
+      .collection("Servico")
+      .doc(servicoID)
+      .collection("Foto")
+      .onSnapshot((querySnapshot) => {
+        const fotos = [];
+        querySnapshot.forEach((documentSnapshot) => {
+          fotos.push({
+            ...documentSnapshot.data(),
+            key: documentSnapshot.id,
+          });
+        });
+        setFotos(fotos);
+      });
+    // Unsubscribe from events when no longer in use
+    return () => subscriber();
+  }, [fotos]);
+
+  const ItemView = ({ item }) => {
+    return (
+        <TouchableOpacity
+          activeOpacity={0.7}
+        >
+          <Image style={styles.image} source={{ uri: item.urlfoto }} />
+        </TouchableOpacity>
+    );
+  };
+
+  function onOpen() {
+    modalizeRef.current?.open();
+  }
 
   const escolhefoto = () => {
     Alert.alert(
@@ -165,6 +203,14 @@ export default function TelaServico({navigation} ) {
       //reference.update({ urlfoto: fbResult.metadata.fullPath, });
       referenceServico.update({ urlfoto: paraDonwload });
     }
+    const ItemView = ({ item }) => {
+      return (
+        <View >
+            <Image style={styles.image} source={{ uri: item.urlfoto }} />
+  
+        </View>
+      );
+    }
   };
 
 
@@ -187,51 +233,61 @@ export default function TelaServico({navigation} ) {
         }
         leftAction={() => navigation.goBack()}
       />
-    <Carousel />
-       <Modalize ref={modalizeRef} snapPoint={180}>
-        <View
-          style={{
-            flex: 1,
-            height: 180,
-            justifyContent: "center",
-            alignItems: "center",
-            backgroundColor: isDarkmode ? themeColor.dark : themeColor.white,
-          }}
-        > 
+   {/* <Carousel />*/}
+   { /* <AcModalize />*/}
+   <Modalize ref={modalizeRef} snapPoint={180}>
+      <View
+        style={{
+          flex: 1,
+          height: 180,
+          justifyContent: "center",
+          alignItems: "center",
+          backgroundColor: isDarkmode ? themeColor.dark : themeColor.white,
+        }}
+      >
         <TextInput
-                    style={{
-                      marginTop: 10,
-                      borderWidth: 2,
-                      padding: 10,
-                      borderRadius: 6,
-                    }}
-                    containerStyle={{ marginTop: 15 }}
-                    placeholder="Data hora"
-
-                    autoCapitalize="none"
-                    autoCompleteType="off"
-                    autoCorrect={false}
-                    keyboardType="text"
-                    
-                  />
-          <TouchableOpacity
-            onPress={() => {}}
-            style={{
-              backgroundColor: "white",
-              borderRadius: 6,
-              padding: 15,
-              borderWidth: 1,
-              borderColor: "rgba(0,0,0, 0.2)",
-              marginTop: 10,
-              marginHorizontal: 15,
-              marginVertical: 6,
-            }}
-          >
-            <Text>Agendar</Text>
-          </TouchableOpacity>
-        </View>
-      </Modalize>
+          style={{
+            marginTop: 10,
+            borderWidth: 2,
+            padding: 10,
+            borderRadius: 6,
+          }}
+          containerStyle={{ marginTop: 15 }}
+          placeholder="Data hora"
+          autoCapitalize="none"
+          autoCompleteType="off"
+          autoCorrect={false}
+          keyboardType="text"
+        />
+        <TouchableOpacity
+          onPress={() => {}}
+          style={{
+            backgroundColor: "white",
+            borderRadius: 6,
+            padding: 15,
+            borderWidth: 1,
+            borderColor: "rgba(0,0,0, 0.2)",
+            marginTop: 10,
+            marginHorizontal: 15,
+            marginVertical: 6,
+          }}
+        >
+          <Text>Agendar</Text>
+        </TouchableOpacity>
+      </View>
+    </Modalize>
+      
       <ScrollView style={styles.screen}>
+      <ScrollView
+      style={{flex: 1}}
+      directionalLockEnabled={false}
+      horizontal={true}>
+      <FlatList
+        numColumns={50}
+        data={fotos}
+        renderItem={ ItemView}
+      />
+    </ScrollView>
 
         <Pressable onPress={() => escolhefoto()}>
           <View style={styles.imageContainer}>
@@ -249,17 +305,16 @@ export default function TelaServico({navigation} ) {
             <Text style={{color:"green"}}>R${servico.valor}</Text>
           </View>
         </Pressable>
+        <View style={{marginRight:10, marginLeft:10}}>
         <Button
           color="#EF8F86"
           text="Adicionar mais Fotos"
           onPress={() => {
             navigation.navigate("AddFotos",{servico:servico});
           }}
-          style={{
-            marginTop: 10,
-            backgroundColor: "#E8A998",
-          }}
+        
         />
+         
         <Button
           color="#EF8F86"
           text="Marcar Horário"
@@ -269,7 +324,7 @@ export default function TelaServico({navigation} ) {
             backgroundColor: "#E8A998",
           }}
         />
-        
+        </View>
       </ScrollView>
     </Layout>
   );
@@ -296,11 +351,12 @@ const styles = StyleSheet.create({
   image: {
     width: 310,
     height: 250,
-   borderRadius: 60,
+   borderRadius: 20,
     resizeMode: "cover",
     borderColor: "#ef846c",
     justifyContent: "center",
     alignItems: "center",
+    marginRight: 10,
   },
   text: {
     fontSize: 18,
