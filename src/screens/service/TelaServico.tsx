@@ -14,7 +14,7 @@ import { Usuario } from "../../../model/Usuario";
 import { Servico } from "../../../model/Servico";
 import { Foto } from "../../../model/Foto"
 import Ionicons from "@expo/vector-icons/Ionicons";
-import { Layout, TopNav, Button, Text,useTheme ,themeColor} from "react-native-rapi-ui";
+import { Layout, TopNav, Button, Text,useTheme ,themeColor, Section, SectionContent} from "react-native-rapi-ui";
 import { Modalize } from "react-native-modalize";
 import Carousel from "../../components/utils/Carousel";
 import { ScrollView } from "react-native-gesture-handler";
@@ -90,7 +90,7 @@ export default function TelaServico({navigation} ) {
         <TouchableOpacity
           activeOpacity={0.7}
         >
-          <Image style={styles.image} source={{ uri: item.urlfoto }} />
+          <Image style={styles.image2} source={{ uri: item.urlfoto }} />
         </TouchableOpacity>
     );
   };
@@ -276,21 +276,18 @@ export default function TelaServico({navigation} ) {
         </TouchableOpacity>
       </View>
     </Modalize>
-      
-      <ScrollView style={styles.screen}>
-      <ScrollView
-      style={{flex: 1}}
-      directionalLockEnabled={false}
-      horizontal={true}>
-      <FlatList
-        numColumns={50}
-        data={fotos}
-        renderItem={ ItemView}
-      />
-    </ScrollView>
-
+    <ScrollView style={styles.screen}>
+    <View style={ {shadowColor: "#171717",
+    shadowOffset: { width: -2, height: 4 },
+    shadowOpacity: 0.2,
+    shadowRadius: 3, borderRadius:20,
+    justifyContent: "center", alignItems:"center"}}>
+     <Section style={{margin:20}}>
+     <SectionContent style={{
+   }}>
+    
         <Pressable onPress={() => escolhefoto()}>
-          <View style={styles.imageContainer}>
+         
             {pickedImagePath !== "" && (
               <Image source={{ uri: pickedImagePath }} style={styles.image} />
             )}
@@ -300,19 +297,42 @@ export default function TelaServico({navigation} ) {
                 style={styles.image}
               />
             )}
-            <Text style={{fontSize: 30, fontStyle:"italic", margin:5}}>{servico.nomecat}</Text>
+          
+        </Pressable>
+        <Text style={{fontSize: 30, fontStyle:"italic", margin:5, alignItems:"flex-start"}}>{servico.nomecat}</Text>
             <Text>{servico.descricao}</Text>
             <Text style={{color:"green"}}>R${servico.valor}</Text>
-          </View>
-        </Pressable>
-        <View style={{marginRight:10, marginLeft:10}}>
+            
+            </SectionContent>
+            </Section>
+            </View>
+        
+            
+      <ScrollView
+      style={{flex: 1, marginTop:15}}
+      directionalLockEnabled={false}
+      horizontal={true}>
+        <Text style={{marginLeft:20, color:themeColor.white200}}>Fotos de {servico.nomecat}</Text>
+      <FlatList
+        numColumns={50}
+        data={fotos}
+        renderItem={ ItemView}
+      />
+    </ScrollView>
+    <View style={{marginRight:60, marginLeft:60, marginTop:10}}>
         <Button
           color="#EF8F86"
           text="Adicionar mais Fotos"
           onPress={() => {
             navigation.navigate("AddFotos",{servico:servico});
-          }}
-        
+           }}
+           leftContent={
+            <Ionicons
+              name="images"
+              size={30}
+              color={isDarkmode ? themeColor.white100 : themeColor.white}
+            />
+        }
         />
          
         <Button
@@ -323,6 +343,13 @@ export default function TelaServico({navigation} ) {
             marginTop: 10,
             backgroundColor: "#E8A998",
           }}
+          leftContent={
+            <Ionicons
+              name="calendar"
+              size={30}
+              color={isDarkmode ? themeColor.white100 : themeColor.white}
+            />
+        }
         />
         </View>
       </ScrollView>
@@ -333,8 +360,6 @@ export default function TelaServico({navigation} ) {
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
-   
-    marginTop: 15,
   },
   buttonContainer: {
     width: 400,
@@ -350,8 +375,17 @@ const styles = StyleSheet.create({
   },
   image: {
     width: 310,
-    height: 250,
+    height: 300,
    borderRadius: 20,
+    resizeMode: "cover",
+    borderColor: "#ef846c",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  image2: {
+    width: 210,
+    height: 150,
+    borderRadius: 20,
     resizeMode: "cover",
     borderColor: "#ef846c",
     justifyContent: "center",

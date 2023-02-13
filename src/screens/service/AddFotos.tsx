@@ -164,13 +164,13 @@ export default function SecondScreen({ navigation }) {
       .then(() => {
         const cancelBtn: AlertButton = { text: 'Ver Serviço',
         onPress: () => {
-            navigation.navigate('AddFotos')
+          navigation.goBack()
             
           } }
         const deleteBtn: AlertButton = {
             text: 'Adicionar mais fotos',
             onPress: () => {
-              navigation.navigate('TelaServico', { servicoID: item.id })
+              navigation.goBack()
               
             }
         }

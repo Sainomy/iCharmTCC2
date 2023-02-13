@@ -112,6 +112,7 @@ export default function ({ navigation }) {
             <TextInput
               containerStyle={{ marginTop: 15 }}
               placeholder="Digite seu nome"
+              require="true"
               value={nome}
               autoCapitalize="none"
               autoCompleteType="off"
