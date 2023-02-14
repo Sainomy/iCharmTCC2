@@ -16,7 +16,6 @@ import { Foto } from "../../../model/Foto"
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { Layout, TopNav, Button, Text,useTheme ,themeColor, Section, SectionContent} from "react-native-rapi-ui";
 import { Modalize } from "react-native-modalize";
-import Carousel from "../../components/utils/Carousel";
 import { ScrollView } from "react-native-gesture-handler";
 //import AcModalize from "../Agendamento";
 
@@ -300,24 +299,51 @@ export default function TelaServico({navigation} ) {
           
         </Pressable>
         <Text style={{fontSize: 30, fontStyle:"italic", margin:5, alignItems:"flex-start"}}>{servico.nomecat}</Text>
-            <Text>{servico.descricao}</Text>
+            <Text style={{color:"gray"}}>{servico.descricao}</Text>
             <Text style={{color:"green"}}>R${servico.valor}</Text>
+            <Button
+              color="#EF8F86"
+              rightContent={
+                <Ionicons
+                    name="create"
+                    size={20}
+                    color={themeColor.white}
+                />}
             
+              onPress={() => {
+                navigation.navigate("EditServico", {servicoID:servicoID});
+              }}
+              style={{
+                position: "absolute",
+                backgroundColor: "#E8A998",
+                right:1,
+                margin:10,
+              }}
+            />
             </SectionContent>
             </Section>
             </View>
         
-            
+            <Text style={{marginLeft:20, color:"gray"}}>Fotos de {servico.nomecat}</Text>
       <ScrollView
       style={{flex: 1, marginTop:15}}
       directionalLockEnabled={false}
       horizontal={true}>
-        <Text style={{marginLeft:20, color:themeColor.white200}}>Fotos de {servico.nomecat}</Text>
+        
       <FlatList
         numColumns={50}
         data={fotos}
         renderItem={ ItemView}
       />
+      <Ionicons
+              name="images"
+              size={60}
+              color={"black"}
+              style={{alignItems:"center", padding:40}}
+              onPress={() => {
+                navigation.navigate("AddFotos",{servico:servico});
+               }}
+            />
     </ScrollView>
     <View style={{marginRight:60, marginLeft:60, marginTop:10}}>
         <Button
@@ -331,6 +357,7 @@ export default function TelaServico({navigation} ) {
               name="images"
               size={30}
               color={isDarkmode ? themeColor.white100 : themeColor.white}
+             
             />
         }
         />
@@ -348,6 +375,7 @@ export default function TelaServico({navigation} ) {
               name="calendar"
               size={30}
               color={isDarkmode ? themeColor.white100 : themeColor.white}
+              
             />
         }
         />

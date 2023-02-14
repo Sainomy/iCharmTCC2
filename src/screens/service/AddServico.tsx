@@ -158,7 +158,6 @@ export default function SecondScreen({ navigation }) {
         nomecat: nomecat,
         descricao: descricao,
         valor: valor,
-        stars: stars,
         urlfoto: urlfoto,
       })
       .then(() => {

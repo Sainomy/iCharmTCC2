@@ -12,7 +12,6 @@ import {
   Modal,
   FlatList,
   ScrollView,
-
 } from "react-native";
 import { TextInput, TopNav,  useTheme,
   themeColor, Button, Layout} from "react-native-rapi-ui";
@@ -28,7 +27,7 @@ import * as ImagePicker from "expo-image-picker";
 import { Usuario } from "../../model/Usuario";
 import Ionicons from '@expo/vector-icons/Ionicons';
 
-export default function Profile({ navigation, route}) {
+export default function editProfile({ navigation, route}) {
   const { isDarkmode, setTheme } = useTheme();
   //antes era só function profile
   const [modalListaVisible, setModalListaVisible] = useState(false);
@@ -185,6 +184,19 @@ export default function Profile({ navigation, route}) {
       reference.update({ urlfoto: paraDonwload });
     }setLoading(true);
   };
+  const deletarUsuario = async () => {
+    var user = auth.currentUser;
+{  /*  const reference = await firestore.collection("Usuario")
+    .doc(auth.currentUser.uid);
+  reference.delete();*/}
+
+    user.delete().then(function(){
+      navigation.navigate("Login");
+      //User deleted.
+    }).catch(function(error){
+      //An error happened
+    });
+  }
  
 
   return (
@@ -284,6 +296,14 @@ export default function Profile({ navigation, route}) {
               }}
             //  disabled={loading===(false)}
             />
+            <Button
+                    color={themeColor.danger}
+                    text={"Excluir"}
+                    onPress={deletarUsuario}
+                    style={{
+                      marginTop: 10,
+                    }}
+                  />
 
 </View>
     </ScrollView>

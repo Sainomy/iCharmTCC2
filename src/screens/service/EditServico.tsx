@@ -1,3 +1,4 @@
+import { useRoute} from "@react-navigation/core";
 import React, { useState, useEffect } from "react";
 import {
   View,
@@ -8,6 +9,7 @@ import {
   Image,
   Alert,
   AlertButton,
+  Pressable
 } from "react-native";
 import {
   Layout,
@@ -27,22 +29,34 @@ import { auth, firestore, storage } from "../../../firebase";
 import { getStorage, uploadBytes } from "firebase/storage";
 import * as ImagePicker from "expo-image-picker";
 
-export default function SecondScreen({ navigation }) {
+export default function EditServico({ navigation }) {
   const { isDarkmode } = useTheme();
-  const [nomecat, setNomeCat] = useState("");
-  const [descricao, setDescricao] = useState("");
+  const [servico, setServico] = useState < Partial < Servico >> ({});
   const [valor, setValor] = useState(0);
-  const [stars, setStars] = useState(0);
   const [inputMoeda, setInputMoeda] = useState("0");
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [urlfoto, setUrlfoto] = useState("");
-  //const [progressPorcent, setPorgessPorcent] = useState(0);
   const [pickedImagePath, setPickedImagePath] = useState("");
-  const referenceServico = firestore
-    .collection("Usuario")
-    .doc(auth.currentUser.uid)
-    .collection("Servico")
-    .doc();
+  const route = useRoute();
+  
+  const {servicoID}=  route.params
+  useEffect(() => {
+    const referenceServico = firestore
+      .collection("Usuario")
+      .doc(auth.currentUser.uid)
+      .collection("Servico")
+      .doc(servicoID)
+      .onSnapshot((documentSnapshot) => {
+        setServico(documentSnapshot.data());
+        if (servico.urlfoto == null) {
+          setPickedImagePath("");
+        } else {
+          setPickedImagePath(servico.urlfoto);
+        }
+      });
+    return () => referenceServico();
+  }, [servico.urlfoto]);
+
   const escolhefoto = () => {
     setLoading(false);
     Alert.alert(
@@ -66,7 +80,7 @@ export default function SecondScreen({ navigation }) {
         onDismiss: () => {},
       }
     );
-   
+    
   };
 
   // This function is triggered when the "Select an image" button pressed
@@ -94,7 +108,7 @@ export default function SecondScreen({ navigation }) {
       setPickedImagePath(result.uri);
       // const storage = app.storage();
       const ref = storage.ref(
-        `imagens/servico/IMAGE-${referenceServico.id}.jpg`
+        `imagens/servico/IMAGE-${servicoID.id}.jpg`
       );
       const img = await fetch(result.uri);
       const bytes = await img.blob();
@@ -106,7 +120,7 @@ export default function SecondScreen({ navigation }) {
         .ref(fbResult.metadata.fullPath)
         .getDownloadURL();
       //reference.update({ urlfoto: fbResult.metadata.fullPath, });
-      referenceServico.update({ urlfoto: paraDonwload });
+      servicoID.update({ urlfoto: paraDonwload });
       setUrlfoto(paraDonwload);
     }
     setLoading(true);
@@ -131,7 +145,7 @@ export default function SecondScreen({ navigation }) {
       setPickedImagePath(result.uri);
       //const storage = storage.storage();
       const ref = storage.ref(
-        `imagens/servico/IMAGE-${referenceServico.id}.jpg`
+        `imagens/servico/IMAGE-${servicoID.id}.jpg`
       );
       const img = await fetch(result.uri);
       const bytes = await img.blob();
@@ -143,40 +157,31 @@ export default function SecondScreen({ navigation }) {
         .ref(fbResult.metadata.fullPath)
         .getDownloadURL();
       //reference.update({ urlfoto: fbResult.metadata.fullPath, });
-      referenceServico.update({ urlfoto: paraDonwload });
+      servicoID.update({ urlfoto: paraDonwload });
      
       setUrlfoto(paraDonwload);
      
     } setLoading(true);
   };
 
-  const enviarDados = () => {
-   
-    referenceServico
-      .set({
-        id: referenceServico.id,
-        nomecat: nomecat,
-        descricao: descricao,
-        valor: valor,
-        stars: stars,
-        urlfoto: urlfoto,
+   const salvar = () => {
+    const reference = firestore.collection("Usuario")
+    .doc(auth.currentUser.uid)
+    .collection("Servico")
+    .doc(servicoID);
+    reference
+      .update({
+        id: reference.id,
+        nomecat: servico.nomecat,
+        descricao:  servico.descricao,
+          // password: password,
+        valor:  servico.valor,
+        urlfoto:  servico.urlfoto,
       })
       .then(() => {
-        const cancelBtn: AlertButton = { text: 'Adicionar mais fotos' ,   onPress: () => {
-          navigation.navigate('AddFotos')
-          
-        }}
-        const deleteBtn: AlertButton = {
-            text: 'Ver Serviço',
-            onPress: () => {
-              navigation.navigate('TelaServico', { servicoID: referenceServico.id })
-              
-            }
-        }
-
-        Alert.alert(`Deseja adicionar mais foto?`, 'Essa ação não pode ser desfeita!', [deleteBtn, cancelBtn])
-      });
-     
+        alert("Salvo com sucesso");
+      })
+      .catch((error) => alert(error.message));
   };
   return (
     <Layout>
@@ -236,44 +241,45 @@ export default function SecondScreen({ navigation }) {
                       alignSelf: "center",
                     }}
                   >
-                    Criando Serviço
+                    Editar Serviço
                   </Text>
-                  <Text style={{ marginTop: 15 }}>Nome</Text>
+                  <Pressable onPress={() => escolhefoto()}>
+        <View style={styles.imageContainer}>
+          {pickedImagePath !== "" && (
+            <Image source={{ uri: pickedImagePath }} style={styles.image} />
+          )}
+          {pickedImagePath === "" && (
+            <Image
+              source={require("../../../assets/usuario.png")}
+              style={styles.image}
+            />
+          )}
+          <Ionicons
+            name="create"
+            size={30}
+            position="absolute"
+            color={isDarkmode ? themeColor.white100 : themeColor.black}
+          />
+        </View>
+      </Pressable>
+                  <Text>Nome</Text>
+            <TextInput
+              containerStyle={{ marginTop: 15 }}
+              value={servico.nomecat}
+              autoCapitalize="none"
+              autoCompleteType="off"
+              autoCorrect={false}
+              keyboardType="text"
+              onChangeText={(text) => setServico({ ...servico, nomecat: text })}
+             />
+             <Text style={{ marginTop: 15 }}>Descrição</Text>
                   <TextInput
-                    style={{
-                      marginTop: 10,
-                      borderWidth: 2,
-                      padding: 10,
-                      borderRadius: 6,
-                    }}
-                    containerStyle={{ marginTop: 15 }}
-                    placeholder="Nome do serviço"
-                    value={nomecat}
-                    autoCapitalize="none"
-                    autoCompleteType="off"
-                    autoCorrect={false}
-                    keyboardType="text"
-                    onChangeText={(text) => setNomeCat(text)}
-                  />
-
-                  <Text style={{ marginTop: 15 }}>Descrição</Text>
-                  <TextInput
-                    style={{
-                      marginTop: 10,
-                      borderColor:  "#f8f8ff",
-                      borderWidth: 2,
-                      padding: 10,
-                      borderRadius: 6,
-                    }}
                     containerStyle={{ marginTop: 15 }}
                     multiline
                     numberOfLines={10}
-                    placeholder="Informações sobre o serviço"
-                    value={descricao}
-                    autoCapitalize="none"
-                    autoCompleteType="off"
+                    value={servico.descricao}
                     autoCorrect={false}
-                    onChangeText={(text) => setDescricao(text)}
+                    onChangeText={(text) => setServico({ ...servico, descricao: text })}
                   />
 
                   <Text style={{ marginTop: 15 }}>Valor</Text>
@@ -288,40 +294,38 @@ export default function SecondScreen({ navigation }) {
                     type={"money"}
                     placeholder="Valor do serviço"
                     keyboardType="phone-pad"
-                    value={inputMoeda}
+                    value={servico.valor}
                     maxLength={18}
                     onChangeText={(value) => {
                       setInputMoeda(value);
                       value = value.replace("R$", "");
                       value = value.replace(".", "");
                       value = value.replace(",", ".");
-                      setValor(Number(value));
+                      setServico({ ...servico, valor: Number(value) });
                     }}
                   />
-                
-                  <Ionicons
-                    style={{ margin: 15 }}
-                    name="add"
-                    size={60}
-                    color={isDarkmode ? themeColor.white100 : themeColor.black}
-                    onPress={escolhefoto}
-                  />
-
-                  <Image
-                    source={{ uri: pickedImagePath }}
-                    style={{ width: 100, height: 100 }}
-                    
-                  />
-                  <Button
+                   
                  
+                  <Button
                     color="#EF8F86"
-                    text={loading ? "Adicionar" : "Carregando"}
-                    onPress={enviarDados}
+                    text={loading ? "Salvar" : "Carregando"}
+                    onPress={() => {
+                      salvar();
+                      navigation.goBack();
+                    }}
+                    
                     style={{
                       marginTop: 20,
                     }}
                     disabled={loading===(false)}
-
+                  />
+                  <Button
+                    color={themeColor.danger}
+                    text={"Excluir"}
+                    onPress={salvar}
+                    style={{
+                      marginTop: 10,
+                    }}
                   />
                  
                 </View>
@@ -331,5 +335,21 @@ export default function SecondScreen({ navigation }) {
         
       </KeyboardAvoidingView>
     </Layout>
-  );
+  ); 
 }
+const styles = StyleSheet.create({
+  imageContainer: {
+    marginTop:20,
+    //padding: 30,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  image: {
+    width: 200,
+    height: 200,
+    borderRadius: 40,
+    resizeMode: "cover",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+});

@@ -119,7 +119,7 @@ export default function ({ navigation }) {
               color="#EF8F86"
               text="Agendamentos"
               onPress={() => {
-                navigation.navigate("AddServico");
+                navigation.navigate("Agendamento");
               }}
               style={{
                 marginTop: 10,

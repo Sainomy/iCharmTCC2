@@ -11,6 +11,7 @@ import TabBarText from "../components/utils/TabBarText";
 import Home from "../screens/Home";
 import AddServico from "../screens/service/AddServico";
 import Agenda from "../screens/Agenda";
+//import Agendamento from "../screens/Agendamento";
 import Profile from "../screens/Profile";
 import Loading from "../screens/utils/Loading";
 import ListarServico from "../screens/service/ListarServico";
@@ -20,6 +21,7 @@ import Endereco from "../screens/Endereco";
 import AddFotos from "../screens/service/AddFotos";
 import editProfile from "../screens/editProfile";
 import Mapa from "../components/utils/Mapa";
+import EditServico from "../screens/service/EditServico";
 // Auth screens
 import Login from "../screens/auth/Login";
 import Register from "../screens/auth/Register";
@@ -72,6 +74,8 @@ const Main = () => {
       <MainStack.Screen name="AddFotos" component={AddFotos} />
       <MainStack.Screen name="editProfile" component={editProfile} />
       <MainStack.Screen name="Mapa" component={Mapa} />
+      <MainStack.Screen name="EditServico" component={EditServico} />
+      {/* <MainStack.Screen name="Agendamento" component={Agendamento} />*/}
     </MainStack.Navigator>
   );
 };

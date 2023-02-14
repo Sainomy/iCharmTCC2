@@ -1,4 +1,4 @@
-import React from 'react-native';
+/*import React from 'react-native';
 import PhotoGrid from 'react-native-photo-grid';
 let { Image, TouchableOpacity, Text } = React;
 
@@ -54,4 +54,4 @@ class Carousel extends React.Component {
 
 }
 
-export default Carousel;
+export default Carousel;*/
