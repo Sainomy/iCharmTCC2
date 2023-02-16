@@ -12,9 +12,11 @@ import {
   Modal,
   FlatList,
   ScrollView,
+  Switch,
+  
 } from "react-native";
 import { TextInput, TopNav,  useTheme,
-  themeColor, Button, Layout} from "react-native-rapi-ui";
+  themeColor, Button, Layout, CheckBox,} from "react-native-rapi-ui";
   import { DatePickerInput } from 'react-native-paper-dates';
   import { SafeAreaProvider } from "react-native-safe-area-context";
 // import firebaseConfig from "./firebase";
@@ -26,8 +28,10 @@ import { getStorage, uploadBytes } from "firebase/storage"; //access the storage
 import * as ImagePicker from "expo-image-picker";
 import { Usuario } from "../../model/Usuario";
 import Ionicons from '@expo/vector-icons/Ionicons';
+import { getAuth } from "firebase/auth";
 
-export default function editProfile({ navigation, route}) {
+export default function EditProfile({ navigation, route}) {
+  const auth = getAuth();
   const { isDarkmode, setTheme } = useTheme();
   //antes era só function profile
   const [modalListaVisible, setModalListaVisible] = useState(false);
@@ -39,7 +43,8 @@ export default function editProfile({ navigation, route}) {
   const [usuario, setUsuario] = useState < Partial < Usuario >> ({});
   // The path of the picked image
   const [pickedImagePath, setPickedImagePath] = useState("");
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const toggleSwitch = () => setPro((previousState) => !previousState);
 
   const escolhefoto = () => {
     setLoading(false);
@@ -93,7 +98,8 @@ export default function editProfile({ navigation, route}) {
           // password: password,
         numero:  usuario.numero,
         data:  usuario.data,
-        urlfoto:  usuario.urlfoto,
+        pro: usuario.pro,
+     //   urlfoto:  usuario.urlfoto,
       })
       .then(() => {
         alert("Salvo com sucesso");
@@ -186,16 +192,14 @@ export default function editProfile({ navigation, route}) {
   };
   const deletarUsuario = async () => {
     var user = auth.currentUser;
-{  /*  const reference = await firestore.collection("Usuario")
+    const referenceExclui = await firestore.collection("Usuario")
     .doc(auth.currentUser.uid);
-  reference.delete();*/}
+  referenceExclui.delete();
 
     user.delete().then(function(){
       navigation.navigate("Login");
       //User deleted.
-    }).catch(function(error){
-      //An error happened
-    });
+    }).catch(function(error){});
   }
  
 
@@ -282,6 +286,13 @@ export default function editProfile({ navigation, route}) {
               value={usuario.numero}
               autoCorrect={false}
             />
+             <Text style={{ marginTop: 15, marginVertical: 15 }}>
+              Profissional?
+            </Text>
+            <CheckBox 
+            checkedColor="pink"
+            value={usuario.pro} 
+            onValueChange={(boolean) => setUsuario({...usuario, pro:boolean})} />
 
      
               <Button
@@ -294,7 +305,7 @@ export default function editProfile({ navigation, route}) {
               style={{
                 marginTop: 20,
               }}
-            //  disabled={loading===(false)}
+             disabled={loading===(false)}
             />
             <Button
                     color={themeColor.danger}

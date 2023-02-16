@@ -24,8 +24,10 @@ import { Servico } from "../../model/Servico"
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { Layout, TopNav, Button, Text,  useTheme,
   themeColor,} from "react-native-rapi-ui";
+import ListarServico from "./service/ListarServico";
 import Mapa from "../../src/components/utils/Mapa"
 import MapView, { Marker } from "react-native-maps";
+import { ScrollView } from "react-native-gesture-handler";
 
 
 // import { clickProps } from "react-native-web/dist/cjs/modules/forwardedProps";
@@ -62,7 +64,7 @@ export default function Profile({ navigation, route}) {
   }, [usuario]);
   
   return (
-    <Layout >
+    <Layout style={{flex:1}} >
        <TopNav style={{position:"relative"}}
         middleContent={
           <Image
@@ -73,6 +75,7 @@ export default function Profile({ navigation, route}) {
         }
         leftContent={<Ionicons name="menu" size={30} color={isDarkmode ? themeColor.dark100 : "black"}/>}
       />
+      <ScrollView>
       <View style={{flex:0.03}}>
       <Button
               color="#EF8F86"
@@ -84,7 +87,7 @@ export default function Profile({ navigation, route}) {
                 />}
               text="Editar "
               onPress={() => {
-                navigation.navigate("editProfile");
+                navigation.navigate("EditProfile");
               }}
               style={{
                 position: "absolute",
@@ -97,20 +100,24 @@ export default function Profile({ navigation, route}) {
     
     <View style={styles.screen}>
      
-          {usuario.urlfoto !== null && (
+          {usuario.urlfoto !== "" && (
             <Image source={{ uri: usuario.urlfoto }} style={styles.image} />
           )}
-          {usuario.urlfoto === null && (
+          {usuario.urlfoto === "" && (
             <Image
               source={require("../../assets/usuario.png")}
               style={styles.image}
             />
           )}
- {/* <Image source={{ uri: usuario.urlfoto }} style={styles.image}/>*/}
          
+        
         <Text style={{ fontSize: 18, marginTop: 50, textAlign: "right", marginLeft:100,}}>
           {usuario.nome}
           </Text>
+          {usuario.pro === true && (
+            <Text style={{color: "gray", textAlign: "right", marginLeft:100,}}>Profissional</Text>
+            
+          )}
         <Text style={styles.text}>{usuario.numero}</Text>
         <Text style={styles.text}>{usuario.email}</Text>
         <Text style={{color: "gray", marginTop:20}}>Sobre:</Text>
@@ -149,8 +156,32 @@ export default function Profile({ navigation, route}) {
                 backgroundColor: "#E8A998",
               }}
             />
+            <Button
+              color="#EF8F86"
+              style={{ marginTop: 5 }}
+              text="Serviços"
+              onPress={() => {
+                navigation.navigate("ListarServico");
+              }}
+            />
+<ListarServico />
+           
+            {usuario.pro === true && (
+            <TouchableOpacity
+            activeOpacity={0.7}
+            onPress={() => {
+              navigation.navigate("AddServico");
+            }} style={{alignItems:"center"}}>
+            <Ionicons name="add-circle" size={60} color={"#EF8F86"} style={{ 
+      width: 70,
+      height: 70,}}/>
+          </TouchableOpacity>
+          )}
+            
              
+            
         </View>
+        </ScrollView>
     </Layout>
     
   );

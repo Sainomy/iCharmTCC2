@@ -5,6 +5,7 @@ import {
   View,
   KeyboardAvoidingView,
   Image,
+  Switch,
 } from "react-native";
 import {
   getAuth,
@@ -31,10 +32,12 @@ export default function ({ navigation }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [data, setData] = useState("");
+  const [pro, setPro] = useState("");
   const [descricao, setDescricao] = useState("");
   const [numero, setNumero] = useState("");
   const [loading, setLoading] = useState(false);
-  const [urlfoto, setUrlfoto] = useState(null);
+  const [urlfoto, setUrlfoto] = useState("");
+  const toggleSwitch = () => setPro((previousState) => !previousState);
 
   async function register() {
     await createUserWithEmailAndPassword(auth, email, password)
@@ -51,6 +54,7 @@ export default function ({ navigation }) {
           // password: password,
           numero: numero,
           data: data,
+          pro: pro,
           urlfoto: urlfoto,
         });
         console.log("Registered with:", user.email);
@@ -161,6 +165,16 @@ export default function ({ navigation }) {
               onChangeText={setNumero}
               value={numero}
               autoCorrect={false}
+            />
+            <Text style={{ marginTop: 15, marginVertical: 15 }}>
+              Profissional?
+            </Text>
+            <Switch
+              trackColor={{ false: "#767577", true: "#81b0ff" }}
+              thumbColor={pro ? "#f5dd4b" : "#f4f3f4"}
+              ios_backgroundColor="#3e3e3e"
+              onValueChange={toggleSwitch}
+              value={pro}
             />
 
             <Button

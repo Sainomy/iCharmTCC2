@@ -17,7 +17,7 @@ import {
 } from "react-native-rapi-ui";
 import { Ionicons } from "@expo/vector-icons";
 
-export default function ({ navigation }) {
+export default function Login({ navigation }) {
   const { isDarkmode, setTheme } = useTheme();
   const auth = getAuth();
   const [email, setEmail] = useState("simonycogoy@gmail.com");

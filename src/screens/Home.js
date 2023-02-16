@@ -1,6 +1,14 @@
 import React from "react";
 import { useState, useRef } from "react";
-import { View, Linking, Image, TouchableOpacity } from "react-native";
+import {
+  StyleSheet,
+  View,
+  Linking,
+  Image,
+  TouchableOpacity,
+  ScrollView,
+  FlatList,
+} from "react-native";
 import { getAuth, signOut } from "firebase/auth";
 import { Ionicons } from "@expo/vector-icons";
 import {
@@ -14,15 +22,49 @@ import {
   themeColor,
 } from "react-native-rapi-ui";
 import { Modalize } from "react-native-modalize";
+import ListarUsuario from "./ListarUsuario";
 
 export default function ({ navigation }) {
   const modalizeRef = useRef(null);
   const { isDarkmode, setTheme } = useTheme();
   const auth = getAuth();
+  const DATA = [
+    {
+      id: "bd7acbea-c1b1-46c2-aed5-3ad53abb28ba",
+      title: "First Item",
+    },
+    {
+      id: "3ac68afc-c605-48d3-a4f8-fbd91aa97f63",
+      title: "Second Item",
+    },
+    {
+      id: "58694a0f-3da1-471f-bd96-145571e29d72",
+      title: "Third Item",
+    },
+  ];
 
   function onOpen() {
     modalizeRef.current?.open();
   }
+  const ItemView = ({ item }) => {
+    return (
+      <TouchableOpacity activeOpacity={0.7}>
+        <Image
+          style={{
+            width: 210,
+            height: 150,
+            borderRadius: 20,
+            resizeMode: "cover",
+            borderColor: "#ef846c",
+            justifyContent: "center",
+            alignItems: "center",
+            marginRight: 10,
+          }}
+          require={"../../assets/promo.png"}
+        />
+      </TouchableOpacity>
+    );
+  };
   return (
     <Layout>
       <TopNav
@@ -96,64 +138,46 @@ export default function ({ navigation }) {
           </TouchableOpacity>
         </View>
       </Modalize>
-
+      <ScrollView
+        style={{ flex: 1, marginTop: 15 }}
+        directionalLockEnabled={false}
+        horizontal={true}
+      >
+        <Image
+          style={styles.image}
+          source={require("../../assets/promo.png")}
+        />
+        <Image
+          style={styles.image}
+          source={require("../../assets/promo.png")}
+        />
+        <Image
+          style={styles.image}
+          source={require("../../assets/promo.png")}
+        />
+      </ScrollView>
       <View
         style={{
           flex: 1,
-          alignItems: "center",
-          justifyContent: "center",
-          marginHorizontal: 20,
+          // alignItems: "center",
+          // justifyContent: "center",
+          margin: 15,
         }}
       >
-        <Section>
-          <SectionContent>
-            <Button
-              color="#EF8F86"
-              style={{ marginTop: 10 }}
-              text="Serviços"
-              onPress={() => {
-                navigation.navigate("ListarServico");
-              }}
-            />
-            <Button
-              color="#EF8F86"
-              text="Agendamentos"
-              onPress={() => {
-                navigation.navigate("Agendamento");
-              }}
-              style={{
-                marginTop: 10,
-                backgroundColor: "#E8A998",
-              }}
-            />
-
-            {/* <Button
-              text={isDarkmode ? "Modo Claro" : "Modo Escuro"}
-              status={isDarkmode ? "success" : "warning"}
-              onPress={() => {
-                if (isDarkmode) {
-                  setTheme("light");
-                } else {
-                  setTheme("dark");
-                }
-              }}
-              style={{
-                marginTop: 10,
-              }}
-            />
-            <Button
-              status="danger"
-              text="Sair"
-              onPress={() => {
-                signOut(auth);
-              }}
-              style={{
-                marginTop: 10,
-              }}
-            />*/}
-          </SectionContent>
-        </Section>
+        <ListarUsuario />
       </View>
     </Layout>
   );
 }
+const styles = StyleSheet.create({
+  image: {
+    width: 320,
+    height: 180,
+    borderRadius: 20,
+    resizeMode: "cover",
+    borderColor: "#ef846c",
+    justifyContent: "center",
+    alignItems: "center",
+    marginRight: 10,
+  },
+});

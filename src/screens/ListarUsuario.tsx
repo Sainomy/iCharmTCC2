@@ -11,35 +11,31 @@ import {
 } from "react-native";
 import { Layout, Text, TopNav, useTheme } from "react-native-rapi-ui";
 import { Ionicons } from "@expo/vector-icons";
-import Stars from "../utils/Stars";
-import { auth, firestore } from "../../../firebase";
+import Stars from "./utils/Stars";
+import { auth, firestore } from "../../firebase";
 import { ScrollView } from "react-native-gesture-handler";
-import { Usuario } from "../../../model/Usuario";
+import { Usuario } from "../../model/Usuario";
 
 
-export default function ListarServico({ navigation }) {
+export default function ListarUsuario({ navigation }) {
   const { isDarkmode, setTheme } = useTheme();
   const [loading, setLoading] = useState(true); // Set loading to true on component mount
-  const [servicos, setServicos] = useState([]); // Initial empty array of users
-  const [usuario, setUsuario] = useState < Partial < Usuario >> ({});
+  const [usuarios, setUsuarios] = useState ([]);
   const [defaultRating, setDefaultRating] = useState(2);
   // const [maxRating, setMaxRating] = useState([1, 2, 3, 4, 5]);
 
   useEffect(() => {
-  
     const subscriber = firestore
       .collection("Usuario")
-      .doc(auth.currentUser.uid)
-      .collection("Servico")
       .onSnapshot((querySnapshot) => {
-        const servicos = [];
+        const usuarios = [];
         querySnapshot.forEach((documentSnapshot) => {
-          servicos.push({
+          usuarios.push({
             ...documentSnapshot.data(),
             key: documentSnapshot.id,
           });
         });
-        setServicos(servicos);
+        setUsuarios(usuarios);
         setLoading(false);
       });
     // Unsubscribe from events when no longer in use
@@ -54,7 +50,7 @@ export default function ListarServico({ navigation }) {
         <TouchableOpacity
           activeOpacity={0.7}
           onPress={() =>
-            navigation.navigate("TelaServico", { servicoID: item.id })
+            navigation.navigate("Profile")
           }
         >
           <Image style={styles.image} source={{ uri: item.urlfoto }} />
@@ -62,8 +58,8 @@ export default function ListarServico({ navigation }) {
 
         {/* // coloca alinhamento em coluna justificado flex-start */}
         <View style={styles.alinhamentoColuna}>
-          <Text style={styles.itemStylee}>{item.nomecat}</Text>
-          <Text style={styles.itemStyle}>R${item.valor} </Text>
+          <Text style={styles.itemStylee}>{item.nome}</Text>
+          <Text style={styles.itemStyle}>{item.descricao} </Text>
           {/* fecha alinhamento colunas */}
           {/* <Stars stars={item.stars} showNumber={true} />*/}
           {/*  <RatingBar />*/}
@@ -107,30 +103,13 @@ export default function ListarServico({ navigation }) {
   };*/
 
   return (
-    <Layout>
-     {/* <TopNav
-        style={{ flex: 1 }}
-        middleContent={
-          <Image
-            source={require("../../../assets/nome.png")}
-            style={{ width: 110, height: 110 }}
-            resizeMode="contain"
-          />
-        }
-        leftContent={<Ionicons name="chevron-back" size={20} />}
-        leftAction={() => navigation.goBack()}
-      />
-      */}
-      <ScrollView style={styles.container}>
-        <FlatList
-          data={servicos}
-          keyExtractor={(item) => item.id}
-          //  ItemSeparatorComponent={ItemSeparatorView}
-          renderItem={ItemView}
-        />
-       
-      </ScrollView>
-    </Layout>
+    <FlatList
+    data={usuarios}
+    keyExtractor={(item) => item.id}
+    //  ItemSeparatorComponent={ItemSeparatorView}
+    renderItem={ItemView}
+  />
+    
   );
 }
 
@@ -138,7 +117,6 @@ const styles = StyleSheet.create({
   containerSafeArea: {
     flex: 1,
   },
-  container: {},
   itemStylee: {
     fontSize: 20,
     padding: 5,

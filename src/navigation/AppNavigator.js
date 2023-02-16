@@ -7,21 +7,24 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { useTheme, themeColor } from "react-native-rapi-ui";
 import TabBarIcon from "../components/utils/TabBarIcon";
 import TabBarText from "../components/utils/TabBarText";
+import Loading from "../screens/utils/Loading";
 //Screens
 import Home from "../screens/Home";
-import AddServico from "../screens/service/AddServico";
 import Agenda from "../screens/Agenda";
-//import Agendamento from "../screens/Agendamento";
 import Profile from "../screens/Profile";
-import Loading from "../screens/utils/Loading";
+import ListarUsuario from "../screens/ListarUsuario";
+//import Agendamento from "../screens/Agendamento";
+//Service
+import AddServico from "../screens/service/AddServico";
 import ListarServico from "../screens/service/ListarServico";
 import TelaServico from "../screens/service/TelaServico";
-import Welcome from "../screens/layout/Welcome";
-import Endereco from "../screens/Endereco";
 import AddFotos from "../screens/service/AddFotos";
-import editProfile from "../screens/editProfile";
-import Mapa from "../components/utils/Mapa";
+import EditProfile from "../screens/EditProfile";
 import EditServico from "../screens/service/EditServico";
+//Endereco
+import Mapa from "../components/utils/Mapa";
+import Endereco from "../screens/Endereco";
+//import Welcome from "../screens/layout/Welcome";
 // Auth screens
 import Login from "../screens/auth/Login";
 import Register from "../screens/auth/Register";
@@ -72,9 +75,10 @@ const Main = () => {
       <MainStack.Screen name="TelaServico" component={TelaServico} />
       <MainStack.Screen name="Endereco" component={Endereco} />
       <MainStack.Screen name="AddFotos" component={AddFotos} />
-      <MainStack.Screen name="editProfile" component={editProfile} />
+      <MainStack.Screen name="EditProfile" component={EditProfile} />
       <MainStack.Screen name="Mapa" component={Mapa} />
       <MainStack.Screen name="EditServico" component={EditServico} />
+      <MainStack.Screen name="ListarUsuario" component={ListarUsuario} />
       {/* <MainStack.Screen name="Agendamento" component={Agendamento} />*/}
     </MainStack.Navigator>
   );
