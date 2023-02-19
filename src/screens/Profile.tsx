@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
   View,
   StyleSheet,
@@ -25,20 +25,14 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 import { Layout, TopNav, Button, Text,  useTheme,
   themeColor,} from "react-native-rapi-ui";
 import ListarServico from "./service/ListarServico";
-import Mapa from "../../src/components/utils/Mapa"
+import Mapa from "../screens/utils/Mapa"
 import MapView, { Marker } from "react-native-maps";
 import { ScrollView } from "react-native-gesture-handler";
+import { Modalize } from "react-native-modalize";
 
-
-// import { clickProps } from "react-native-web/dist/cjs/modules/forwardedProps";
-// import { nome } from "../screens/auth/Register";
-
-
-export default function Profile({ navigation, route}) {
+export default function Profile({ navigation }) {
   const { isDarkmode, setTheme } = useTheme();
-  const [modalVisible, setModalVisible] = useState(false);
-  const [modalListaVisible, setModalListaVisible] = useState(false);
-  const [servico, setServico] = useState < Partial < Servico>> ({});
+  const modalizeRef = useRef(null);
   const [usuario, setUsuario] = useState < Partial < Usuario >> ({});
   const [itemLista, setItemLista] = useState({
     ...itemLista,
@@ -46,7 +40,9 @@ export default function Profile({ navigation, route}) {
     title: "",
   });
   const [pickedImagePath, setPickedImagePath] = useState("");
-  
+  function onOpen() {
+    modalizeRef.current?.open();
+  }
   useEffect(() => {
     const subscriber = firestore
       .collection("Usuario")
@@ -62,9 +58,15 @@ export default function Profile({ navigation, route}) {
       });
     return () => subscriber();
   }, [usuario]);
+
+ 
   
   return (
-    <Layout style={{flex:1}} >
+    <View style={{ flex: 1}}>
+    <View style={{ backgroundColor: "white" }}>
+      <Text> </Text>
+      <Text> </Text>
+    </View>
        <TopNav style={{position:"relative"}}
         middleContent={
           <Image
@@ -73,10 +75,9 @@ export default function Profile({ navigation, route}) {
             resizeMode="contain"
           />
         }
-        leftContent={<Ionicons name="menu" size={30} color={isDarkmode ? themeColor.dark100 : "black"}/>}
       />
-      <ScrollView>
-      <View style={{flex:0.03}}>
+      <ScrollView >
+      <View style={{margin:10}}>
       <Button
               color="#EF8F86"
               rightContent={
@@ -122,43 +123,25 @@ export default function Profile({ navigation, route}) {
         <Text style={styles.text}>{usuario.email}</Text>
         <Text style={{color: "gray", marginTop:20}}>Sobre:</Text>
         <Text style={styles.text2}>{usuario.descricao}</Text>
-        <Button
-              color="#EF8F86"
-              text="Adicionar Endereço"
-              rightContent={
-                <Ionicons
-                    name="locate"
-                    size={20}
-                    color={themeColor.white}
-                />}
-              onPress={() => {
-                navigation.navigate("Endereco");
-              }}
-              style={{
-                marginTop: 5,
-                backgroundColor: "#E8A998",
-              }}
-            />
+
+        <ScrollView
+        style={{ flex: 1 }}
+        directionalLockEnabled={false}
+        horizontal={true}>
+        <Mapa />
+        <Ionicons
+        name="add-circle"
+        size={40}
+        color={"black"}
+        style={{ alignItems: "center", padding: 30 }}
+        onPress={() => {
+          navigation.navigate("Endereco");
+        }}
+      />
+        </ScrollView>
             <Button
               color="#EF8F86"
-              text="Mapa"
-              rightContent={
-                <Ionicons
-                    name="locate"
-                    size={20}
-                    color={themeColor.white}
-                />}
-              onPress={() => {
-                navigation.navigate("Mapa");
-              }}
-              style={{
-                marginTop: 5,
-                backgroundColor: "#E8A998",
-              }}
-            />
-            <Button
-              color="#EF8F86"
-              style={{ marginTop: 5 }}
+              style={{ marginTop: 20 }}
               text="Serviços"
               onPress={() => {
                 navigation.navigate("ListarServico");
@@ -172,17 +155,13 @@ export default function Profile({ navigation, route}) {
             onPress={() => {
               navigation.navigate("AddServico");
             }} style={{alignItems:"center"}}>
-            <Ionicons name="add-circle" size={60} color={"#EF8F86"} style={{ 
-      width: 70,
-      height: 70,}}/>
+            <Ionicons name="add-circle" size={60} color={"#EF8F86"} style={{ width: 70,height: 70,}}/>
           </TouchableOpacity>
           )}
             
-             
-            
         </View>
         </ScrollView>
-    </Layout>
+    </View>
     
   );
       }   
@@ -192,7 +171,7 @@ const styles = StyleSheet.create({
     //justifyContent: "center",
    // alignItems: "center",
    //marginTop:50,
-    margin: 15,
+   margin: 15,
   },
   buttonContainer: {
     width: 400,

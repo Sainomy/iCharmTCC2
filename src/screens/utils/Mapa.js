@@ -13,31 +13,28 @@ import { Layout, Text, TopNav, useTheme } from "react-native-rapi-ui";
 import { Ionicons } from "@expo/vector-icons";
 import { auth, firestore } from "../../../firebase";
 import { ScrollView } from "react-native-gesture-handler";
-import { Usuario } from "../../../model/Usuario";
 
-
-export default function ListarServico({ navigation }) {
+export default function Mapa({ navigation }) {
   const { isDarkmode, setTheme } = useTheme();
   const [loading, setLoading] = useState(true); // Set loading to true on component mount
-  const [servicos, setServicos] = useState([]); // Initial empty array of users
-  const [usuario, setUsuario] = useState < Partial < Usuario >> ({});
+  const [enderecos, setEnderecos] = useState([]);
   const [defaultRating, setDefaultRating] = useState(2);
+  // const [maxRating, setMaxRating] = useState([1, 2, 3, 4, 5]);
 
   useEffect(() => {
-  
     const subscriber = firestore
       .collection("Usuario")
       .doc(auth.currentUser.uid)
-      .collection("Servico")
+      .collection("Endereco")
       .onSnapshot((querySnapshot) => {
-        const servicos = [];
+        const enderecos = [];
         querySnapshot.forEach((documentSnapshot) => {
-          servicos.push({
+          enderecos.push({
             ...documentSnapshot.data(),
             key: documentSnapshot.id,
           });
         });
-        setServicos(servicos);
+        setEnderecos(enderecos);
         setLoading(false);
       });
     // Unsubscribe from events when no longer in use
@@ -47,46 +44,40 @@ export default function ListarServico({ navigation }) {
   const ItemView = ({ item }) => {
     return (
       <View style={styles.alinhamentoLinha}>
-        <TouchableOpacity
-          activeOpacity={0.7}
-          onPress={() =>
-               navigation.navigate("TelaServico", { servicoID: item.id })
-          }
-        >
-          <Image style={styles.image} source={{ uri: item.urlfoto }} />
-        </TouchableOpacity>
+        <Ionicons
+          style={{ alignItems: "center", padding: 30 }}
+          name="map"
+          size={20}
+          color={"gray"}
+        />
 
         <View style={styles.alinhamentoColuna}>
-          <Text style={styles.itemStylee}>{item.nomecat}</Text>
-          <Text style={styles.itemStyle}>R${item.valor} </Text>
+          <Text style={styles.itemStylee}>
+            {item.rua}, {item.numero}
+          </Text>
+          <Text style={styles.itemStyle}>{item.bairro} </Text>
+          <Text style={styles.itemStyle}>
+            {item.cidade}, {item.uf}{" "}
+          </Text>
         </View>
       </View>
     );
   };
+
   return (
-    <Layout>
-     {/* <TopNav
-        style={{ flex: 1 }}
-        middleContent={
-          <Image
-            source={require("../../../assets/nome.png")}
-            style={{ width: 110, height: 110 }}
-            resizeMode="contain"
-          />
-        }
-        leftContent={<Ionicons name="chevron-back" size={20} />}
-        leftAction={() => navigation.goBack()}
+    <ScrollView
+      style={{ flex: 1 }}
+      directionalLockEnabled={false}
+      horizontal={true}
+      vertical={false}
+    >
+      <FlatList
+        numColumns={50}
+        data={enderecos}
+        keyExtractor={(item) => item.id}
+        renderItem={ItemView}
       />
-      */}
-      <ScrollView style={styles.container}>
-        <FlatList
-          data={servicos}
-          keyExtractor={(item) => item.id}
-          //  ItemSeparatorComponent={ItemSeparatorView}
-          renderItem={ItemView}
-        />
-      </ScrollView>
-    </Layout>
+    </ScrollView>
   );
 }
 
@@ -94,16 +85,15 @@ const styles = StyleSheet.create({
   containerSafeArea: {
     flex: 1,
   },
-  container: {},
   itemStylee: {
-    fontSize: 20,
+    fontSize: 15,
     padding: 5,
     marginTop: 2,
   },
   itemStyle: {
-    fontSize: 18,
+    fontSize: 12,
     padding: 5,
-    color: "green",
+    color: "gray",
   },
   alinhamentoLinha: {
     flexDirection: "row",

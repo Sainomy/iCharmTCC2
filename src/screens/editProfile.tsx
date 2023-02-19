@@ -35,16 +35,15 @@ export default function EditProfile({ navigation, route}) {
   const { isDarkmode, setTheme } = useTheme();
   //antes era só function profile
   const [modalListaVisible, setModalListaVisible] = useState(false);
-  const [itemLista, setItemLista] = useState({
+ {/* const [itemLista, setItemLista] = useState({
     ...itemLista,
     id: "",
     categoria: "",
-  });
+  });*/}
   const [usuario, setUsuario] = useState < Partial < Usuario >> ({});
   // The path of the picked image
   const [pickedImagePath, setPickedImagePath] = useState("");
   const [loading, setLoading] = useState(true);
-  const toggleSwitch = () => setPro((previousState) => !previousState);
 
   const escolhefoto = () => {
     setLoading(false);
@@ -70,8 +69,9 @@ export default function EditProfile({ navigation, route}) {
       }
     );
   };
-  useEffect(() => {
-    const subscriber = firestore
+  
+  useEffect(() => { 
+      const subscriber = firestore
       .collection("Usuario")
       .doc(auth.currentUser.uid)
       .onSnapshot((documentSnapshot) => {
@@ -84,9 +84,7 @@ export default function EditProfile({ navigation, route}) {
       });
     return () => subscriber();
   }, [usuario.urlfoto]);
-
- 
-
+    
   const salvar = () => {
     const reference = firestore.collection("Usuario").doc(auth.currentUser.uid);
     reference
@@ -99,7 +97,7 @@ export default function EditProfile({ navigation, route}) {
         numero:  usuario.numero,
         data:  usuario.data,
         pro: usuario.pro,
-     //   urlfoto:  usuario.urlfoto,
+        urlfoto:  usuario.urlfoto,
       })
       .then(() => {
         alert("Salvo com sucesso");
@@ -190,17 +188,7 @@ export default function EditProfile({ navigation, route}) {
       reference.update({ urlfoto: paraDonwload });
     }setLoading(true);
   };
-  const deletarUsuario = async () => {
-    var user = auth.currentUser;
-    const referenceExclui = await firestore.collection("Usuario")
-    .doc(auth.currentUser.uid);
-  referenceExclui.delete();
-
-    user.delete().then(function(){
-      navigation.navigate("Login");
-      //User deleted.
-    }).catch(function(error){});
-  }
+ 
  
 
   return (
@@ -293,8 +281,7 @@ export default function EditProfile({ navigation, route}) {
             checkedColor="pink"
             value={usuario.pro} 
             onValueChange={(boolean) => setUsuario({...usuario, pro:boolean})} />
-
-     
+            
               <Button
               color="#EF8F86"
               text={"Salvar"}
@@ -307,15 +294,6 @@ export default function EditProfile({ navigation, route}) {
               }}
              disabled={loading===(false)}
             />
-            <Button
-                    color={themeColor.danger}
-                    text={"Excluir"}
-                    onPress={deletarUsuario}
-                    style={{
-                      marginTop: 10,
-                    }}
-                  />
-
 </View>
     </ScrollView>
     </Layout>

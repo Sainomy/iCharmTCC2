@@ -13,6 +13,7 @@ import Home from "../screens/Home";
 import Agenda from "../screens/Agenda";
 import Profile from "../screens/Profile";
 import ListarUsuario from "../screens/ListarUsuario";
+import UseDelete from "../screens/UseDelete";
 //import Agendamento from "../screens/Agendamento";
 //Service
 import AddServico from "../screens/service/AddServico";
@@ -79,6 +80,7 @@ const Main = () => {
       <MainStack.Screen name="Mapa" component={Mapa} />
       <MainStack.Screen name="EditServico" component={EditServico} />
       <MainStack.Screen name="ListarUsuario" component={ListarUsuario} />
+      <MainStack.Screen name="UseDelete" component={UseDelete} />
       {/* <MainStack.Screen name="Agendamento" component={Agendamento} />*/}
     </MainStack.Navigator>
   );

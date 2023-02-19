@@ -28,20 +28,6 @@ export default function ({ navigation }) {
   const modalizeRef = useRef(null);
   const { isDarkmode, setTheme } = useTheme();
   const auth = getAuth();
-  const DATA = [
-    {
-      id: "bd7acbea-c1b1-46c2-aed5-3ad53abb28ba",
-      title: "First Item",
-    },
-    {
-      id: "3ac68afc-c605-48d3-a4f8-fbd91aa97f63",
-      title: "Second Item",
-    },
-    {
-      id: "58694a0f-3da1-471f-bd96-145571e29d72",
-      title: "Third Item",
-    },
-  ];
 
   function onOpen() {
     modalizeRef.current?.open();
@@ -109,7 +95,7 @@ export default function ({ navigation }) {
               padding: 15,
               borderWidth: 1,
               borderColor: "rgba(0,0,0, 0.2)",
-              marginTop: 10,
+              marginTop: 40,
               marginHorizontal: 15,
               marginVertical: 6,
             }}
@@ -118,7 +104,23 @@ export default function ({ navigation }) {
               {isDarkmode ? "Modo Claro" : "Modo Escuro"}
             </Text>
           </TouchableOpacity>
-
+          <TouchableOpacity
+            onPress={() => {
+              navigation.navigate("UseDelete");
+            }}
+            style={{
+              backgroundColor: isDarkmode ? themeColor.dark100 : "white",
+              borderRadius: 6,
+              padding: 15,
+              borderWidth: 1,
+              borderColor: "rgba(0,0,0, 0.2)",
+              marginTop: 10,
+              marginHorizontal: 15,
+              marginVertical: 6,
+            }}
+          >
+            <Text>Configurações</Text>
+          </TouchableOpacity>
           <TouchableOpacity
             onPress={() => {
               signOut(auth);

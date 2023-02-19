@@ -13,7 +13,11 @@ import AgendaScreen from "./AgendaScreen";
 export default function ({ navigation }) {
   const { isDarkmode, setTheme } = useTheme();
   return (
-    <Layout>
+    <View style={{ flex: 1 }}>
+      <View style={{ backgroundColor: "white" }}>
+        <Text> </Text>
+        <Text> </Text>
+      </View>
       <TopNav
         middleContent={
           <Image
@@ -32,6 +36,6 @@ export default function ({ navigation }) {
       />
 
       <AgendaScreen />
-    </Layout>
+    </View>
   );
 }
