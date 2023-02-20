@@ -16,7 +16,7 @@ import { ScrollView } from "react-native-gesture-handler";
 import { Usuario } from "../../../model/Usuario";
 
 
-export default function ListarServico({ navigation }) {
+export default function ListarServico({ navigation, Abrir }) {
   const { isDarkmode, setTheme } = useTheme();
   const [loading, setLoading] = useState(true); // Set loading to true on component mount
   const [servicos, setServicos] = useState([]); // Initial empty array of users
@@ -49,9 +49,9 @@ export default function ListarServico({ navigation }) {
       <View style={styles.alinhamentoLinha}>
         <TouchableOpacity
           activeOpacity={0.7}
-          onPress={() =>
-               navigation.navigate("TelaServico", { servicoID: item.id })
-          }
+        onPress={()=>//Abrir({servicoID:item.id}) 
+                navigation.navigate("TelaServico", { servicoID: item.id, userpro:item.pro })
+           }
         >
           <Image style={styles.image} source={{ uri: item.urlfoto }} />
         </TouchableOpacity>
@@ -78,14 +78,14 @@ export default function ListarServico({ navigation }) {
         leftAction={() => navigation.goBack()}
       />
       */}
-      <ScrollView style={styles.container}>
+    
         <FlatList
           data={servicos}
           keyExtractor={(item) => item.id}
           //  ItemSeparatorComponent={ItemSeparatorView}
           renderItem={ItemView}
         />
-      </ScrollView>
+     
     </Layout>
   );
 }

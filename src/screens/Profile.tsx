@@ -43,6 +43,7 @@ export default function Profile({ navigation }) {
   function onOpen() {
     modalizeRef.current?.open();
   }
+ 
   useEffect(() => {
     const subscriber = firestore
       .collection("Usuario")
@@ -147,7 +148,9 @@ export default function Profile({ navigation }) {
                 navigation.navigate("ListarServico");
               }}
             />
-<ListarServico />
+<ListarServico  Abrir={ ({servicoID})=>
+ navigation.navigate("TelaServico", { servicoID: servicoID })} 
+ />
            
             {usuario.pro === true && (
             <TouchableOpacity

@@ -38,10 +38,18 @@ export default function EditServico({ navigation }) {
   const [urlfoto, setUrlfoto] = useState("");
   const [pickedImagePath, setPickedImagePath] = useState("");
   const route = useRoute();
+  const [deletado, setDeletado]= useState(false);
   
-  const {servicoID}=  route.params
-  useEffect(() => {
+  //if(deletado===false){
+   
+    let {servicoID}=  route.params
     const referenceServico = firestore
+    .collection("Usuario")
+    .doc(auth.currentUser.uid)
+    .collection("Servico")
+    .doc(servicoID);
+   useEffect(() => {
+    const subscriber = firestore
       .collection("Usuario")
       .doc(auth.currentUser.uid)
       .collection("Servico")
@@ -54,11 +62,10 @@ export default function EditServico({ navigation }) {
           setPickedImagePath(servico.urlfoto);
         }
       });
-    return () => referenceServico();
-  }, [servico.urlfoto]);
-
+    return () => subscriber();
+  }, [servico]);
+  
   const escolhefoto = () => {
-    setLoading(false);
     Alert.alert(
       "Alert Title",
       "My Alert Msg",
@@ -80,7 +87,6 @@ export default function EditServico({ navigation }) {
         onDismiss: () => {},
       }
     );
-    
   };
 
   // This function is triggered when the "Select an image" button pressed
@@ -108,22 +114,24 @@ export default function EditServico({ navigation }) {
       setPickedImagePath(result.uri);
       // const storage = app.storage();
       const ref = storage.ref(
-        `imagens/servico/IMAGE-${servicoID.id}.jpg`
+        `imagens/servico/IMAGE-${referenceServico.id}.jpg`
       );
       const img = await fetch(result.uri);
       const bytes = await img.blob();
       const fbResult = await uploadBytes(ref, bytes);
       console.log(result.uri);
       console.log("firebase url :", fbResult.metadata.fullPath);
-
+      const reference = firestore
+      .collection("Usuario")
+      .doc(auth.currentUser.uid)
+      .collection("Servico")
+      .doc();
       const paraDonwload = await storage
         .ref(fbResult.metadata.fullPath)
         .getDownloadURL();
       //reference.update({ urlfoto: fbResult.metadata.fullPath, });
-      servicoID.update({ urlfoto: paraDonwload });
-      setUrlfoto(paraDonwload);
+      referenceServico.update({ urlfoto: paraDonwload });
     }
-    setLoading(true);
   };
 
   // This function is triggered when the "Open camera" button pressed
@@ -144,44 +152,59 @@ export default function EditServico({ navigation }) {
     if (!result.cancelled) {
       setPickedImagePath(result.uri);
       //const storage = storage.storage();
-      const ref = storage.ref(
-        `imagens/servico/IMAGE-${servicoID.id}.jpg`
-      );
+      const ref = storage.ref(`imagens/servico/IMAGE-${referenceServico.id}.jpg`);
       const img = await fetch(result.uri);
       const bytes = await img.blob();
       const fbResult = await uploadBytes(ref, bytes);
       console.log(result.uri);
       console.log("firebase url :", fbResult.metadata.fullPath);
-
+      const reference = firestore
+      .collection("Usuario")
+      .doc(auth.currentUser.uid)
+      .collection("Servico")
+      .doc();
       const paraDonwload = await storage
         .ref(fbResult.metadata.fullPath)
         .getDownloadURL();
       //reference.update({ urlfoto: fbResult.metadata.fullPath, });
-      servicoID.update({ urlfoto: paraDonwload });
-     
-      setUrlfoto(paraDonwload);
-     
-    } setLoading(true);
-  };
+      referenceServico.update({ urlfoto: paraDonwload });
+    }};
+  
+     const salvar = () => {
+      const reference = firestore.collection("Usuario")
+      .doc(auth.currentUser.uid)
+      .collection("Servico")
+      .doc(servicoID);
+      reference
+        .update({
+          id: reference.id,
+          nomecat: servico.nomecat,
+          descricao:  servico.descricao,
+            // password: password,
+          valor:  servico.valor,
+          urlfoto:  servico.urlfoto,
+        })
+        .then(() => {
+          alert("Salvo com sucesso");
+        })
+        .catch((error) => alert(error.message));
+    };
+ // }
+ 
+  const deleteServico = async () => {
+    const delserv =
+      firestore
+      .collection("Usuario")
+      .doc(auth.currentUser.uid)
+      .collection("Servico")
+      .doc(servicoID);
 
-   const salvar = () => {
-    const reference = firestore.collection("Usuario")
-    .doc(auth.currentUser.uid)
-    .collection("Servico")
-    .doc(servicoID);
-    reference
-      .update({
-        id: reference.id,
-        nomecat: servico.nomecat,
-        descricao:  servico.descricao,
-          // password: password,
-        valor:  servico.valor,
-        urlfoto:  servico.urlfoto,
-      })
-      .then(() => {
-        alert("Salvo com sucesso");
-      })
-      .catch((error) => alert(error.message));
+      delserv.delete().then(function(){
+        navigation.goBack();
+        setDeletado(true);
+   
+    //User deleted.
+    }).catch(function(error){});
   };
   return (
     <Layout>
@@ -317,12 +340,12 @@ export default function EditServico({ navigation }) {
                     style={{
                       marginTop: 20,
                     }}
-                    disabled={loading===(false)}
+                  //  disabled={loading===(false)}
                   />
                   <Button
                     color={themeColor.danger}
                     text={"Excluir"}
-                    onPress={salvar}
+                    onPress={deleteServico}
                     style={{
                       marginTop: 10,
                     }}

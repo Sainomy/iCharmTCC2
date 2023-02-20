@@ -17,13 +17,13 @@ import { ScrollView } from "react-native-gesture-handler";
 import { Usuario } from "../../model/Usuario";
 
 
-export default function ListarUsuario({ navigation }) {
+export default function ListarUsuario({ navigation, Abrir }) {
   const { isDarkmode, setTheme } = useTheme();
   const [loading, setLoading] = useState(true); // Set loading to true on component mount
   const [usuarios, setUsuarios] = useState ([]);
   const [defaultRating, setDefaultRating] = useState(2);
   // const [maxRating, setMaxRating] = useState([1, 2, 3, 4, 5]);
-
+ 
   useEffect(() => {
     const subscriber = firestore
       .collection("Usuario")
@@ -49,9 +49,7 @@ export default function ListarUsuario({ navigation }) {
       <View style={styles.alinhamentoLinha}>
         <TouchableOpacity
           activeOpacity={0.7}
-          onPress={() =>
-            navigation.navigate("Profile")
-          }
+          onPress={Abrir}
         >
           <Image style={styles.image} source={{ uri: item.urlfoto }} />
         </TouchableOpacity>

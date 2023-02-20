@@ -20,7 +20,7 @@ import { Ionicons } from "@expo/vector-icons";
 export default function Login({ navigation }) {
   const { isDarkmode, setTheme } = useTheme();
   const auth = getAuth();
-  const [email, setEmail] = useState("simonycogoy@gmail.com");
+  const [email, setEmail] = useState("new@gmail.com");
   const [password, setPassword] = useState("121212");
   const [loading, setLoading] = useState(false);
 

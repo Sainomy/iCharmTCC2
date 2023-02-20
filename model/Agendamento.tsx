@@ -1,32 +1,32 @@
 
-export class Servico {
+export class Agendamento {
     public id : string;
-    public nomecat: string;
-    public descricao : string;
-    public valor: number;
+    public hora: string;
+    public data: string;
+    public servico: string;
     public pro: string;
-    public urlfoto : string;
+    public cli: string;
         
 
-    constructor(obj?: Partial<Servico>) {
+    constructor(obj?: Partial<Foto>) {
         if (obj) {
             this.id = obj.id
-            this.nomecat = obj.nomecat
-            this.descricao = obj.descricao
-            this.valor = obj.valor
+            this.hora = obj.hora
+            this.data = obj.data
+            this.servico = obj.servico
             this.pro = obj.pro
-            this.urlfoto = obj.urlfoto
+            this.cli = obj.cli
         }
     }
 
     toString() {
         const Objeto = `{
             "id": "${this.id}",
-            "nomecat": "${this.nomecat}",
-            "descricao": "${this.descricao}",
-            "valor": "${this.valor},
-            "pro": "${this.pro},
-            "urlfoto": "${this.urlfoto}"
+            "hora": "${this.hora}"
+            "data": "${this.data}"
+            "servico": "${this.data}"
+            "pro": "${this.pro}"
+            "cli": "${this.cli}"
         }`
 
         //const fields = Object.values(this).join(', ')

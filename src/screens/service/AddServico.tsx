@@ -32,6 +32,7 @@ export default function SecondScreen({ navigation }) {
   const [nomecat, setNomeCat] = useState("");
   const [descricao, setDescricao] = useState("");
   const [valor, setValor] = useState(0);
+  const [pro, setPro] = useState(auth.currentUser.uid);
   const [stars, setStars] = useState(0);
   const [inputMoeda, setInputMoeda] = useState("0");
   const [loading, setLoading] = useState(false);
@@ -159,6 +160,7 @@ export default function SecondScreen({ navigation }) {
         descricao: descricao,
         valor: valor,
         urlfoto: urlfoto,
+        pro: pro,
       })
       .then(() => {
         const cancelBtn: AlertButton = { text: 'Adicionar mais fotos' ,   onPress: () => {
@@ -168,7 +170,7 @@ export default function SecondScreen({ navigation }) {
         const deleteBtn: AlertButton = {
             text: 'Ver Serviço',
             onPress: () => {
-              navigation.navigate('TelaServico', { servicoID: referenceServico.id })
+              navigation.navigate('TelaServico', { servicoID: referenceServico.id, userpro: pro})
               
             }
         }
