@@ -24,6 +24,8 @@ import DatePicker from "react-native-datepicker";
 import { DatePickerInput } from "react-native-paper-dates";
 import { firestore } from "../../../firebase";
 import RNPickerSelect from "react-native-picker-select";
+import DateTimePickerModal from "react-native-modal-datetime-picker";
+import Ionicons from "@expo/vector-icons/Ionicons";
 
 export default function ({ navigation }) {
   const { isDarkmode, setTheme } = useTheme();
@@ -38,6 +40,28 @@ export default function ({ navigation }) {
   const [loading, setLoading] = useState(false);
   const [urlfoto, setUrlfoto] = useState("");
   const toggleSwitch = () => setPro((previousState) => !previousState);
+  const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
+  const [dataString, setDataString] = useState("");
+
+  const hideDatePicker = () => {
+    setDatePickerVisibility(false);
+  };
+  const showDatePicker = () => {
+    setDatePickerVisibility(true);
+  };
+  const handleConfirm = (date) => {
+    console.warn("A data foi selecionada: " + date);
+    const formattedDate =
+      date.getDate().toString().padStart(2, "0") +
+      "/" +
+      (date.getMonth() + 1).toString().padStart(2, "0") +
+      "/" +
+      date.getFullYear();
+    console.log(formattedDate);
+    setDataString(formattedDate);
+    setData(date);
+    hideDatePicker();
+  };
 
   async function register() {
     await createUserWithEmailAndPassword(auth, email, password)
@@ -53,7 +77,7 @@ export default function ({ navigation }) {
           descricao: descricao,
           // password: password,
           numero: numero,
-          data: data,
+          data: dataString,
           pro: pro,
           urlfoto: urlfoto,
         });
@@ -148,14 +172,26 @@ export default function ({ navigation }) {
               secureTextEntry={true}
               onChangeText={(text) => setPassword(text)}
             />
-            <Text style={{ marginVertical: 15 }}>Data de Nascimento</Text>
-
-            <DatePickerInput
-              backgroundColor="white"
-              locale="pt"
-              value={data}
-              onChange={(text) => setData(text)}
-              inputMode="start"
+            <Text style={{ marginTop: 15 }}>
+              Data de Nascimento: {dataString}
+            </Text>
+            <Button
+              title="Calendário"
+              style={{ width: 25 }}
+              text="Calendário"
+              color={"#EF8F86"}
+              leftContent={
+                <Ionicons name="calendar" size={20} color={"white"}>
+                  {" "}
+                </Ionicons>
+              }
+              onPress={showDatePicker}
+            />
+            <DateTimePickerModal
+              isVisible={isDatePickerVisible}
+              mode="date"
+              onConfirm={handleConfirm}
+              onCancel={hideDatePicker}
             />
 
             <Text style={{ marginTop: 15, marginVertical: 15 }}>Contato</Text>

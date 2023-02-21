@@ -12,14 +12,16 @@ import { Modalize } from "react-native-modalize";
 import { ScrollView } from "react-native-gesture-handler";
 import { Agendamento } from "../../../model/Agendamento";
 import { Divider} from 'react-native-paper';
-
+import DateTimePickerModal from "react-native-modal-datetime-picker";
 
 export default function TelaServico({navigation} ) {
   const { isDarkmode } = useTheme();
   const modalizeRef = useRef(null);
- 
+  const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
+
   const [hora, setHora] = useState("");
   const [data, setData] = useState("");
+  const [dataString, setDataString] = useState("");
   const [pro, setPro] = useState("");
   const [cli, setCli] = useState(auth.currentUser.uid);
   const [agendamento, setAgendamento] = useState({
@@ -42,6 +44,7 @@ export default function TelaServico({navigation} ) {
   const route = useRoute();
   const {servicoID}=  route.params
   const {userpro} = route.params
+  const {userID} = route.params
   const [service, setService] = useState(servicoID);
 
   const [pickedImagePath, setPickedImagePath] = useState("");
@@ -49,7 +52,7 @@ export default function TelaServico({navigation} ) {
   useEffect(() => {
      const subscriber =  firestore
       .collection("Usuario")
-      .doc(auth.currentUser.uid)
+      .doc(userpro)
       .collection("Servico")
       .doc(servicoID)
       .onSnapshot((documentSnapshot) => {
@@ -67,7 +70,7 @@ export default function TelaServico({navigation} ) {
   useEffect(() => {
     const subscriber = firestore
       .collection("Usuario")
-      .doc(auth.currentUser.uid)
+      .doc(userpro)
       .collection("Servico")
       .doc(servicoID)
       .collection("Foto")
@@ -81,7 +84,7 @@ export default function TelaServico({navigation} ) {
         });
         setFotos(fotos);
       });
-    // Unsubscribe from events when no longer in use
+  
     return () => subscriber();
   }, [fotos]);
 
@@ -104,7 +107,7 @@ export default function TelaServico({navigation} ) {
   const referenceAgendamento = firestore
   .collection("Usuario")
   .doc(auth.currentUser.uid)
-  .collection("Endereco")
+  .collection("Agendamento")
   .doc();
 
 const enviarDados = () => {
@@ -112,7 +115,7 @@ const enviarDados = () => {
     .set({
       id: referenceAgendamento.id,
       hora: hora,
-      data: data,
+      data: dataString,
       service:service,
       pro: userpro,
       cli: cli,
@@ -211,6 +214,26 @@ const enviarDados = () => {
       );
     };
     
+  const hideDatePicker = () => {
+    setDatePickerVisibility(false);
+  };
+  const showDatePicker = () => {
+    setDatePickerVisibility(true);
+  };
+  const handleConfirm = (date) => {
+    console.warn("A data foi selecionada: " + date);
+    const formattedDate =
+      date.getDate().toString().padStart(2, "0") +
+      "/" +
+      (date.getMonth() + 1).toString().padStart(2, "0") +
+      "/" +
+      date.getFullYear();
+    console.log(formattedDate);
+    setDataString(formattedDate);
+    setData(date);
+    hideDatePicker();
+  };
+    
   return (
     <Layout>
       <TopNav
@@ -231,13 +254,12 @@ const enviarDados = () => {
         leftAction={() => navigation.goBack()}
       />
  
-   <Modalize ref={modalizeRef} snapPoint={500}>
+   <Modalize ref={modalizeRef} snapPoint={560}>
+    
       <View
         style={{
           flex: 1,
-          height: 500,
-        //  justifyContent: "center",
-         //alignItems: "center",
+          height: 560,
           backgroundColor: isDarkmode ? themeColor.dark : themeColor.white,
         }}
       >
@@ -259,13 +281,32 @@ const enviarDados = () => {
          R${servico.valor}</Text>
          </View>
         <Divider style={{width:"100%", margin:5, marginTop:20}}/>
-
-        <Text style={{margin:10}}> Data: </Text>
+        <Text style={{margin:10, fontSize:20}}> Data: {dataString}</Text>
+        <Button
+              title="Calendário"
+              style={{ width: 25 }}
+              text="Calendário"
+              color={"#EF8F86"}
+              leftContent={
+                <Ionicons name="calendar" size={20} color={"white"}>
+                  {" "}
+                </Ionicons>
+              }
+              onPress={showDatePicker}
+            />
+            <DateTimePickerModal
+              isVisible={isDatePickerVisible}
+              mode="date"
+              onConfirm={handleConfirm}
+              onCancel={hideDatePicker}
+            />
+       
+       
         
-        <Divider />
 
         <View style={{margin:10}}>
-        <Text style={{fontSize:20}}>Horário: {hora}</Text>
+        <Divider />
+        <Text style={{fontSize:20, marginTop:15}}>Horário: {hora}</Text>
 
         <ScrollView  
       directionalLockEnabled={false}
@@ -278,22 +319,12 @@ const enviarDados = () => {
         extraData={selectedId}
       />
         </ScrollView>
-
-        <TouchableOpacity
-          onPress={enviarDados}
-          style={{
-            backgroundColor: "white",
-            borderRadius: 6,
-            padding: 15,
-            borderWidth: 1,
-            borderColor: "rgba(0,0,0, 0.2)",
-            margin:20,
-            marginLeft:40,
-            marginRight:40,
-          }}
-        >
-          <Text>Agendar</Text>
-        </TouchableOpacity>
+        <Button
+              color="#EF8F86"
+              style={{ marginTop: 20 }}
+              text="Agendar"
+              onPress={enviarDados}
+            />
         </View>
       </View>
     </Modalize>
@@ -306,7 +337,7 @@ const enviarDados = () => {
      <Section style={{margin:20}}>
      <SectionContent style={{
    }}>
-        
+
             {pickedImagePath !== "" && (
               <Image source={{ uri: servico.urlfoto }} style={styles.image} />
             )}
@@ -379,6 +410,7 @@ const enviarDados = () => {
             />
         }
         />    
+        
         <Button
           color="#EF8F86"
           text="Marcar Horário"

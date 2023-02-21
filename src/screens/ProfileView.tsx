@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
+import { useNavigation, useRoute} from "@react-navigation/core";
 import {
   View,
   StyleSheet,
@@ -24,14 +25,13 @@ import { Servico } from "../../model/Servico"
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { Layout, TopNav, Button, Text,  useTheme,
   themeColor,} from "react-native-rapi-ui";
-//import ListarServico from "./service/ListarServico";
+import ListarServico from "./service/ListarServico";
 import Mapa from "../screens/utils/Mapa"
 import MapView, { Marker } from "react-native-maps";
 import { ScrollView } from "react-native-gesture-handler";
 import { Modalize } from "react-native-modalize";
-import MeusServicos from "./service/MeusServicos";
 
-export default function Profile({ navigation }) {
+export default function ProfileView({ navigation }) {
   const { isDarkmode, setTheme } = useTheme();
   const modalizeRef = useRef(null);
   const [usuario, setUsuario] = useState < Partial < Usuario >> ({});
@@ -40,6 +40,8 @@ export default function Profile({ navigation }) {
     id: "",
     title: "",
   });
+  const route = useRoute();
+  const {userID}=  route.params
   const [pickedImagePath, setPickedImagePath] = useState("");
   function onOpen() {
     modalizeRef.current?.open();
@@ -48,7 +50,7 @@ export default function Profile({ navigation }) {
   useEffect(() => {
     const subscriber = firestore
       .collection("Usuario")
-      .doc(auth.currentUser.uid)
+      .doc(userID)
       .onSnapshot((documentSnapshot) => {
         setUsuario(documentSnapshot.data());
         if (usuario.urlfoto == null) {
@@ -75,30 +77,20 @@ export default function Profile({ navigation }) {
             source={require("../../assets/nome.png")}
             style={{ width: 110, height: 110 }}
             resizeMode="contain"
+            
           />
         }
+        leftContent={
+            <Ionicons
+              name="chevron-back"
+              size={20}
+              color={isDarkmode ? themeColor.white100 : themeColor.black}
+            />
+          }
+          leftAction={() => navigation.goBack()}
       />
       <ScrollView >
       <View style={{margin:10}}>
-      <Button
-              color="#EF8F86"
-              rightContent={
-                <Ionicons
-                    name="create"
-                    size={20}
-                    color={themeColor.white}
-                />}
-              text="Editar "
-              onPress={() => {
-                navigation.navigate("EditProfile");
-              }}
-              style={{
-                position: "absolute",
-                backgroundColor: "#E8A998",
-                right:1,
-                margin:10,
-              }}
-            />
       </View>
     
     <View style={styles.screen}>
@@ -114,7 +106,7 @@ export default function Profile({ navigation }) {
           )}
          
         
-        <Text style={{ fontSize: 18, marginTop: 50, textAlign: "right", marginLeft:100,}}>
+        <Text style={{ fontSize: 18, marginTop: 30, textAlign: "right", marginLeft:100,}}>
           {usuario.nome}
           </Text>
           {usuario.pro === true && (
@@ -126,42 +118,23 @@ export default function Profile({ navigation }) {
         <Text style={{color: "gray", marginTop:20}}>Sobre:</Text>
         <Text style={styles.text2}>{usuario.descricao}</Text>
 
-        <Text>Endereços</Text>
         <ScrollView
         style={{ flex: 1 }}
         directionalLockEnabled={false}
         horizontal={true}>
         <Mapa />
-        <Ionicons
-        name="add-circle"
-        size={40}
-        color={"black"}
-        style={{ alignItems: "center", padding: 30 }}
-        onPress={() => {
-          navigation.navigate("Endereco");
-        }}
-      />
-      
+        
         </ScrollView>
             <Button
               color="#EF8F86"
               style={{ marginTop: 20 }}
               text="Serviços"
               onPress={() => {
-                navigation.navigate("ListarServico", { userID: auth.currentUser.uid });
+                navigation.navigate("ListarServico", {userID: userID});
               }}
             />
-<MeusServicos />
-           
-            {usuario.pro === true && (
-            <TouchableOpacity
-            activeOpacity={0.7}
-            onPress={() => {
-              navigation.navigate("AddServico");
-            }} style={{alignItems:"center"}}>
-            <Ionicons name="add-circle" size={60} color={"#EF8F86"} style={{ width: 70,height: 70,}}/>
-          </TouchableOpacity>
-          )}
+<ListarServico  
+ />
             
         </View>
         </ScrollView>

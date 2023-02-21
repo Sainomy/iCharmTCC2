@@ -1,9 +1,8 @@
 import React from "react";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import {
   StyleSheet,
   View,
-  Linking,
   Image,
   TouchableOpacity,
   ScrollView,
@@ -11,48 +10,67 @@ import {
 } from "react-native";
 import { getAuth, signOut } from "firebase/auth";
 import { Ionicons } from "@expo/vector-icons";
-import {
-  Layout,
-  Button,
-  Text,
-  TopNav,
-  Section,
-  SectionContent,
-  useTheme,
-  themeColor,
-} from "react-native-rapi-ui";
+import { Text, TopNav, useTheme, themeColor } from "react-native-rapi-ui";
 import { Modalize } from "react-native-modalize";
 import ListarUsuario from "./ListarUsuario";
+import { firestore } from "../../firebase";
+import { Usuario } from "../../model/Usuario";
 
 export default function ({ navigation }) {
   const modalizeRef = useRef(null);
+  const [loading, setLoading] = useState(true);
   const { isDarkmode, setTheme } = useTheme();
   const auth = getAuth();
+  const [usuarios, setUsuarios] = useState([]);
+
+  useEffect(() => {
+    const subscriber = firestore
+      .collection("Usuario")
+      .onSnapshot((querySnapshot) => {
+        const usuarios = [];
+        querySnapshot.forEach((documentSnapshot) => {
+          usuarios.push({
+            ...documentSnapshot.data(),
+            key: documentSnapshot.id,
+          });
+        });
+        setUsuarios(usuarios);
+        setLoading(false);
+      });
+    // Unsubscribe from events when no longer in use
+    return () => subscriber();
+  }, []);
+  const ItemView = ({ item }) => {
+    return (
+      <View style={styles.alinhamentoLinha}>
+        <TouchableOpacity
+          activeOpacity={0.7}
+          onPress={() =>
+            //Abrir({servicoID:item.id})
+            navigation.navigate("ProfileView", { userID: item.id })
+          }
+        >
+          <Image style={styles.image} source={{ uri: item.urlfoto }} />
+        </TouchableOpacity>
+
+        <View style={styles.alinhamentoColuna}>
+          <Text style={styles.itemStylee}>{item.nome}</Text>
+          <Text style={styles.itemStyle}>{item.descricao} </Text>
+        </View>
+      </View>
+    );
+  };
 
   function onOpen() {
     modalizeRef.current?.open();
   }
-  const ItemView = ({ item }) => {
-    return (
-      <TouchableOpacity activeOpacity={0.7}>
-        <Image
-          style={{
-            width: 210,
-            height: 150,
-            borderRadius: 20,
-            resizeMode: "cover",
-            borderColor: "#ef846c",
-            justifyContent: "center",
-            alignItems: "center",
-            marginRight: 10,
-          }}
-          require={"../../assets/promo.png"}
-        />
-      </TouchableOpacity>
-    );
-  };
+
   return (
-    <Layout>
+    <View style={{ flex: 1 }}>
+      <View style={{ backgroundColor: "white" }}>
+        <Text> </Text>
+        <Text> </Text>
+      </View>
       <TopNav
         style={{ borderColor: isDarkmode ? themeColor.dark100 : "#E6E6E6" }}
         middleContent={
@@ -141,45 +159,79 @@ export default function ({ navigation }) {
         </View>
       </Modalize>
       <ScrollView
-        style={{ flex: 1, marginTop: 15 }}
+        style={{ marginTop: 15 }}
         directionalLockEnabled={false}
         horizontal={true}
       >
         <Image
-          style={styles.image}
+          style={styles.image1}
           source={require("../../assets/promo.png")}
         />
         <Image
-          style={styles.image}
+          style={styles.image1}
           source={require("../../assets/promo.png")}
         />
         <Image
-          style={styles.image}
+          style={styles.image1}
           source={require("../../assets/promo.png")}
         />
       </ScrollView>
-      <View
-        style={{
-          flex: 1,
-          // alignItems: "center",
-          // justifyContent: "center",
-          margin: 15,
-        }}
-      >
-        <ListarUsuario />
-      </View>
-    </Layout>
+      <FlatList
+        data={usuarios}
+        keyExtractor={(item) => item.id}
+        //  ItemSeparatorComponent={ItemSeparatorView}
+        renderItem={ItemView}
+      />
+      {/*<ListarUsuario />*/}
+    </View>
   );
 }
 const styles = StyleSheet.create({
-  image: {
+  image1: {
     width: 320,
-    height: 180,
+    height: 220,
     borderRadius: 20,
-    resizeMode: "cover",
     borderColor: "#ef846c",
-    justifyContent: "center",
-    alignItems: "center",
     marginRight: 10,
   },
+  containerSafeArea: {
+    flex: 1,
+  },
+  itemStylee: {
+    fontSize: 20,
+    padding: 5,
+    marginTop: 2,
+  },
+  itemStyle: {
+    fontSize: 18,
+    padding: 5,
+    color: "green",
+  },
+  alinhamentoLinha: {
+    flexDirection: "row",
+    justifyContent: "flex-start",
+    backgroundColor: "white",
+    margin: 12,
+    borderRadius: 20,
+    shadowColor: "#171717",
+    shadowOffset: { width: -2, height: 4 },
+    shadowOpacity: 0.2,
+    shadowRadius: 3,
+  },
+  alinhamentoColuna: {
+    flexDirection: "column",
+    justifyContent: "flex-start",
+  },
+  image: {
+    height: 100,
+    width: 100,
+    alignSelf: "center",
+    resizeMode: "cover",
+    borderRadius: 15,
+  },
+
+  // separador: {
+  //   height: 1,
+  //   width: "100%",
+  // },
 });

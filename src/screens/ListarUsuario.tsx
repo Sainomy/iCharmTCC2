@@ -4,25 +4,17 @@ import {
   StyleSheet,
   View,
   Image,
-  SafeAreaView,
   FlatList,
   TouchableOpacity,
-  Pressable,
 } from "react-native";
-import { Layout, Text, TopNav, useTheme } from "react-native-rapi-ui";
-import { Ionicons } from "@expo/vector-icons";
-import Stars from "./utils/Stars";
-import { auth, firestore } from "../../firebase";
-import { ScrollView } from "react-native-gesture-handler";
-import { Usuario } from "../../model/Usuario";
+import { Text, useTheme } from "react-native-rapi-ui";
+import { firestore } from "../../firebase";
 
 
-export default function ListarUsuario({ navigation, Abrir }) {
+export default function ListarUsuario({ navigation }) {
   const { isDarkmode, setTheme } = useTheme();
   const [loading, setLoading] = useState(true); // Set loading to true on component mount
   const [usuarios, setUsuarios] = useState ([]);
-  const [defaultRating, setDefaultRating] = useState(2);
-  // const [maxRating, setMaxRating] = useState([1, 2, 3, 4, 5]);
  
   useEffect(() => {
     const subscriber = firestore
@@ -49,7 +41,7 @@ export default function ListarUsuario({ navigation, Abrir }) {
       <View style={styles.alinhamentoLinha}>
         <TouchableOpacity
           activeOpacity={0.7}
-          onPress={Abrir}
+
         >
           <Image style={styles.image} source={{ uri: item.urlfoto }} />
         </TouchableOpacity>
@@ -71,34 +63,6 @@ export default function ListarUsuario({ navigation, Abrir }) {
     );
   };
 
-  
-  /*const RatingBar = () => {
-    return (
-      <View style={{ flexDirection: "row" }}>
-        {maxRating.map((item, key) => {
-          return (
-            <TouchableOpacity
-              activeOpacity={0.7}
-              key={item}
-              onPress={() => setDefaultRating(item)}
-            >
-              <Image
-                style={{
-                  width: 25,
-                  height: 25,
-                }}
-                source={
-                  item <= defaultRating
-                    ? require("../../../assets/star.png")
-                    : require("../../../assets/st.png")
-                }
-              />
-            </TouchableOpacity>
-          );
-        })}
-      </View>
-    );
-  };*/
 
   return (
     <FlatList

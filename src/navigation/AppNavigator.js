@@ -14,6 +14,7 @@ import Agenda from "../screens/Agenda";
 import Profile from "../screens/Profile";
 import ListarUsuario from "../screens/ListarUsuario";
 import UseDelete from "../screens/UseDelete";
+import ProfileView from "../screens/ProfileView";
 //import Agendamento from "../screens/Agendamento";
 //Service
 import AddServico from "../screens/service/AddServico";
@@ -81,6 +82,7 @@ const Main = () => {
       <MainStack.Screen name="EditServico" component={EditServico} />
       <MainStack.Screen name="ListarUsuario" component={ListarUsuario} />
       <MainStack.Screen name="UseDelete" component={UseDelete} />
+      <MainStack.Screen name="ProfileView" component={ProfileView} />
       {/* <MainStack.Screen name="Agendamento" component={Agendamento} />*/}
     </MainStack.Navigator>
   );

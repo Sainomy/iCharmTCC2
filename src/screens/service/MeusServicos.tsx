@@ -17,20 +17,18 @@ import { ScrollView } from "react-native-gesture-handler";
 import { Usuario } from "../../../model/Usuario";
 
 
-export default function ListarServico({ navigation }) {
+export default function MeusServicos({ navigation}) {
   const { isDarkmode, setTheme } = useTheme();
   const [loading, setLoading] = useState(true); // Set loading to true on component mount
   const [servicos, setServicos] = useState([]); // Initial empty array of users
   const [usuario, setUsuario] = useState < Partial < Usuario >> ({});
   const [defaultRating, setDefaultRating] = useState(2);
 
-  const route = useRoute();
-  const {userID}=  route.params
   useEffect(() => {
   
     const subscriber = firestore
       .collection("Usuario")
-      .doc(userID)
+      .doc(auth.currentUser.uid)
       .collection("Servico")
       .onSnapshot((querySnapshot) => {
         const servicos = [];
@@ -53,7 +51,7 @@ export default function ListarServico({ navigation }) {
         <TouchableOpacity
           activeOpacity={0.7}
         onPress={()=>//Abrir({servicoID:item.id}) 
-                navigation.navigate("TelaServico", { servicoID: item.id, userpro:item.pro, userID:userID })
+                navigation.navigate("TelaServico", { servicoID: item.id, userpro:item.pro })
            }
         >
           <Image style={styles.image} source={{ uri: item.urlfoto }} />

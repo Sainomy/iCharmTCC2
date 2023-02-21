@@ -8,7 +8,7 @@ export class Agendamento {
     public cli: string;
         
 
-    constructor(obj?: Partial<Foto>) {
+    constructor(obj?: Partial<Agendamento>) {
         if (obj) {
             this.id = obj.id
             this.hora = obj.hora
