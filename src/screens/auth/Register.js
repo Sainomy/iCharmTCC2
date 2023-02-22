@@ -26,6 +26,7 @@ import { firestore } from "../../../firebase";
 import RNPickerSelect from "react-native-picker-select";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import Ionicons from "@expo/vector-icons/Ionicons";
+import MaskInput from "react-native-mask-input";
 
 export default function ({ navigation }) {
   const { isDarkmode, setTheme } = useTheme();
@@ -195,12 +196,40 @@ export default function ({ navigation }) {
             />
 
             <Text style={{ marginTop: 15, marginVertical: 15 }}>Contato</Text>
-            <TextInput
-              placeholder="Digite seu número para contato"
-              keyboardType="phone-pad"
-              onChangeText={setNumero}
+            <MaskInput
+              style={{
+                height: 40,
+                margin: 2,
+                borderWidth: 1,
+                padding: 10,
+                borderRadius: 7,
+                borderColor: themeColor.white200,
+              }}
               value={numero}
-              autoCorrect={false}
+              onChangeText={(masked, unmasked) => {
+                setNumero(masked); // you can use the unmasked value as well
+
+                // assuming you typed "9" all the way:
+                console.log(masked); // (99) 99999-9999
+                console.log(unmasked); // 99999999999
+              }}
+              mask={[
+                "(",
+                /\d/,
+                /\d/,
+                ")",
+                " ",
+                /\d/,
+                /\d/,
+                /\d/,
+                /\d/,
+                /\d/,
+                "-",
+                /\d/,
+                /\d/,
+                /\d/,
+                /\d/,
+              ]}
             />
             <Text style={{ marginTop: 15, marginVertical: 15 }}>
               Profissional?

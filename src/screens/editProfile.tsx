@@ -13,7 +13,7 @@ import {
   FlatList,
   ScrollView,
   Switch,
-  
+  KeyboardAvoidingView,
 } from "react-native";
 import { TextInput, TopNav,  useTheme,
   themeColor, Button, Layout, CheckBox,} from "react-native-rapi-ui";
@@ -29,6 +29,7 @@ import * as ImagePicker from "expo-image-picker";
 import { Usuario } from "../../model/Usuario";
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { getAuth } from "firebase/auth";
+import MaskInput from "react-native-mask-input";
 
 export default function EditProfile({ navigation, route}) {
   const auth = getAuth();
@@ -192,6 +193,7 @@ export default function EditProfile({ navigation, route}) {
  
 
   return (
+    <KeyboardAvoidingView behavior="height" enabled style={{ flex: 1 }}>
     <Layout>
     <ScrollView >
   
@@ -267,12 +269,35 @@ export default function EditProfile({ navigation, route}) {
               onChangeText={(text) => setUsuario({ ...usuario, email: text })}
             />
             <Text style={{ marginTop: 15, marginVertical: 15 }}>Contato</Text>
-            <TextInput
-              placeholder="Digite seu número para contato"
+            <MaskInput
+              style={{
+                height: 40,
+                margin: 2,
+                borderWidth: 1,
+                padding: 10,
+                borderRadius: 7,
+                borderColor: themeColor.white200,
+              }}
               keyboardType="phone-pad"
-              onChangeText={(text) => setUsuario({ ...usuario, numero: text })}
               value={usuario.numero}
-              autoCorrect={false}
+              onChangeText={(masked) => setUsuario({ ...usuario, numero: masked })}
+              mask={[
+                "(",
+                /\d/,
+                /\d/,
+                ")",
+                " ",
+                /\d/,
+                /\d/,
+                /\d/,
+                /\d/,
+                /\d/,
+                "-",
+                /\d/,
+                /\d/,
+                /\d/,
+                /\d/,
+              ]}
             />
              <Text style={{ marginTop: 15, marginVertical: 15 }}>
               Profissional?
@@ -297,6 +322,7 @@ export default function EditProfile({ navigation, route}) {
 </View>
     </ScrollView>
     </Layout>
+  </KeyboardAvoidingView>
   );
 };
 

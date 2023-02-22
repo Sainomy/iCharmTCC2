@@ -7,16 +7,20 @@ import {
   TouchableOpacity,
   ScrollView,
   FlatList,
+  Pressable,
 } from "react-native";
 import { getAuth, signOut } from "firebase/auth";
 import { Ionicons } from "@expo/vector-icons";
-import { Text, TopNav, useTheme, themeColor } from "react-native-rapi-ui";
+import { Text, TopNav, useTheme, themeColor , TextInput} from "react-native-rapi-ui";
 import { Modalize } from "react-native-modalize";
 import ListarUsuario from "./ListarUsuario";
 import { firestore } from "../../firebase";
 import { Usuario } from "../../model/Usuario";
 
 export default function ({ navigation }) {
+  const [search, setSearch] = useState("");
+  const [like, setLike] = useState(false);
+  const [dadosFiltrados, setdadosFiltrados] = useState([]);
   const modalizeRef = useRef(null);
   const [loading, setLoading] = useState(true);
   const { isDarkmode, setTheme } = useTheme();
@@ -35,11 +39,31 @@ export default function ({ navigation }) {
           });
         });
         setUsuarios(usuarios);
+        setdadosFiltrados(usuarios);
         setLoading(false);
       });
     // Unsubscribe from events when no longer in use
     return () => subscriber();
   }, []);
+
+  const searchFilter = (text) => {
+    if (text) {
+      const newData = usuarios.filter(function (item) {
+        if (item.nome) {
+          const itemData = item.nome.toUpperCase();
+          const textData = text.toUpperCase();
+          return itemData.indexOf(textData) > -1;
+        }
+      });
+      setdadosFiltrados(newData);
+      setSearch(text);
+    } else {
+      setdadosFiltrados(usuarios);
+      setSearch(text);
+    }
+  };
+
+
   const ItemView = ({ item }) => {
     return (
       <View style={styles.alinhamentoLinha}>
@@ -50,12 +74,25 @@ export default function ({ navigation }) {
             navigation.navigate("ProfileView", { userID: item.id })
           }
         >
-          <Image style={styles.image} source={{ uri: item.urlfoto }} />
+          <Image style={styles.image} source={{ uri: item.urlfoto }}  />
         </TouchableOpacity>
 
         <View style={styles.alinhamentoColuna}>
-          <Text style={styles.itemStylee}>{item.nome}</Text>
+          <Text  style={styles.itemStylee}>{item.nome} </Text>
           <Text style={styles.itemStyle}>{item.descricao} </Text>
+          <Pressable>
+          <Ionicons
+        
+        name="heart"
+        size={30}
+        color={"#EF8F86"}
+        style={{position:"relative", marginTop:5}}
+        onPress={() => {
+          setLike(true);
+        }}
+      />
+          </Pressable>
+          
         </View>
       </View>
     );
@@ -158,6 +195,24 @@ export default function ({ navigation }) {
           </TouchableOpacity>
         </View>
       </Modalize>
+      <ScrollView style={{marginTop:10}}>
+        <View style={{margin:5}}>
+      <TextInput
+          borderRadius={15}
+          onChangeText={(text) => searchFilter(text)}
+          value={search}
+          underlineColorAndroid="transparent"
+          placeholder="Procure Aqui"
+          rightContent={
+            <Ionicons
+              name="search"
+              size={20}
+              color={themeColor.gray300}
+            />
+          }
+        />
+        </View>
+        
       <ScrollView
         style={{ marginTop: 15 }}
         directionalLockEnabled={false}
@@ -177,13 +232,15 @@ export default function ({ navigation }) {
         />
       </ScrollView>
       <FlatList
-        data={usuarios}
+        data={dadosFiltrados}
         keyExtractor={(item) => item.id}
         //  ItemSeparatorComponent={ItemSeparatorView}
         renderItem={ItemView}
       />
       {/*<ListarUsuario />*/}
+      </ScrollView>
     </View>
+
   );
 }
 const styles = StyleSheet.create({
@@ -204,7 +261,7 @@ const styles = StyleSheet.create({
   },
   itemStyle: {
     fontSize: 18,
-    padding: 5,
+    padding: 0,
     color: "green",
   },
   alinhamentoLinha: {
@@ -219,8 +276,8 @@ const styles = StyleSheet.create({
     shadowRadius: 3,
   },
   alinhamentoColuna: {
-    flexDirection: "column",
-    justifyContent: "flex-start",
+  //  flexDirection: "column",
+  //  justifyContent: "flex-start",
   },
   image: {
     height: 100,

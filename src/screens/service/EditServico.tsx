@@ -207,6 +207,7 @@ export default function EditServico({ navigation }) {
     }).catch(function(error){});
   };
   return (
+    <KeyboardAvoidingView behavior="height" enabled style={{ flex: 1 }}>
     <Layout>
       <TopNav
         middleContent={
@@ -226,7 +227,7 @@ export default function EditServico({ navigation }) {
         leftAction={() => navigation.goBack()}
       />
 
-      <KeyboardAvoidingView behavior="height" enabled style={{ flex: 1 }}>
+    
        
           <ScrollView
             contentContainerStyle={{
@@ -356,8 +357,9 @@ export default function EditServico({ navigation }) {
             </Section>
           </ScrollView>
         
-      </KeyboardAvoidingView>
+    
     </Layout>
+    </KeyboardAvoidingView>
   ); 
 }
 const styles = StyleSheet.create({

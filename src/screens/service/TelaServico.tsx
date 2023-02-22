@@ -114,9 +114,9 @@ const enviarDados = () => {
   referenceAgendamento
     .set({
       id: referenceAgendamento.id,
-      hora: hora,
-      data: dataString,
-      service:service,
+      description: hora,
+      time: dataString,
+      title:servico.nomecat,
       pro: userpro,
       cli: cli,
     })
@@ -157,36 +157,44 @@ const enviarDados = () => {
   }
   const DATA = [
     {
-      id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
+      id: '9',
       hora: '9:00',
     },
     {
-      id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
+      id: '10',
       hora: '10:00',
     },
     {
-      id: '58694a0f-3da1-471f-bd96-145571e29d72',
+      id: '11',
       hora: '11:00',
     },
     {
-      id: '58694a0f-3da1-471f-bd96-145571e29d71',
+      id: '14',
       hora: '14:00',
     },
     {
-      id: '58694a0f-3da1-471f-bd96-145571e29d73',
+      id: '15',
       hora: '15:00',
      },
      {
-      id: '58694a0f-3da1-471f-bd96-145571e29d73',
+      id: '16',
       hora: '16:00',
      },
      {
-      id: '58694a0f-3da1-471f-bd96-145571e29d73',
+      id: '17',
       hora: '17:00',
      },
      {
-      id: '58694a0f-3da1-471f-bd96-145571e29d73',
+      id: '18',
       hora: '18:00',
+     },
+     {
+      id: '19',
+      hora: '19:00',
+     },
+     {
+      id: '20',
+      hora: '20:00',
      },
   ];
  
