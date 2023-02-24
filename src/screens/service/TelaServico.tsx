@@ -114,9 +114,10 @@ const enviarDados = () => {
   referenceAgendamento
     .set({
       id: referenceAgendamento.id,
-      description: hora,
-      time: dataString,
+      description: usuario.nome,
+      time: hora,
       title:servico.nomecat,
+      data: dataString,
       pro: userpro,
       cli: cli,
     })
@@ -124,13 +125,13 @@ const enviarDados = () => {
       const cancelBtn: AlertButton = {
         text: "Acompanhar agendamento",
         onPress: () => {
-          navigation.navigate("Profile");
+          navigation.navigate("Agenda");
         },
       };
       const deleteBtn: AlertButton = {
         text: "Voltar",
         onPress: () => {
-          navigation.navigate("Endereco");
+          navigation.goBack()
         },
       };
 
@@ -238,7 +239,7 @@ const enviarDados = () => {
       date.getFullYear();
     console.log(formattedDate);
     setDataString(formattedDate);
-    setData(date);
+    setData(date.toString());
     hideDatePicker();
   };
     

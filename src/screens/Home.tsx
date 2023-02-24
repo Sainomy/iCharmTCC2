@@ -49,8 +49,8 @@ export default function ({ navigation }) {
   const searchFilter = (text) => {
     if (text) {
       const newData = usuarios.filter(function (item) {
-        if (item.nome) {
-          const itemData = item.nome.toUpperCase();
+        if (item.data) {
+          const itemData = item.data.toUpperCase();
           const textData = text.toUpperCase();
           return itemData.indexOf(textData) > -1;
         }

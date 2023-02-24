@@ -1,6 +1,13 @@
 import React from "react";
 import { useState, useEffect } from "react";
-import { View, Image, SafeAreaView } from "react-native";
+import {
+  View,
+  Image,
+  SafeAreaView,
+  FlatList,
+  TouchableOpacity,
+  TextInput,
+} from "react-native";
 import {
   Layout,
   Text,
@@ -17,6 +24,8 @@ import { addDays } from "date-fns";
 
 export default function ({ navigation }) {
   const [selectedDate, setSelectedDate] = React.useState(new Date());
+  const [search, setSearch] = useState("");
+
   const [dadosFiltrados, setdadosFiltrados] = useState([]);
   const { isDarkmode, setTheme } = useTheme();
   const [agendamentos, setAgendamentos] = useState([]);
@@ -39,21 +48,33 @@ export default function ({ navigation }) {
     // Unsubscribe from events when no longer in use
     return () => subscriber();
   }, []);
+  const ItemView = ({ item }) => {
+    return (
+      <TouchableOpacity activeOpacity={0.7}>
+        <Text>{item.time}</Text>
+      </TouchableOpacity>
+    );
+  };
 
-  const searchFilter = (text) => {
-    if (text) {
-      const newData = usuarios.filter(function (item) {
-        if (item.nome) {
-          const itemData = item.nome.toUpperCase();
-          const textData = text.toUpperCase();
+  const searchFilter = (formattedDate) => {
+    if (formattedDate) {
+      const newData = agendamentos.filter(function (item) {
+        if (item.data) {
+          const itemData = item.data;
+          const textData = formattedDate;
           return itemData.indexOf(textData) > -1;
         }
       });
-      setdadosFiltrados(newData);
-      setSearch(text);
+      const ordemData = newData.sort(function (a, b) {
+        return new Date(b.time) - new Date(a.time);
+      });
+      setdadosFiltrados(ordemData);
+      setSearch(formattedDate);
+      //   console.log("text " + formattedDate);
     } else {
-      setdadosFiltrados(usuarios);
-      setSearch(text);
+      setdadosFiltrados(agendamentos);
+      setSearch(formattedDate);
+      // console.log("text " + formattedDate);
     }
   };
 
@@ -69,11 +90,7 @@ export default function ({ navigation }) {
     { time: "16:30", title: "Event 5", description: "Event 5 Description" },
   ];
   return (
-    <View style={{ flex: 1, backgroundColor: "white" }}>
-      <View style={{ backgroundColor: "white" }}>
-        <Text> </Text>
-        <Text> </Text>
-      </View>
+    <SafeAreaView style={{ flex: 1, backgroundColor: "white" }}>
       <TopNav
         middleContent={
           <Image
@@ -90,18 +107,38 @@ export default function ({ navigation }) {
           />
         }
       />
+      <View>
+        <TextInput
+          style={{
+            margin: 10,
+            textAlign: "center",
+            fontSize: 20,
+            color: "#D76348",
+          }}
+          borderRadius={15}
+          onChangeText={(text) => searchFilter(text)}
+          value={selectedDate}
+          underlineColorAndroid="transparent"
+          placeholder="Dia/Mês/Ano"
+        ></TextInput>
+
+        {/*   <AgendaScreen />*/}
+        {/*<FlatList data={dadosFiltrados} renderItem={ItemView} />*/}
+      </View>
       <Timeline
-        data={agendamentos}
+        data={dadosFiltrados}
         circleSize={20}
-        circleColor="#ff9797"
-        lineColor="rgb(45,156,219)"
+        circleColor="#D76348"
+        lineColor="#ff9797"
         timeContainerStyle={{ minWidth: 52, marginTop: -5 }}
         timeStyle={{
           textAlign: "center",
-          backgroundColor: "#ff9797",
+          backgroundColor: "#D76348",
           color: "white",
-          padding: 20,
+          padding: 10,
           borderRadius: 13,
+          marginTop: 10,
+          marginLeft: 10,
         }}
         descriptionStyle={{ color: "gray" }}
         options={{
@@ -109,22 +146,31 @@ export default function ({ navigation }) {
         }}
         isUsingFlatlist={true}
       />
-      {/*   <AgendaScreen />*/}
-
       <DatePicker
         startDate={new Date()}
         maxFutureDays={90}
-        markedDates={[new Date(), addDays(new Date(), 2)]}
-        onDateChange={(date) => setSelectedDate(date)}
-        theme={{
-          primaryColor: "purple",
+        //  markedDates={[new Date(), addDays(new Date(), 2)]}
+        onDateChange={(date) => {
+          console.log(date);
+          let formattedDate =
+            date.getDate().toString().padStart(2, "0") +
+            "/" +
+            (date.getMonth() + 1).toString().padStart(2, "0") +
+            "/" +
+            date.getFullYear();
+          console.log(formattedDate);
+          setSelectedDate(formattedDate);
+          //  setSearch(selectedDate);
+          //    let muda = formattedDate;
+          searchFilter(formattedDate);
+          // const data = formattedDate;
+          //  setSelectedDate(formattedDate);
+          //  console.log("console date agora " + formattedDate + selectedDate);
         }}
-      >
-        <View>
-          <Text>Timeslots</Text>
-          <Text>{selectedDate.toString()}</Text>
-        </View>
-      </DatePicker>
-    </View>
+        theme={{
+          primaryColor: "#D76348",
+        }}
+      ></DatePicker>
+    </SafeAreaView>
   );
 }
