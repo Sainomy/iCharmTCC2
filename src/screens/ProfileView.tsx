@@ -35,6 +35,7 @@ export default function ProfileView({ navigation }) {
   const { isDarkmode, setTheme } = useTheme();
   const modalizeRef = useRef(null);
   const [usuario, setUsuario] = useState < Partial < Usuario >> ({});
+  const [servicos, setServicos] = useState([]); // Initial empty array of users
   const [itemLista, setItemLista] = useState({
     ...itemLista,
     id: "",
@@ -63,7 +64,45 @@ export default function ProfileView({ navigation }) {
     return () => subscriber();
   }, [usuario]);
 
- 
+  useEffect(() => {
+  
+    const subscriber = firestore
+      .collection("Usuario")
+      .doc(userID)
+      .collection("Servico")
+      .onSnapshot((querySnapshot) => {
+        const servicos = [];
+        querySnapshot.forEach((documentSnapshot) => {
+          servicos.push({
+            ...documentSnapshot.data(),
+            key: documentSnapshot.id,
+          });
+        });
+        setServicos(servicos);
+      });
+    // Unsubscribe from events when no longer in use
+    return () => subscriber();
+  }, []);
+
+  const ItemView = ({ item }) => {
+    return (
+      <View style={styles.alinhamentoLinha}>
+        <TouchableOpacity
+          activeOpacity={0.7}
+        onPress={()=>//Abrir({servicoID:item.id}) 
+                navigation.navigate("TelaServico", { servicoID: item.id, userpro:item.pro, userID:userID })
+           }
+        >
+          <Image style={styles.image1} source={{ uri: item.urlfoto }} />
+        </TouchableOpacity>
+
+        <View style={styles.alinhamentoColuna}>
+          <Text style={styles.itemStylee}>{item.nomecat}</Text>
+          <Text style={styles.itemStyle}>R${item.valor} </Text>
+        </View>
+      </View>
+    );
+  };
   
   return (
     <View style={{ flex: 1}}>
@@ -133,8 +172,14 @@ export default function ProfileView({ navigation }) {
                 navigation.navigate("ListarServico", {userID: userID});
               }}
             />
-<ListarServico  
- />
+
+<FlatList
+          data={servicos}
+          keyExtractor={(item) => item.id}
+          //  ItemSeparatorComponent={ItemSeparatorView}
+          renderItem={ItemView}
+        />
+{/*<ListarServico />*/}
             
         </View>
         </ScrollView>
@@ -143,6 +188,43 @@ export default function ProfileView({ navigation }) {
   );
       }   
 const styles = StyleSheet.create({
+  containerSafeArea: {
+    flex: 1,
+  },
+  container: {},
+  itemStylee: {
+    fontSize: 20,
+    padding: 5,
+    marginTop: 2,
+  },
+  itemStyle: {
+    fontSize: 18,
+    padding: 5,
+    color: "green",
+  },
+  alinhamentoLinha: {
+    flexDirection: "row",
+    justifyContent: "flex-start",
+    backgroundColor: "white",
+    margin: 12,
+    borderRadius: 20,
+    shadowColor: "#171717",
+    shadowOffset: { width: -2, height: 4 },
+    shadowOpacity: 0.2,
+    shadowRadius: 3,
+  },
+  alinhamentoColuna: {
+    flexDirection: "column",
+    justifyContent: "flex-start",
+  },
+  image1: {
+    height: 100,
+    width: 100,
+    alignSelf: "center",
+    resizeMode: "cover",
+    borderRadius: 15,
+  },
+
   screen: {
     flex: 1,
     //justifyContent: "center",

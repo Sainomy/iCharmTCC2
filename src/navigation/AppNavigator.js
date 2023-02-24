@@ -18,7 +18,7 @@ import ProfileView from "../screens/ProfileView";
 //import Agendamento from "../screens/Agendamento";
 //Service
 import AddServico from "../screens/service/AddServico";
-import ListarServico from "../screens/service/ListarServico";
+//import ListarServico from "../screens/service/ListarServico";
 import TelaServico from "../screens/service/TelaServico";
 import AddFotos from "../screens/service/AddFotos";
 import EditProfile from "../screens/EditProfile";
@@ -73,7 +73,7 @@ const Main = () => {
     >
       <MainStack.Screen name="MainTabs" component={MainTabs} />
       <MainStack.Screen name="AddServico" component={AddServico} />
-      <MainStack.Screen name="ListarServico" component={ListarServico} />
+      {/*   <MainStack.Screen name="ListarServico" component={ListarServico} />*/}
       <MainStack.Screen name="TelaServico" component={TelaServico} />
       <MainStack.Screen name="Endereco" component={Endereco} />
       <MainStack.Screen name="AddFotos" component={AddFotos} />

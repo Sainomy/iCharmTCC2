@@ -7,6 +7,7 @@ import {
   FlatList,
   TouchableOpacity,
   TextInput,
+  StyleSheet,
 } from "react-native";
 import {
   Layout,
@@ -50,9 +51,14 @@ export default function ({ navigation }) {
   }, []);
   const ItemView = ({ item }) => {
     return (
-      <TouchableOpacity activeOpacity={0.7}>
-        <Text>{item.time}</Text>
-      </TouchableOpacity>
+      <View style={styles.alinhamentoLinha}>
+        <Text style={{ padding: 20, color: "#D76348" }}>{item.time}</Text>
+
+        <View style={styles.alinhamentoColuna}>
+          <Text style={styles.itemStylee}>{item.title} </Text>
+          <Text style={styles.itemStyle}>{item.description} </Text>
+        </View>
+      </View>
     );
   };
 
@@ -107,45 +113,6 @@ export default function ({ navigation }) {
           />
         }
       />
-      <View>
-        <TextInput
-          style={{
-            margin: 10,
-            textAlign: "center",
-            fontSize: 20,
-            color: "#D76348",
-          }}
-          borderRadius={15}
-          onChangeText={(text) => searchFilter(text)}
-          value={selectedDate}
-          underlineColorAndroid="transparent"
-          placeholder="Dia/Mês/Ano"
-        ></TextInput>
-
-        {/*   <AgendaScreen />*/}
-        {/*<FlatList data={dadosFiltrados} renderItem={ItemView} />*/}
-      </View>
-      <Timeline
-        data={dadosFiltrados}
-        circleSize={20}
-        circleColor="#D76348"
-        lineColor="#ff9797"
-        timeContainerStyle={{ minWidth: 52, marginTop: -5 }}
-        timeStyle={{
-          textAlign: "center",
-          backgroundColor: "#D76348",
-          color: "white",
-          padding: 10,
-          borderRadius: 13,
-          marginTop: 10,
-          marginLeft: 10,
-        }}
-        descriptionStyle={{ color: "gray" }}
-        options={{
-          style: { paddingTop: 5 },
-        }}
-        isUsingFlatlist={true}
-      />
       <DatePicker
         startDate={new Date()}
         maxFutureDays={90}
@@ -170,7 +137,97 @@ export default function ({ navigation }) {
         theme={{
           primaryColor: "#D76348",
         }}
-      ></DatePicker>
+      >
+        <View>
+          <TextInput
+            style={{
+              margin: 10,
+              textAlign: "center",
+              fontSize: 20,
+              color: "#D76348",
+            }}
+            borderRadius={15}
+            onChangeText={(text) => searchFilter(text)}
+            value={selectedDate}
+            underlineColorAndroid="transparent"
+            placeholder="Dia/Mês/Ano"
+          ></TextInput>
+
+          {/*   <AgendaScreen />*/}
+          <FlatList data={dadosFiltrados} renderItem={ItemView} />
+        </View>
+        {/*<Timeline
+        data={dadosFiltrados}
+        circleSize={20}
+        circleColor="#D76348"
+        lineColor="#ff9797"
+        timeContainerStyle={{ minWidth: 52, marginTop: -5 }}
+        timeStyle={{
+          textAlign: "center",
+          backgroundColor: "#D76348",
+          color: "white",
+          padding: 10,
+          borderRadius: 13,
+          marginTop: 10,
+          marginLeft: 10,
+        }}
+        descriptionStyle={{ color: "gray" }}
+        options={{
+          style: { paddingTop: 5 },
+        }}
+        isUsingFlatlist={true}
+      />*/}
+      </DatePicker>
     </SafeAreaView>
   );
 }
+const styles = StyleSheet.create({
+  image1: {
+    width: 320,
+    height: 220,
+    borderRadius: 20,
+    borderColor: "#ef846c",
+    marginRight: 10,
+  },
+  containerSafeArea: {
+    flex: 1,
+  },
+  itemStylee: {
+    fontSize: 20,
+    padding: 5,
+    marginTop: 2,
+  },
+  itemStyle: {
+    fontSize: 18,
+    padding: 0,
+    margin: 5,
+    color: "gray",
+  },
+  alinhamentoLinha: {
+    flexDirection: "row",
+    justifyContent: "flex-start",
+    backgroundColor: "white",
+    margin: 12,
+    borderRadius: 20,
+    shadowColor: "#171717",
+    shadowOffset: { width: -2, height: 4 },
+    shadowOpacity: 0.2,
+    shadowRadius: 3,
+  },
+  alinhamentoColuna: {
+    //  flexDirection: "column",
+    //  justifyContent: "flex-start",
+  },
+  image: {
+    height: 100,
+    width: 100,
+    alignSelf: "center",
+    resizeMode: "cover",
+    borderRadius: 15,
+  },
+
+  // separador: {
+  //   height: 1,
+  //   width: "100%",
+  // },
+});

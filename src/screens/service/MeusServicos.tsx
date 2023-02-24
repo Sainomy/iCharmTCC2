@@ -1,4 +1,4 @@
-import React from "react";
+{/*import React from "react";
 import { useNavigation, useRoute} from "@react-navigation/core";
 import { useState, useEffect } from "react";
 import {
@@ -18,12 +18,9 @@ import { Usuario } from "../../../model/Usuario";
 
 
 export default function MeusServicos({ navigation}) {
-  const { isDarkmode, setTheme } = useTheme();
   const [loading, setLoading] = useState(true); // Set loading to true on component mount
   const [servicos, setServicos] = useState([]); // Initial empty array of users
-  const [usuario, setUsuario] = useState < Partial < Usuario >> ({});
-  const [defaultRating, setDefaultRating] = useState(2);
-
+ 
   useEffect(() => {
   
     const subscriber = firestore
@@ -123,4 +120,4 @@ const styles = StyleSheet.create({
   //   height: 1,
   //   width: "100%",
   // },
-});
+});*/}
