@@ -10,7 +10,7 @@ import {
   SafeAreaView,
   FlatList,
   TextInput,
-  TouchableOpacity
+  TouchableOpacity,
 } from "react-native";
 // import firebaseConfig from "./firebase";
 // import firebase from "firebase/compat/app";
@@ -105,11 +105,7 @@ export default function ProfileView({ navigation }) {
   };
   
   return (
-    <View style={{ flex: 1}}>
-    <View style={{ backgroundColor: "white" }}>
-      <Text> </Text>
-      <Text> </Text>
-    </View>
+    <SafeAreaView style={{ flex: 1, backgroundColor:"white"}}>
        <TopNav style={{position:"relative"}}
         middleContent={
           <Image
@@ -183,7 +179,7 @@ export default function ProfileView({ navigation }) {
             
         </View>
         </ScrollView>
-    </View>
+    </SafeAreaView>
     
   );
       }   
@@ -206,12 +202,14 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "flex-start",
     backgroundColor: "white",
-    margin: 12,
+    marginTop: 12,
     borderRadius: 20,
     shadowColor: "#171717",
     shadowOffset: { width: -2, height: 4 },
     shadowOpacity: 0.2,
     shadowRadius: 3,
+    borderColor: "#d3d3d3",
+    borderWidth:0.5
   },
   alinhamentoColuna: {
     flexDirection: "column",

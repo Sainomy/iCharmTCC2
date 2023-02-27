@@ -8,10 +8,11 @@ import {
   ScrollView,
   FlatList,
   Pressable,
+  SafeAreaView,
 } from "react-native";
 import { getAuth, signOut } from "firebase/auth";
 import { Ionicons } from "@expo/vector-icons";
-import { Text, TopNav, useTheme, themeColor , TextInput} from "react-native-rapi-ui";
+import { Text, TopNav, useTheme, themeColor , TextInput, Button} from "react-native-rapi-ui";
 import { Modalize } from "react-native-modalize";
 import ListarUsuario from "./ListarUsuario";
 import { firestore } from "../../firebase";
@@ -103,11 +104,8 @@ export default function ({ navigation }) {
   }
 
   return (
-    <View style={{ flex: 1 }}>
-      <View style={{ backgroundColor: "white" }}>
-        <Text> </Text>
-        <Text> </Text>
-      </View>
+    <SafeAreaView style={{ flex: 1, backgroundColor: "white" }}>
+      
       <TopNav
         style={{ borderColor: isDarkmode ? themeColor.dark100 : "#E6E6E6" }}
         middleContent={
@@ -196,7 +194,7 @@ export default function ({ navigation }) {
         </View>
       </Modalize>
       <ScrollView style={{marginTop:10}}>
-        <View style={{margin:5}}>
+        <View style={{margin:10}}>
       <TextInput
           borderRadius={15}
           onChangeText={(text) => searchFilter(text)}
@@ -220,26 +218,40 @@ export default function ({ navigation }) {
       >
         <Image
           style={styles.image1}
-          source={require("../../assets/promo.png")}
+          source={require("../../assets/4.png")}
         />
         <Image
           style={styles.image1}
-          source={require("../../assets/promo.png")}
+          source={require("../../assets/3.png")}
         />
         <Image
           style={styles.image1}
-          source={require("../../assets/promo.png")}
+          source={require("../../assets/2.png")}
         />
+        
       </ScrollView>
+      <View style={{margin:10}}>
+      <TouchableOpacity style={{alignItems:"center"}}>
+      <Image
+          style={{width: 80,
+            height: 80,
+            borderRadius: 150 / 2,
+            left:10, }}
+          source={require("../../assets/usuario.png")}
+        />
+        <Text>Favoritos</Text>
+      </TouchableOpacity>
       <FlatList
         data={dadosFiltrados}
         keyExtractor={(item) => item.id}
         //  ItemSeparatorComponent={ItemSeparatorView}
         renderItem={ItemView}
       />
+      </View>
+      
       {/*<ListarUsuario />*/}
       </ScrollView>
-    </View>
+    </SafeAreaView>
 
   );
 }
@@ -268,12 +280,14 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "flex-start",
     backgroundColor: "white",
-    margin: 12,
+    marginTop: 12,
     borderRadius: 20,
     shadowColor: "#171717",
     shadowOffset: { width: -2, height: 4 },
     shadowOpacity: 0.2,
     shadowRadius: 3,
+    borderColor: "#d3d3d3",
+    borderWidth:0.5
   },
   alinhamentoColuna: {
   //  flexDirection: "column",

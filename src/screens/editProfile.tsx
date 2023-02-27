@@ -33,6 +33,7 @@ import MaskInput from "react-native-mask-input";
 
 export default function EditProfile({ navigation, route}) {
   const auth = getAuth();
+  const toggleSwitch = () => setPro((previousState) => !previousState);
   const { isDarkmode, setTheme } = useTheme();
   //antes era só function profile
   const [modalListaVisible, setModalListaVisible] = useState(false);
@@ -302,11 +303,15 @@ export default function EditProfile({ navigation, route}) {
              <Text style={{ marginTop: 15, marginVertical: 15 }}>
               Profissional?
             </Text>
-            <CheckBox 
-            checkedColor="pink"
-            value={usuario.pro} 
-            onValueChange={(boolean) => setUsuario({...usuario, pro:boolean})} />
-            
+
+            <Switch
+              trackColor={{ false: "#767577", true: "#EF8F86" }}
+              thumbColor={usuario.pro ? "white" : "#f4f3f4"}
+              ios_backgroundColor="#3e3e3e"
+              onValueChange={(boolean) => setUsuario({...usuario, pro:boolean})}
+              value={usuario.pro}
+            />
+          
               <Button
               color="#EF8F86"
               text={"Salvar"}

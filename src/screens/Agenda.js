@@ -19,7 +19,7 @@ import {
 import { Ionicons } from "@expo/vector-icons";
 import AgendaScreen from "./AgendaScreen";
 import Timeline from "react-native-timeline-flatlist";
-import { auth, firestore } from "../../firebase";
+import { auth, firestore, firebase } from "../../firebase";
 import { DatePicker } from "react-native-week-month-date-picker";
 import { addDays } from "date-fns";
 
@@ -32,6 +32,27 @@ export default function ({ navigation }) {
   const [agendamentos, setAgendamentos] = useState([]);
 
   useEffect(() => {
+    const subscriber = firestore
+      .collection("Usuario")
+      .doc(auth.currentUser.uid)
+      .collection("Agendamento")
+      .where("data", "==", "23/02/2023")
+      .onSnapshot((querySnapshot) => {
+        const agendamentos = [];
+        querySnapshot.forEach((documentSnapshot) => {
+          agendamentos.push({
+            ...documentSnapshot.data(),
+            key: documentSnapshot.id,
+          });
+        });
+        setAgendamentos(agendamentos);
+      });
+    // Unsubscribe from events when no longer in use
+    return () => subscriber();
+  }, []);
+
+  {
+    /* useEffect(() => {
     const subscriber = firestore
       .collection("Usuario")
       .doc(auth.currentUser.uid)
@@ -49,6 +70,8 @@ export default function ({ navigation }) {
     // Unsubscribe from events when no longer in use
     return () => subscriber();
   }, []);
+*/
+  }
   const ItemView = ({ item }) => {
     return (
       <View style={styles.alinhamentoLinha}>
@@ -62,24 +85,22 @@ export default function ({ navigation }) {
     );
   };
 
-  const searchFilter = (formattedDate) => {
-    if (formattedDate) {
+  const searchFilter = (text) => {
+    if (text) {
       const newData = agendamentos.filter(function (item) {
         if (item.data) {
-          const itemData = item.data;
-          const textData = formattedDate;
+          const itemData = item.data.toUpperCase();
+          const textData = text.toUpperCase();
           return itemData.indexOf(textData) > -1;
         }
       });
-      const ordemData = newData.sort(function (a, b) {
-        return new Date(b.time) - new Date(a.time);
-      });
-      setdadosFiltrados(ordemData);
-      setSearch(formattedDate);
+
+      setdadosFiltrados(newData);
+      setSearch(text);
       //   console.log("text " + formattedDate);
     } else {
-      setdadosFiltrados(agendamentos);
-      setSearch(formattedDate);
+      setdadosFiltrados(newData);
+      setSearch(text);
       // console.log("text " + formattedDate);
     }
   };
@@ -147,14 +168,18 @@ export default function ({ navigation }) {
               color: "#D76348",
             }}
             borderRadius={15}
-            onChangeText={(text) => searchFilter(text)}
+            onChangeText={(text) => {
+              searchFilter(text);
+              useEffect(text);
+              //compareValues(text);
+            }}
             value={selectedDate}
             underlineColorAndroid="transparent"
             placeholder="Dia/Mês/Ano"
           ></TextInput>
 
           {/*   <AgendaScreen />*/}
-          <FlatList data={dadosFiltrados} renderItem={ItemView} />
+          <FlatList data={agendamentos} renderItem={ItemView} />
         </View>
         {/*<Timeline
         data={dadosFiltrados}
@@ -213,6 +238,8 @@ const styles = StyleSheet.create({
     shadowOffset: { width: -2, height: 4 },
     shadowOpacity: 0.2,
     shadowRadius: 3,
+    borderColor: "#d3d3d3",
+    borderWidth: 0.5,
   },
   alinhamentoColuna: {
     //  flexDirection: "column",

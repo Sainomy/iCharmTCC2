@@ -105,11 +105,7 @@ export default function Profile({ navigation }) {
  
   
   return (
-    <View style={{ flex: 1}}>
-    <View style={{ backgroundColor: "white" }}>
-      <Text> </Text>
-      <Text> </Text>
-    </View>
+    <SafeAreaView style={{ flex: 1, backgroundColor: "white" }}>
        <TopNav style={{position:"relative"}}
         middleContent={
           <Image
@@ -212,7 +208,7 @@ export default function Profile({ navigation }) {
             
         </View>
         </ScrollView>
-    </View>
+    </SafeAreaView>
     
   );
       }   
@@ -241,6 +237,8 @@ const styles = StyleSheet.create({
     shadowOffset: { width: -2, height: 4 },
     shadowOpacity: 0.2,
     shadowRadius: 3,
+    borderColor: "#d3d3d3",
+    borderWidth:0.5
   },
   alinhamentoColuna: {
     flexDirection: "column",
