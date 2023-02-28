@@ -12,9 +12,10 @@ import Loading from "../screens/utils/Loading";
 import Home from "../screens/Home";
 import Agenda from "../screens/Agenda";
 import Profile from "../screens/Profile";
-import ListarUsuario from "../screens/ListarUsuario";
+//import ListarUsuario from "../screens/ListarUsuario";
 import UseDelete from "../screens/UseDelete";
 import ProfileView from "../screens/ProfileView";
+import Horarios from "../screens/Horarios";
 //import Agendamento from "../screens/Agendamento";
 //Service
 import AddServico from "../screens/service/AddServico";
@@ -80,10 +81,9 @@ const Main = () => {
       <MainStack.Screen name="EditProfile" component={EditProfile} />
       <MainStack.Screen name="Mapa" component={Mapa} />
       <MainStack.Screen name="EditServico" component={EditServico} />
-      <MainStack.Screen name="ListarUsuario" component={ListarUsuario} />
       <MainStack.Screen name="UseDelete" component={UseDelete} />
       <MainStack.Screen name="ProfileView" component={ProfileView} />
-      {/* <MainStack.Screen name="Agendamento" component={Agendamento} />*/}
+      <MainStack.Screen name="Horarios" component={Horarios} />
     </MainStack.Navigator>
   );
 };

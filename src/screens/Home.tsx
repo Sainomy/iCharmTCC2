@@ -14,7 +14,6 @@ import { getAuth, signOut } from "firebase/auth";
 import { Ionicons } from "@expo/vector-icons";
 import { Text, TopNav, useTheme, themeColor , TextInput, Button} from "react-native-rapi-ui";
 import { Modalize } from "react-native-modalize";
-import ListarUsuario from "./ListarUsuario";
 import { firestore } from "../../firebase";
 import { Usuario } from "../../model/Usuario";
 

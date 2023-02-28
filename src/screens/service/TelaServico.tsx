@@ -31,6 +31,7 @@ export default function TelaServico({navigation} ) {
 
   const [servico, setServico] = useState  < Servico >({});
   const [usuario, setUsuario] = useState  < Usuario >({});
+  const [horarios, setHorarios] = useState ([ ]);
   const [fotos, setFotos] = useState < Foto > ({});
   const [itemLista, setItemLista] = useState({
     ...itemLista,
@@ -156,6 +157,25 @@ const enviarDados = () => {
   function onOpen() {
     modalizeRef.current?.open();
   }
+  useEffect(() => {
+    const subscriber = firestore
+      .collection("Usuario")
+      .doc(userpro)
+      .collection("Horarios")
+      .onSnapshot((querySnapshot) => {
+        const horarios = [];
+        querySnapshot.forEach((documentSnapshot) => {
+          horarios.push({
+            ...documentSnapshot.data(),
+            key: documentSnapshot.id,
+          });
+        });
+        setHorarios(horarios);
+      
+      });
+    // Unsubscribe from events when no longer in use
+    return () => subscriber();
+  }, []);
   const DATA = [
     {
       id: '9',
@@ -207,19 +227,174 @@ const enviarDados = () => {
    
      const shortClick=(item)=>{
       alert('voce pressionou curto e '+ item.hora);
-      setHora(item.hora);
+      setHora(item.hora10);
      };
      const ItemView2 = ({ item }) => {
       return (
+       <ScrollView  
+        directionalLockEnabled={false}
+              horizontal={true}>
+           <Pressable
+        style={({ pressed }) => [{ backgroundColor: pressed ? '#f1f1f1' : 'transparent'}]}
+        onLongPress={() => { LongClick(item) }}
+        onPress={() => { shortClick(item); setData(item.hora8) }}
+    >
+        <View>
+            <Text style={{margin:10, color: "gray"}}>  {item.hora8}  </Text>
+           
+        </View>
+    </Pressable>
         <Pressable
         style={({ pressed }) => [{ backgroundColor: pressed ? '#f1f1f1' : 'transparent'}]}
         onLongPress={() => { LongClick(item) }}
-        onPress={() => { shortClick(item) }}
+        onPress={() => { shortClick(item); setHora(item.hora9) }}
     >
         <View>
-            <Text style={{margin:10, color: "gray"}}> {item.hora}</Text>
+            <Text style={{margin:10, color: "gray"}}> {item.hora9} </Text>
+           
         </View>
     </Pressable>
+    <Pressable
+        style={({ pressed }) => [{ backgroundColor: pressed ? '#f1f1f1' : 'transparent'}]}
+        onLongPress={() => { LongClick(item) }}
+        onPress={() => { shortClick(item); setHora(item.hora10) }}
+    >
+        <View>
+            <Text style={{margin:10, color: "gray"}}>  {item.hora10}  </Text>
+           
+        </View>
+    </Pressable>
+    <Pressable
+        style={({ pressed }) => [{ backgroundColor: pressed ? '#f1f1f1' : 'transparent'}]}
+        onLongPress={() => { LongClick(item) }}
+        onPress={() => { shortClick(item); setHora(item.hora11) }}
+    >
+        <View>
+            <Text style={{margin:10, color: "gray"}}>  {item.hora11}  </Text>
+           
+        </View>
+    </Pressable>
+    <Pressable
+        style={({ pressed }) => [{ backgroundColor: pressed ? '#f1f1f1' : 'transparent'}]}
+        onLongPress={() => { LongClick(item) }}
+        onPress={() => { shortClick(item); setHora(item.hora12) }}
+    >
+        <View>
+            <Text style={{margin:10, color: "gray"}}>  {item.hora12}  </Text>
+           
+        </View>
+    </Pressable>
+    <Pressable
+        style={({ pressed }) => [{ backgroundColor: pressed ? '#f1f1f1' : 'transparent'}]}
+        onLongPress={() => { LongClick(item) }}
+        onPress={() => { shortClick(item); setHora(item.hora13) }}
+    >
+        <View>
+            <Text style={{margin:10, color: "gray"}}>  {item.hora13}  </Text>
+           
+        </View>
+    </Pressable>
+    <Pressable
+        style={({ pressed }) => [{ backgroundColor: pressed ? '#f1f1f1' : 'transparent'}]}
+        onLongPress={() => { LongClick(item) }}
+        onPress={() => { shortClick(item); setHora(item.hora14) }}
+    >
+        <View>
+            <Text style={{margin:10, color: "gray"}}>  {item.hora14}  </Text>
+           
+        </View>
+    </Pressable>
+    <Pressable
+        style={({ pressed }) => [{ backgroundColor: pressed ? '#f1f1f1' : 'transparent'}]}
+        onLongPress={() => { LongClick(item) }}
+        onPress={() => { shortClick(item); setHora(item.hora15) }}
+    >
+        <View>
+            <Text style={{margin:10, color: "gray"}}>  {item.hora15}  </Text>
+           
+        </View>
+    </Pressable>
+    <Pressable
+        style={({ pressed }) => [{ backgroundColor: pressed ? '#f1f1f1' : 'transparent'}]}
+        onLongPress={() => { LongClick(item) }}
+        onPress={() => { shortClick(item); setHora(item.hora16) }}
+    >
+        <View>
+            <Text style={{margin:10, color: "gray"}}>  {item.hora16}  </Text>
+           
+        </View>
+    </Pressable>
+    <Pressable
+        style={({ pressed }) => [{ backgroundColor: pressed ? '#f1f1f1' : 'transparent'}]}
+        onLongPress={() => { LongClick(item) }}
+        onPress={() => { shortClick(item); setHora(item.hora17) }}
+    >
+        <View>
+            <Text style={{margin:10, color: "gray"}}>  {item.hora17}  </Text>
+           
+        </View>
+    </Pressable>
+    <Pressable
+        style={({ pressed }) => [{ backgroundColor: pressed ? '#f1f1f1' : 'transparent'}]}
+        onLongPress={() => { LongClick(item) }}
+        onPress={() => { shortClick(item); setHora(item.hora18) }}
+    >
+        <View>
+            <Text style={{margin:10, color: "gray"}}>  {item.hora18}  </Text>
+           
+        </View>
+    </Pressable>
+    <Pressable
+        style={({ pressed }) => [{ backgroundColor: pressed ? '#f1f1f1' : 'transparent'}]}
+        onLongPress={() => { LongClick(item) }}
+        onPress={() => { shortClick(item); setHora(item.hora19) }}
+    >
+        <View>
+            <Text style={{margin:10, color: "gray"}}>  {item.hora19}  </Text>
+           
+        </View>
+    </Pressable>
+    <Pressable
+        style={({ pressed }) => [{ backgroundColor: pressed ? '#f1f1f1' : 'transparent'}]}
+        onLongPress={() => { LongClick(item) }}
+        onPress={() => { shortClick(item); setHora(item.hora20) }}
+    >
+        <View>
+            <Text style={{margin:10, color: "gray"}}>  {item.hora20}  </Text>
+           
+        </View>
+    </Pressable>
+    <Pressable
+        style={({ pressed }) => [{ backgroundColor: pressed ? '#f1f1f1' : 'transparent'}]}
+        onLongPress={() => { LongClick(item) }}
+        onPress={() => { shortClick(item); setHora(item.hora21) }}
+    >
+        <View>
+            <Text style={{margin:10, color: "gray"}}>  {item.hora21}  </Text>
+           
+        </View>
+    </Pressable>
+    <Pressable
+        style={({ pressed }) => [{ backgroundColor: pressed ? '#f1f1f1' : 'transparent'}]}
+        onLongPress={() => { LongClick(item) }}
+        onPress={() => { shortClick(item); setHora(item.hora22) }}
+    >
+        <View>
+            <Text style={{margin:10, color: "gray"}}>  {item.hora22}  </Text>
+           
+        </View>
+    </Pressable>
+    <Pressable
+        style={({ pressed }) => [{ backgroundColor: pressed ? '#f1f1f1' : 'transparent'}]}
+        onLongPress={() => { LongClick(item) }}
+        onPress={() => { shortClick(item); setHora(item.hora23); }}
+    >
+        <View>
+            <Text style={{margin:10, color: "gray"}}>  {item.hora23}  </Text>
+           
+        </View>
+    </Pressable>
+    </ScrollView>
       );
     };
     
@@ -317,17 +492,17 @@ const enviarDados = () => {
         <Divider />
         <Text style={{fontSize:20, marginTop:15}}>Horário: {hora}</Text>
 
-        <ScrollView  
+    { /*   <ScrollView  
       directionalLockEnabled={false}
-      horizontal={true}>
+            horizontal={true}>*/}
         <FlatList
         numColumns={5}
-        data={DATA}
+        data={horarios}
         renderItem={ItemView2}
         keyExtractor={item => item.id}
         extraData={selectedId}
       />
-        </ScrollView>
+    {  /*</ScrollView>*/}
         <Button
               color="#EF8F86"
               style={{ marginTop: 20 }}
@@ -359,7 +534,8 @@ const enviarDados = () => {
           
         <Text style={{fontSize: 30, fontStyle:"italic", margin:5, alignItems:"flex-start"}}>{servico.nomecat}</Text>
             <Text style={{color:"gray"}}>{servico.descricao}</Text>
-            <Text style={{color:"green"}}>R${servico.valor}</Text>
+            <Text style={{color:"green", textAlign:"left"}}>R${servico.valor}</Text>
+            <Text style={{color:"gray", textAlign:"right", marginTop:-22 }}>Tempo: {servico.tempo}</Text>
             <Button
               color="#EF8F86"
               rightContent={

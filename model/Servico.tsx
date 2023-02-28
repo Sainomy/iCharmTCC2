@@ -4,6 +4,7 @@ export class Servico {
     public nomecat: string;
     public descricao : string;
     public valor: number;
+    public tempo: string;
     public pro: string;
     public urlfoto : string;
         
@@ -14,6 +15,7 @@ export class Servico {
             this.nomecat = obj.nomecat
             this.descricao = obj.descricao
             this.valor = obj.valor
+            this.tempo = obj.tempo
             this.pro = obj.pro
             this.urlfoto = obj.urlfoto
         }
@@ -25,6 +27,7 @@ export class Servico {
             "nomecat": "${this.nomecat}",
             "descricao": "${this.descricao}",
             "valor": "${this.valor},
+            "tempo": "${this.tempo},
             "pro": "${this.pro},
             "urlfoto": "${this.urlfoto}"
         }`

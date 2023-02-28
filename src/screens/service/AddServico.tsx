@@ -32,6 +32,7 @@ export default function SecondScreen({ navigation }) {
   const [nomecat, setNomeCat] = useState("");
   const [descricao, setDescricao] = useState("");
   const [valor, setValor] = useState(0);
+  const [tempo, setTempo] = useState("");
   const [pro, setPro] = useState(auth.currentUser.uid);
   const [stars, setStars] = useState(0);
   const [inputMoeda, setInputMoeda] = useState("0");
@@ -159,6 +160,7 @@ export default function SecondScreen({ navigation }) {
         nomecat: nomecat,
         descricao: descricao,
         valor: valor,
+        tempo: tempo,
         urlfoto: urlfoto,
         pro: pro,
       })
@@ -275,6 +277,23 @@ export default function SecondScreen({ navigation }) {
                     autoCompleteType="off"
                     autoCorrect={false}
                     onChangeText={(text) => setDescricao(text)}
+                  />
+                    <Text style={{ marginTop: 15 }}>Duração do Procedimento</Text>
+                  <TextInput
+                    style={{
+                      marginTop: 10,
+                      borderWidth: 2,
+                      padding: 10,
+                      borderRadius: 6,
+                    }}
+                    containerStyle={{ marginTop: 15 }}
+                    placeholder="30min/1h"
+                    value={tempo}
+                    autoCapitalize="none"
+                    autoCompleteType="off"
+                    autoCorrect={false}
+                    keyboardType="text"
+                    onChangeText={(text) => setTempo(text)}
                   />
 
                   <Text style={{ marginTop: 15 }}>Valor</Text>

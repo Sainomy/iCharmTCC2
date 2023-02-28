@@ -180,7 +180,7 @@ export default function EditServico({ navigation }) {
           id: reference.id,
           nomecat: servico.nomecat,
           descricao:  servico.descricao,
-            // password: password,
+          tempo: servico.tempo,
           valor:  servico.valor,
           urlfoto:  servico.urlfoto,
         })
@@ -304,6 +304,24 @@ export default function EditServico({ navigation }) {
                     value={servico.descricao}
                     autoCorrect={false}
                     onChangeText={(text) => setServico({ ...servico, descricao: text })}
+                  />
+
+                   <Text style={{ marginTop: 15 }}>Duração do Procedimento</Text>
+                  <TextInput
+                    style={{
+                      marginTop: 10,
+                      borderWidth: 2,
+                      padding: 10,
+                      borderRadius: 6,
+                    }}
+                    containerStyle={{ marginTop: 15 }}
+                    placeholder="30min/1h"
+                    value={servico.tempo}
+                    autoCapitalize="none"
+                    autoCompleteType="off"
+                    autoCorrect={false}
+                    keyboardType="text"
+                    onChangeText={(text) => setServico({ ...servico, tempo: text })}
                   />
 
                   <Text style={{ marginTop: 15 }}>Valor</Text>

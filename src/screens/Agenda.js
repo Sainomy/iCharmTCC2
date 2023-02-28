@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   TextInput,
   StyleSheet,
+  RefreshControl,
 } from "react-native";
 import {
   Layout,
@@ -22,8 +23,10 @@ import Timeline from "react-native-timeline-flatlist";
 import { auth, firestore, firebase } from "../../firebase";
 import { DatePicker } from "react-native-week-month-date-picker";
 import { addDays } from "date-fns";
+import { todayString } from "react-native-calendars/src/expandableCalendar/commons";
 
 export default function ({ navigation }) {
+  const [refreshing, setRefreshing] = useState(false);
   const [selectedDate, setSelectedDate] = React.useState(new Date());
   const [search, setSearch] = useState("");
 
@@ -36,7 +39,7 @@ export default function ({ navigation }) {
       .collection("Usuario")
       .doc(auth.currentUser.uid)
       .collection("Agendamento")
-      .where("data", "==", "23/02/2023")
+      // .where("data", "==", search)
       .onSnapshot((querySnapshot) => {
         const agendamentos = [];
         querySnapshot.forEach((documentSnapshot) => {
@@ -85,24 +88,33 @@ export default function ({ navigation }) {
     );
   };
 
-  const searchFilter = (text) => {
-    if (text) {
+  const searchFilter = (formattedDate) => {
+    if (formattedDate) {
       const newData = agendamentos.filter(function (item) {
         if (item.data) {
           const itemData = item.data.toUpperCase();
-          const textData = text.toUpperCase();
+          const textData = formattedDate.toUpperCase();
           return itemData.indexOf(textData) > -1;
         }
       });
 
       setdadosFiltrados(newData);
-      setSearch(text);
+      setSelectedDate(formattedDate);
+      setSearch(formattedDate);
+      console.log(newData);
       //   console.log("text " + formattedDate);
     } else {
       setdadosFiltrados(newData);
-      setSearch(text);
+      setSelectedDate(formattedDate);
+      setSearch(formattedDate);
+      console.log(newData);
+
       // console.log("text " + formattedDate);
     }
+  };
+  const onRefresh = () => {
+    setRefreshing(true);
+    setdadosFiltrados([]);
   };
 
   const data = [
@@ -147,16 +159,18 @@ export default function ({ navigation }) {
             "/" +
             date.getFullYear();
           console.log(formattedDate);
-          setSelectedDate(formattedDate);
+          //  setSelectedDate(formattedDate);
           //  setSearch(selectedDate);
           //    let muda = formattedDate;
           searchFilter(formattedDate);
+          //  setSearch(formattedDate);
           // const data = formattedDate;
           //  setSelectedDate(formattedDate);
           //  console.log("console date agora " + formattedDate + selectedDate);
         }}
         theme={{
           primaryColor: "#D76348",
+          backgroundColor: "white",
         }}
       >
         <View>
@@ -170,7 +184,6 @@ export default function ({ navigation }) {
             borderRadius={15}
             onChangeText={(text) => {
               searchFilter(text);
-              useEffect(text);
               //compareValues(text);
             }}
             value={selectedDate}
@@ -179,7 +192,13 @@ export default function ({ navigation }) {
           ></TextInput>
 
           {/*   <AgendaScreen />*/}
-          <FlatList data={agendamentos} renderItem={ItemView} />
+          <FlatList
+            data={dadosFiltrados}
+            renderItem={ItemView}
+            //  refreshControl={
+            //    <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+            //  }
+          />
         </View>
         {/*<Timeline
         data={dadosFiltrados}

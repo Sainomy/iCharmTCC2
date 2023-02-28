@@ -160,6 +160,14 @@ export default function Profile({ navigation }) {
           )}
         <Text style={styles.text}>{usuario.numero}</Text>
         <Text style={styles.text}>{usuario.email}</Text>
+        <Button
+              color="#EF8F86"
+              style={{ marginTop: 20 }}
+              text="Personalizar Horários"
+              onPress={() => {
+                navigation.navigate("Horarios");
+              }}
+            />
         <Text style={{color: "gray", marginTop:20}}>Sobre:</Text>
         <Text style={styles.text2}>{usuario.descricao}</Text>
 
