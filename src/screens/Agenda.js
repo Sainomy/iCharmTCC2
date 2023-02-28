@@ -39,7 +39,7 @@ export default function ({ navigation }) {
       .collection("Usuario")
       .doc(auth.currentUser.uid)
       .collection("Agendamento")
-      // .where("data", "==", search)
+      .orderBy("NOrdem", "asc")
       .onSnapshot((querySnapshot) => {
         const agendamentos = [];
         querySnapshot.forEach((documentSnapshot) => {

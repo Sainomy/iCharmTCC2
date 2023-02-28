@@ -1,3 +1,4 @@
+import { useRoute} from "@react-navigation/core";
 import React, { useState, useEffect, useRef } from "react";
 import {
   View,
@@ -33,6 +34,7 @@ import MeusServicos from "./service/MeusServicos";
 
 export default function Profile({ navigation }) {
   const { isDarkmode, setTheme } = useTheme();
+  const [addhr, setAddhr] = useState(true);
   const modalizeRef = useRef(null);
   const [usuario, setUsuario] = useState < Partial < Usuario >> ({});
   const [servicos, setServicos] = useState([]); // Initial empty array of users
@@ -42,10 +44,15 @@ export default function Profile({ navigation }) {
     title: "",
   });
   const [pickedImagePath, setPickedImagePath] = useState("");
-  function onOpen() {
-    modalizeRef.current?.open();
-  }
- 
+  const route = useRoute();
+  const editado = (route.params); 
+  
+  {  /*if (editado == null) {
+      setAddhr(false);
+    } else {
+      setAddhr(true);
+    };*/}
+  
   useEffect(() => {
     const subscriber = firestore
       .collection("Usuario")
@@ -160,14 +167,27 @@ export default function Profile({ navigation }) {
           )}
         <Text style={styles.text}>{usuario.numero}</Text>
         <Text style={styles.text}>{usuario.email}</Text>
-        <Button
-              color="#EF8F86"
-              style={{ marginTop: 20 }}
-              text="Personalizar Horários"
-              onPress={() => {
-                navigation.navigate("Horarios");
-              }}
-            />
+        {addhr === true && (
+             <Button
+             color="#EF8F86"
+             style={{ marginTop: 20 }}
+             text="Editar Horários"
+             onPress={() => {
+               navigation.navigate("AddHorarios");
+             }}
+           />
+          )}
+          {addhr === null && (
+             <Button
+             color="#EF8F86"
+             style={{ marginTop: 20 }}
+             text="Personalizar Horários"
+             onPress={() => {
+               navigation.navigate("AddHorarios");
+             }}
+           />
+          )}
+       
         <Text style={{color: "gray", marginTop:20}}>Sobre:</Text>
         <Text style={styles.text2}>{usuario.descricao}</Text>
 

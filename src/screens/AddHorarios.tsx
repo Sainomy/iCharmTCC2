@@ -1,3 +1,4 @@
+import { useRoute} from "@react-navigation/core";
 import React, { useState, useEffect } from "react";
 import {
   View,
@@ -62,7 +63,7 @@ export default function SecondScreen({ navigation }) {
   const [hora22t, setHora22t] = useState("22:00");
   const [hora23, setHora23] = useState(false);
   const [hora23t, setHora23t] = useState("23:00");
-  const [editado, setEditado] = useState( );
+  const [editado, setEditado] = useState(false);
  
   const referenceHorarios = firestore
     .collection("Usuario")
@@ -74,6 +75,7 @@ export default function SecondScreen({ navigation }) {
    
     referenceHorarios
       .set({
+        id: 1,
         hora8: hora8t,
         hora9: hora9t,
         hora10: hora10t,
@@ -93,13 +95,13 @@ export default function SecondScreen({ navigation }) {
       })
       .then(() => {
         const cancelBtn: AlertButton = { text: 'Voltar ao Perfil' ,   onPress: () => {
-          navigation.navigate('Profile')
+          navigation.navigate('Profile', {editado:true})
           
         }}
         const deleteBtn: AlertButton = {
             text: 'Visualizar horários',
             onPress: () => {
-              navigation.navigate('Profile')
+              navigation.navigate('Profile', {editado:true})
               
             }
         }
@@ -166,7 +168,7 @@ export default function SecondScreen({ navigation }) {
                       alignSelf: "center",
                     }}
                   >
-                    Editando Horários
+                    Adicionando Horários
                   </Text>
                   <View style={{ flexDirection: "row",
                    alignItems: 'center', marginTop:15 }}>
