@@ -35,6 +35,7 @@ export default function ({ navigation }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [data, setData] = useState("");
+  const [curtida, setCurtida] = useState(0);
   const [pro, setPro] = useState("");
   const [descricao, setDescricao] = useState("");
   const [numero, setNumero] = useState("");
@@ -79,6 +80,7 @@ export default function ({ navigation }) {
           // password: password,
           numero: numero,
           data: dataString,
+          curtida: curtida,
           pro: pro,
           urlfoto: urlfoto,
         });

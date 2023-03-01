@@ -129,7 +129,12 @@ export default function ({ navigation }) {
     { time: "16:30", title: "Event 5", description: "Event 5 Description" },
   ];
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: "white" }}>
+    <SafeAreaView
+      style={{
+        flex: 1,
+        backgroundColor: isDarkmode ? themeColor.dark100 : "white",
+      }}
+    >
       <TopNav
         middleContent={
           <Image
@@ -170,7 +175,7 @@ export default function ({ navigation }) {
         }}
         theme={{
           primaryColor: "#D76348",
-          backgroundColor: "white",
+          backgroundColor: isDarkmode ? themeColor.dark100 : "white",
         }}
       >
         <View>
@@ -191,36 +196,58 @@ export default function ({ navigation }) {
             placeholder="Dia/Mês/Ano"
           ></TextInput>
 
+          <Timeline
+            data={dadosFiltrados}
+            circleSize={20}
+            circleColor="#D76348"
+            lineColor="#ff9797"
+            timeContainerStyle={{ minWidth: 52, marginTop: -5 }}
+            timeStyle={{
+              textAlign: "center",
+              backgroundColor: "#D76348",
+              color: "white",
+              padding: 10,
+              borderRadius: 13,
+              marginTop: 10,
+              marginLeft: 10,
+            }}
+            descriptionStyle={{ color: "gray" }}
+            options={{
+              style: { paddingTop: 5 },
+            }}
+            isUsingFlatlist={true}
+          />
+
           {/*   <AgendaScreen />*/}
-          <FlatList
+          {/* <FlatList
             data={dadosFiltrados}
             renderItem={ItemView}
             //  refreshControl={
             //    <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
             //  }
-          />
+          />*/}
         </View>
-        {/*<Timeline
-        data={dadosFiltrados}
-        circleSize={20}
-        circleColor="#D76348"
-        lineColor="#ff9797"
-        timeContainerStyle={{ minWidth: 52, marginTop: -5 }}
-        timeStyle={{
-          textAlign: "center",
-          backgroundColor: "#D76348",
-          color: "white",
-          padding: 10,
-          borderRadius: 13,
-          marginTop: 10,
-          marginLeft: 10,
-        }}
-        descriptionStyle={{ color: "gray" }}
-        options={{
-          style: { paddingTop: 5 },
-        }}
-        isUsingFlatlist={true}
-      />*/}
+        <Timeline
+          data={dadosFiltrados}
+          circleSize={20}
+          circleColor="#D76348"
+          lineColor="#ff9797"
+          timeContainerStyle={{ minWidth: 52, marginTop: -5 }}
+          timeStyle={{
+            textAlign: "center",
+            backgroundColor: "#D76348",
+            color: "white",
+            padding: 10,
+            borderRadius: 13,
+            marginTop: 10,
+            marginLeft: 10,
+          }}
+          descriptionStyle={{ color: "gray" }}
+          options={{
+            style: { paddingTop: 5, marginLeft: 20 },
+          }}
+          isUsingFlatlist={true}
+        />
       </DatePicker>
     </SafeAreaView>
   );
@@ -260,10 +287,6 @@ const styles = StyleSheet.create({
     borderColor: "#d3d3d3",
     borderWidth: 0.5,
   },
-  alinhamentoColuna: {
-    //  flexDirection: "column",
-    //  justifyContent: "flex-start",
-  },
   image: {
     height: 100,
     width: 100,
@@ -271,9 +294,4 @@ const styles = StyleSheet.create({
     resizeMode: "cover",
     borderRadius: 15,
   },
-
-  // separador: {
-  //   height: 1,
-  //   width: "100%",
-  // },
 });

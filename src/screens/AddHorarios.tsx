@@ -32,9 +32,9 @@ export default function SecondScreen({ navigation }) {
   const { isDarkmode } = useTheme();
   const [pro, setPro] = useState(auth.currentUser.uid);
   const [hora8, setHora8] = useState(false);
-  const [hora8t, setHora8t] = useState("8:00");
+  const [hora8t, setHora8t] = useState("08:00");
   const [hora9, setHora9] = useState(true);
-  const [hora9t, setHora9t] = useState("9:00");
+  const [hora9t, setHora9t] = useState("09:00");
   const [hora10t, setHora10t] = useState("10:00");
   const [hora10, setHora10] = useState(true);
   const [hora11t, setHora11t] = useState("11:00");
@@ -151,9 +151,10 @@ export default function SecondScreen({ navigation }) {
                   borderRadius: 10,
                 }}
               >
-                <View
+               <View
                   style={{
                     flex: 1,
+                    alignItems:"center",
                  //   paddingHorizontal: 5,
                     paddingBottom: 20,
                     backgroundColor: isDarkmode
@@ -170,88 +171,17 @@ export default function SecondScreen({ navigation }) {
                   >
                     Adicionando Horários
                   </Text>
+
                   <View style={{ flexDirection: "row",
                    alignItems: 'center', marginTop:15 }}>
-          
             <CheckBox checkedColor={"pink"} value={hora8} onValueChange={(val) => {setHora8(val);
             if(val===true){
-                setHora8t("8:00");
+                setHora8t("08:00");
             }else{
                 setHora8t(" ");
             }}} />
             <Text size="md" style={styles.hora}>
-                8:00
-            </Text>
-            <CheckBox style={{marginLeft:30}} checkedColor={"pink"} value={hora9} onValueChange={(val) => {setHora9(val);
-            if(val===true){
-                setHora9t("9:00");
-            }else{
-                setHora9t(" ");
-            }}} />
-            <Text size="md" style={styles.hora}>
-                9:00
-            </Text>
-            <CheckBox  style={{marginLeft:30}} checkedColor={"pink"} value={hora10} onValueChange={(val) => {setHora10(val);
-            if(val===true){
-                setHora10t("10:00");
-            }else{
-                setHora10t(" ");
-            }}} />
-            <Text size="md" style={styles.hora}>
-                10:00
-            </Text>
-        </View>
-
-
-        <View style={{ flexDirection: 'row', alignItems: 'center', marginTop:10 }}>
-        <CheckBox checkedColor={"pink"} value={hora11} onValueChange={(val) => {setHora11(val);
-            if(val===true){
-                setHora11t("11:00");
-            }else{
-                setHora11t(" ");
-            }}} />
-            <Text size="md" style={styles.hora}>
-                11:00
-            </Text>
-            <CheckBox style={{marginLeft:18}} checkedColor={"pink"} value={hora12} onValueChange={(val) => {setHora12(val);
-            if(val===true){
-                setHora12t("12:00");
-            }else{
-                setHora12t(" ");
-            }}} />
-            <Text size="md" style={styles.hora}>
-                12:00
-            </Text>
-            <CheckBox style={{marginLeft:18}} checkedColor={"pink"} value={hora13} onValueChange={(val) => {setHora13(val);
-            if(val===true){
-                setHora13t("13:00");
-            }else{
-                setHora13t(" ");
-            }}} />
-            <Text size="md" style={styles.hora}>
-                13:00
-            </Text>
-            </View>
-
-
-            <View style={{ flexDirection: 'row', alignItems: 'center', marginTop:10 }}>
-            <CheckBox checkedColor={"pink"} value={hora14} onValueChange={(val) => {setHora14(val);
-            if(val===true){
-                setHora14t("14:00");
-            }else{
-                setHora14t(" ");
-            }}} />
-            <Text style={{marginLeft:18}} size="md" style={styles.hora}>
-                14:00
-            </Text>
-            <CheckBox style={{marginLeft:18}} checkedColor={"pink"} value={hora15} onValueChange={(val) => {setHora15(val);
-            if(val===true){
-                setHora15t("15:00");
-            }else{
-                setHora15t(" ");
-            }}} />
-            <Text size="md" style={styles.hora}>
-                15:00
+                08:00
             </Text>
             <CheckBox style={{marginLeft:18}} checkedColor={"pink"} value={hora16} onValueChange={(val) => {setHora16(val);
             if(val===true){
@@ -262,11 +192,22 @@ export default function SecondScreen({ navigation }) {
             <Text size="md" style={styles.hora}>
                 16:00
             </Text>
-            </View>
+          
+           
+        </View>
 
 
-            <View style={{ flexDirection: 'row', alignItems: 'center', marginTop:10 }}>
-            <CheckBox checkedColor={"pink"} value={hora17} onValueChange={(val) => {setHora17(val);
+        <View style={{  flexDirection: "row", alignItems: 'center', marginTop:10 }}>
+        <CheckBox checkedColor={"pink"} value={hora9} onValueChange={(val) => {setHora9(val);
+            if(val===true){
+                setHora9t("09:00");
+            }else{
+                setHora9t(" ");
+            }}} />
+            <Text size="md" style={styles.hora}>
+                09:00
+            </Text>
+            <CheckBox style={{marginLeft:18}} checkedColor={"pink"} value={hora17} onValueChange={(val) => {setHora17(val);
             if(val===true){
                 setHora17t("17:00");
             }else{
@@ -274,6 +215,18 @@ export default function SecondScreen({ navigation }) {
             }}} />
             <Text size="md" style={styles.hora}>
                 17:00
+            </Text>
+       </View>
+            
+            <View style={{  flexDirection: "row", alignItems: 'center', marginTop:10 }}>
+            <CheckBox  checkedColor={"pink"} value={hora10} onValueChange={(val) => {setHora10(val);
+            if(val===true){
+                setHora10t("10:00");
+            }else{
+                setHora10t(" ");
+            }}} />
+            <Text size="md" style={styles.hora}>
+                10:00
             </Text>
             <CheckBox  style={{marginLeft:18}} checkedColor={"pink"} value={hora18} onValueChange={(val) => {setHora18(val);
             if(val===true){
@@ -283,6 +236,18 @@ export default function SecondScreen({ navigation }) {
             }}} />
             <Text size="md" style={styles.hora}>
                 18:00
+            </Text>
+            </View>
+
+            <View style={{ flexDirection: "row",  alignItems: 'center', marginTop:10 }}>
+            <CheckBox checkedColor={"pink"} value={hora11} onValueChange={(val) => {setHora11(val);
+            if(val===true){
+                setHora11t("11:00");
+            }else{
+                setHora11t(" ");
+            }}} />
+            <Text size="md" style={styles.hora}>
+                11:00
             </Text>
             <CheckBox  style={{marginLeft:18}} checkedColor={"pink"} value={hora19} onValueChange={(val) => {setHora19(val);
             if(val===true){
@@ -294,10 +259,18 @@ export default function SecondScreen({ navigation }) {
                 19:00
             </Text>
             </View>
-         
 
-            <View style={{ flexDirection: 'row', alignItems: 'center', marginTop:10 }}>
-            <CheckBox checkedColor={"pink"} value={hora20} onValueChange={(val) => {setHora20(val);
+            <View style={{  flexDirection: "row", alignItems: 'center', marginTop:10 }}>
+            <CheckBox checkedColor={"pink"} value={hora12} onValueChange={(val) => {setHora12(val);
+            if(val===true){
+                setHora12t("12:00");
+            }else{
+                setHora12t(" ");
+            }}} />
+            <Text size="md" style={styles.hora}>
+                12:00
+            </Text>
+            <CheckBox  style={{marginLeft:18}}  checkedColor={"pink"} value={hora20} onValueChange={(val) => {setHora20(val);
             if(val===true){
                 setHora20t("20:00");
             }else{
@@ -305,6 +278,19 @@ export default function SecondScreen({ navigation }) {
             }}} />
             <Text size="md" style={styles.hora}>
                 20:00
+            </Text>
+            </View>
+
+               <View style={{  flexDirection: "row", alignItems: 'center', marginTop:10 }}>
+
+            <CheckBox checkedColor={"pink"} value={hora13} onValueChange={(val) => {setHora13(val);
+            if(val===true){
+                setHora13t("13:00");
+            }else{
+                setHora13t(" ");
+            }}} />
+            <Text size="md" style={styles.hora}>
+                13:00
             </Text>
             <CheckBox  style={{marginLeft:18}} checkedColor={"pink"} value={hora21} onValueChange={(val) => {setHora21(val);
             if(val===true){
@@ -314,6 +300,18 @@ export default function SecondScreen({ navigation }) {
             }}} />
             <Text size="md" style={styles.hora}>
                 21:00
+            </Text>
+            </View>
+
+            <View style={{  flexDirection: "row", alignItems: 'center', marginTop:10 }}>
+            <CheckBox checkedColor={"pink"} value={hora14} onValueChange={(val) => {setHora14(val);
+            if(val===true){
+                setHora14t("14:00");
+            }else{
+                setHora14t(" ");
+            }}} />
+            <Text style={{marginLeft:18}} size="md" style={styles.hora}>
+                14:00
             </Text>
             <CheckBox  style={{marginLeft:18}} checkedColor={"pink"} value={hora22} onValueChange={(val) => {setHora22(val);
             if(val===true){
@@ -325,10 +323,18 @@ export default function SecondScreen({ navigation }) {
                 22:00
             </Text>
             </View>
-           
-            <View style={{ flexDirection: 'row', alignItems: 'center', marginTop:10 }}>
-           
-            <CheckBox checkedColor={"pink"} value={hora23} onValueChange={(val) => {setHora23(val);
+
+            <View style={{  flexDirection: "row", alignItems: 'center', marginTop:10 }}>
+            <CheckBox checkedColor={"pink"} value={hora15} onValueChange={(val) => {setHora15(val);
+            if(val===true){
+                setHora15t("15:00");
+            }else{
+                setHora15t(" ");
+            }}} />
+            <Text size="md" style={styles.hora}>
+                15:00
+            </Text>
+            <CheckBox style={{marginLeft:18}} checkedColor={"pink"} value={hora23} onValueChange={(val) => {setHora23(val);
             if(val===true){
                 setHora23t("23:00");
             }else{
@@ -337,8 +343,9 @@ export default function SecondScreen({ navigation }) {
             <Text size="md" style={styles.hora}>
                 23:00
             </Text>
+           
             </View>
-         
+
                   <Button
                  
                     color="#EF8F86"
@@ -348,8 +355,7 @@ export default function SecondScreen({ navigation }) {
                       marginTop: 20,
                     }}
                   />
-                 
-                </View>
+               </View>
               </SectionContent>
             </Section>
           </ScrollView>

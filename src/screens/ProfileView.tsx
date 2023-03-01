@@ -33,6 +33,8 @@ import { Modalize } from "react-native-modalize";
 
 export default function ProfileView({ navigation }) {
   const { isDarkmode, setTheme } = useTheme();
+  const [like, setLike] = useState(false);
+  const [curtida, setCurtida] = useState(0);
   const modalizeRef = useRef(null);
   const [usuario, setUsuario] = useState < Partial < Usuario >> ({});
   const [servicos, setServicos] = useState([]); // Initial empty array of users
@@ -77,12 +79,28 @@ export default function ProfileView({ navigation }) {
             ...documentSnapshot.data(),
             key: documentSnapshot.id,
           });
+
         });
         setServicos(servicos);
       });
     // Unsubscribe from events when no longer in use
     return () => subscriber();
   }, []);
+
+  const referenceCurtidas = firestore
+    .collection("Usuario")
+    .doc(auth.currentUser.uid)
+    .collection("Curtidas")
+    .doc();
+
+  const enviarDados = (diminui) => {
+    referenceCurtidas
+      .set({
+        id: auth.currentUser.uid,
+       curtida: diminui,
+      })
+     
+  };
 
   const ItemView = ({ item }) => {
     return (
@@ -152,6 +170,39 @@ export default function ProfileView({ navigation }) {
         <Text style={styles.text}>{usuario.email}</Text>
         <Text style={{color: "gray", marginTop:20}}>Sobre:</Text>
         <Text style={styles.text2}>{usuario.descricao}</Text>
+      
+     <View style={{flexDirection:"row"}}>
+     <Text style={{marginTop:10, fontSize:20}}>{usuario.curtida}</Text>
+        {like === true && (
+            <Ionicons
+            name="heart"
+            size={30}
+            color={"pink"}
+            style={{position:"relative", marginTop:5}}
+            onPress={() => {
+              setLike(false);
+              const diminui = usuario.curtida - 1;
+              setCurtida(diminui);
+              enviarDados(diminui);
+            }}
+          />          
+          )}
+          {like === false && (
+            <Ionicons
+            name="heart"
+            size={30}
+            color={"gray"}
+            style={{position:"relative", marginTop:5}}
+            onPress={() => {
+              setLike(true);
+              const diminui = usuario.curtida + 1;
+              setCurtida(diminui);
+              enviarDados(diminui);
+            }}
+          />
+          )}
+          
+          </View>
 
         <ScrollView
         style={{ flex: 1 }}

@@ -112,7 +112,7 @@ export default function Profile({ navigation }) {
  
   
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: "white" }}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: isDarkmode ? themeColor.dark100 : "white"}}>
        <TopNav style={{position:"relative"}}
         middleContent={
           <Image
@@ -258,7 +258,6 @@ const styles = StyleSheet.create({
   alinhamentoLinha: {
     flexDirection: "row",
     justifyContent: "flex-start",
-    backgroundColor: "white",
     margin: 12,
     borderRadius: 20,
     shadowColor: "#171717",

@@ -14,12 +14,12 @@ import "firebase/compat/storage";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyAQZW82rVX-RUrT5r9SFdJu8Yj_kCMfWac",
-  authDomain: "icharmc-b4fb3.firebaseapp.com",
-  projectId: "icharmc-b4fb3",
-  storageBucket: "icharmc-b4fb3.appspot.com",
-  messagingSenderId: "462138045247",
-  appId: "1:462138045247:web:06b1d7258350649af5198a",
+  apiKey: "AIzaSyBQmssvF5nys8YSN7gboPcDveCaNivj05s",
+  authDomain: "icharmb-78b96.firebaseapp.com",
+  projectId: "icharmb-78b96",
+  storageBucket: "icharmb-78b96.appspot.com",
+  messagingSenderId: "796129661721",
+  appId: "1:796129661721:web:cfc69115ca297405462b88",
 };
 
 // Initialize Firebase

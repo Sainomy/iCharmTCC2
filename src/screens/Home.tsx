@@ -80,16 +80,16 @@ export default function ({ navigation }) {
         <View style={styles.alinhamentoColuna}>
           <Text  style={styles.itemStylee}>{item.nome} </Text>
           <Text style={styles.itemStyle}>{item.descricao} </Text>
-          <Pressable>
+          <Pressable onPress={() => {
+          setLike(true);
+        }}>
           <Ionicons
         
         name="heart"
         size={30}
-        color={"#EF8F86"}
+        trackcolor={{ false: "gray", true: "pink" }}
         style={{position:"relative", marginTop:5}}
-        onPress={() => {
-          setLike(true);
-        }}
+        
       />
           </Pressable>
           
@@ -103,10 +103,10 @@ export default function ({ navigation }) {
   }
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: "white" }}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: isDarkmode ? themeColor.dark100 : "white" }}>
       
       <TopNav
-        style={{ borderColor: isDarkmode ? themeColor.dark100 : "#E6E6E6" }}
+        style={{ borderColor: isDarkmode ? themeColor.dark100 : "white" }}
         middleContent={
           <Image
             source={require("../../assets/nome.png")}
@@ -123,13 +123,12 @@ export default function ({ navigation }) {
         }
         leftAction={onOpen}
       />
-      <Modalize ref={modalizeRef} snapPoint={180}>
+      <Modalize ref={modalizeRef} snapPoint={220}>
         <View
           style={{
             flex: 1,
-            height: 180,
-            justifyContent: "center",
-            alignItems: "center",
+            height: 220,
+           
             backgroundColor: isDarkmode ? themeColor.dark : themeColor.white,
           }}
         >
@@ -147,9 +146,10 @@ export default function ({ navigation }) {
               padding: 15,
               borderWidth: 1,
               borderColor: "rgba(0,0,0, 0.2)",
-              marginTop: 40,
-              marginHorizontal: 15,
+              marginTop: 25,
+              marginHorizontal: 30,
               marginVertical: 6,
+              alignItems:"center"
             }}
           >
             <Text style={isDarkmode ? themeColor.dark100 : "white"}>
@@ -166,9 +166,10 @@ export default function ({ navigation }) {
               padding: 15,
               borderWidth: 1,
               borderColor: "rgba(0,0,0, 0.2)",
-              marginTop: 10,
-              marginHorizontal: 15,
+              marginTop: 2,
+              marginHorizontal: 30,
               marginVertical: 6,
+              alignItems:"center"
             }}
           >
             <Text>Configurações</Text>
@@ -183,9 +184,10 @@ export default function ({ navigation }) {
               padding: 15,
               borderWidth: 1,
               borderColor: "rgba(0,0,0, 0.2)",
-              marginTop: 10,
-              marginHorizontal: 15,
+              marginTop: 2,
+              marginHorizontal: 30,
               marginVertical: 6,
+              alignItems:"center"
             }}
           >
             <Text style={{ color: "red" }}>Sair</Text>
@@ -278,7 +280,6 @@ const styles = StyleSheet.create({
   alinhamentoLinha: {
     flexDirection: "row",
     justifyContent: "flex-start",
-    backgroundColor: "white",
     marginTop: 12,
     borderRadius: 20,
     shadowColor: "#171717",
@@ -289,8 +290,8 @@ const styles = StyleSheet.create({
     borderWidth:0.5
   },
   alinhamentoColuna: {
-  //  flexDirection: "column",
-  //  justifyContent: "flex-start",
+   flexDirection: "column",
+   justifyContent: "flex-start",
   },
   image: {
     height: 100,

@@ -8,6 +8,7 @@ export class Usuario {
     public numero: string;
     public descricao: string;
     public data: string;
+    public curtida: number;
     public pro: boolean;
   
         
@@ -21,6 +22,7 @@ export class Usuario {
             this.numero = obj.numero
             this.descricao = obj.descricao
             this.data = obj.data
+            this.curtida = obj.curtida
             this.pro = obj.pro
           
         }
@@ -35,6 +37,7 @@ export class Usuario {
             "numero": "${this.numero}"
             "descricao": "${this.descricao}"
             "data": "${this.data}"
+            "curtida": "${this.curtida}"
             "pro": "${this.pro}"
         }`
 
