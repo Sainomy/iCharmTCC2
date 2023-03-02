@@ -9,7 +9,7 @@ import {
   ActivityIndicator,
   SafeAreaView,
   FlatList,
-  TextInput,
+  KeyboardAvoidingView,
   TouchableOpacity,
 } from "react-native";
 // import firebaseConfig from "./firebase";
@@ -24,7 +24,7 @@ import { Usuario } from "../../model/Usuario";
 import { Servico } from "../../model/Servico"
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { Layout, TopNav, Button, Text,  useTheme,
-  themeColor,} from "react-native-rapi-ui";
+  themeColor, TextInput,} from "react-native-rapi-ui";
 import ListarServico from "./service/ListarServico";
 import Mapa from "../screens/utils/Mapa"
 import MapView, { Marker } from "react-native-maps";
@@ -34,8 +34,11 @@ import { Modalize } from "react-native-modalize";
 export default function ProfileView({ navigation }) {
   const { isDarkmode, setTheme } = useTheme();
   const [like, setLike] = useState(false);
-  const [curtida, setCurtida] = useState(0);
+  const [texto, setTexto] = useState("");
+  const [comentarios, setComentarios] = useState([]);
+ 
   const modalizeRef = useRef(null);
+  const [usuariocli, setUsuariocli] = useState < Partial < Usuario >> ({});
   const [usuario, setUsuario] = useState < Partial < Usuario >> ({});
   const [servicos, setServicos] = useState([]); // Initial empty array of users
   const [itemLista, setItemLista] = useState({
@@ -49,7 +52,7 @@ export default function ProfileView({ navigation }) {
   function onOpen() {
     modalizeRef.current?.open();
   }
- 
+ //profissional
   useEffect(() => {
     const subscriber = firestore
       .collection("Usuario")
@@ -65,9 +68,28 @@ export default function ProfileView({ navigation }) {
       });
     return () => subscriber();
   }, [usuario]);
+  const [curtida, setCurtida] = useState(usuario.curtida);
 
+  //cliente
   useEffect(() => {
-  
+    const subscriber = firestore
+      .collection("Usuario")
+      .doc(auth.currentUser.uid)
+      .onSnapshot((documentSnapshot) => {
+        setUsuariocli(documentSnapshot.data());
+        if (usuario.urlfoto == null) {
+          setPickedImagePath("");
+        } else {
+          setPickedImagePath(usuario.urlfoto);
+        };
+       
+      });
+    return () => subscriber();
+  }, [usuariocli]);
+
+
+//servico profissional
+  useEffect(() => {
     const subscriber = firestore
       .collection("Usuario")
       .doc(userID)
@@ -87,7 +109,24 @@ export default function ProfileView({ navigation }) {
     return () => subscriber();
   }, []);
 
-  const referenceCurtidas = firestore
+  const salvar = (diminui) => {
+    const reference = firestore.collection("Usuario").doc(userID);
+    reference
+      .update({
+        id: userID,
+        nome: usuario.nome,
+        email: usuario.email,
+        descricao:  usuario.descricao,
+          // password: password,
+        numero:  usuario.numero,
+        data:  usuario.data,
+        pro: usuario.pro,
+        curtida: diminui,
+        urlfoto:  usuario.urlfoto,
+      })
+      
+  };
+ {/* const referenceCurtidas = firestore
     .collection("Usuario")
     .doc(auth.currentUser.uid)
     .collection("Curtidas")
@@ -98,6 +137,44 @@ export default function ProfileView({ navigation }) {
       .set({
         id: auth.currentUser.uid,
        curtida: diminui,
+      })
+     
+  };*/}
+
+  //comentarios
+  useEffect(() => {
+  
+    const subscriber = firestore
+      .collection("Usuario")
+      .doc(userID)
+      .collection("Comentarios")
+      .onSnapshot((querySnapshot) => {
+        const comentarios = [];
+        querySnapshot.forEach((documentSnapshot) => {
+          comentarios.push({
+            ...documentSnapshot.data(),
+            key: documentSnapshot.id,
+          });
+
+        });
+        setComentarios(comentarios);
+      });
+    // Unsubscribe from events when no longer in use
+    return () => subscriber();
+  }, []);
+
+  const referenceComentarios = firestore
+    .collection("Usuario")
+    .doc(userID)
+    .collection("Comentarios")
+    .doc();
+
+  const enviarDados1 = () => {
+    referenceComentarios
+      .set({
+        nome: usuariocli.nome,
+        texto: texto,
+        urlfoto: usuariocli.urlfoto,
       })
      
   };
@@ -121,8 +198,30 @@ export default function ProfileView({ navigation }) {
       </View>
     );
   };
+  const ItemViewCom = ({ item }) => {
+    return (
+      <View style={styles.alinhamentoLinha}>
+        <Image style={{  width: 50,
+    height: 50,
+    borderRadius: 150 / 2,
+    resizeMode: "cover",
+    borderColor: "#ef846c",
+    justifyContent: "center",
+    alignItems: "center",
+    margin:10,
+    left:10,}} source={{ uri: item.urlfoto }}  />
+        <View style={styles.alinhamentoColuna}>
+          <Text style={styles.itemStylee}>{item.nome}</Text>
+          <Text style={{ fontSize: 15,
+    padding: 5,
+    marginTop: 2,}}>{item.texto} </Text>
+        </View>
+      </View>
+    );
+  };
   
   return (
+    <KeyboardAvoidingView behavior="height" enabled style={{ flex: 1 }}>
     <SafeAreaView style={{ flex: 1, backgroundColor:"white"}}>
        <TopNav style={{position:"relative"}}
         middleContent={
@@ -172,24 +271,26 @@ export default function ProfileView({ navigation }) {
         <Text style={styles.text2}>{usuario.descricao}</Text>
       
      <View style={{flexDirection:"row"}}>
+  
      <Text style={{marginTop:10, fontSize:20}}>{usuario.curtida}</Text>
         {like === true && (
             <Ionicons
             name="heart"
             size={30}
-            color={"pink"}
+            color={"#EF8F86"}
             style={{position:"relative", marginTop:5}}
             onPress={() => {
               setLike(false);
               const diminui = usuario.curtida - 1;
               setCurtida(diminui);
-              enviarDados(diminui);
+              salvar(diminui);
             }}
           />          
           )}
           {like === false && (
+            <View>
             <Ionicons
-            name="heart"
+            name="heart-outline"
             size={30}
             color={"gray"}
             style={{position:"relative", marginTop:5}}
@@ -197,29 +298,32 @@ export default function ProfileView({ navigation }) {
               setLike(true);
               const diminui = usuario.curtida + 1;
               setCurtida(diminui);
-              enviarDados(diminui);
+              salvar(diminui);
             }}
           />
+          
+          </View>
           )}
           
           </View>
+          <View style={{flexDirection:"row", marginTop:10}}>
+          <Ionicons name="pin" size={25} color={"black"}/>
+            <Text style={{marginLeft:5, fontSize:20}}>Endereços</Text>
+            </View>
 
         <ScrollView
         style={{ flex: 1 }}
         directionalLockEnabled={false}
         horizontal={true}>
+          
         <Mapa />
         
         </ScrollView>
-            <Button
-              color="#EF8F86"
-              style={{ marginTop: 20 }}
-              text="Serviços"
-              onPress={() => {
-                navigation.navigate("ListarServico", {userID: userID});
-              }}
-            />
-
+          
+        <View style={{flexDirection:"row", marginTop:10}}>
+          <Ionicons name="images" size={25} color={"#EF8F86"}/>
+            <Text style={{marginLeft:5, fontSize:20}}>Serviços</Text>
+            </View>
 <FlatList
           data={servicos}
           keyExtractor={(item) => item.id}
@@ -227,11 +331,47 @@ export default function ProfileView({ navigation }) {
           renderItem={ItemView}
         />
 {/*<ListarServico />*/}
+<View style={{ backgroundColor: "white",
+  }}>
+<View style={{flexDirection:"row", marginTop:60}}>
+          <Ionicons name="chatbox-ellipses" size={25} color={"#EF8F86"}/>
+            <Text style={{marginLeft:5, fontSize:20}}>Comentários</Text>
+            </View>
+<FlatList
+          data={comentarios}
+          keyExtractor={(item) => item.id}
+          //  ItemSeparatorComponent={ItemSeparatorView}
+          renderItem={ItemViewCom}
+        />
+
+
+                  <TextInput
+                    containerStyle={{ marginTop: 15 }}
+                    multiline
+                    numberOfLines={10}
+                    value={texto}
+                    placeholder="Digite seu cometário"
+                    autoCorrect={false}
+                    onChangeText={(text) => setTexto(text)}
+                    rightContent={
+                      <Ionicons
+                        name="send"
+                        size={20}
+                        color={themeColor.gray300}
+                        onPress={() => {
+                          enviarDados1()
+                        }}
+                      />
+                    }
+                  />
+
+    </View>
+
             
         </View>
         </ScrollView>
     </SafeAreaView>
-    
+    </KeyboardAvoidingView>
   );
       }   
 const styles = StyleSheet.create({

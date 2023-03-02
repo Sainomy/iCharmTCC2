@@ -78,21 +78,20 @@ export default function ({ navigation }) {
         </TouchableOpacity>
 
         <View style={styles.alinhamentoColuna}>
-          <Text  style={styles.itemStylee}>{item.nome} </Text>
-          <Text style={styles.itemStyle}>{item.descricao} </Text>
-          <Pressable onPress={() => {
-          setLike(true);
-        }}>
-          <Ionicons
-        
-        name="heart"
-        size={30}
-        trackcolor={{ false: "gray", true: "pink" }}
-        style={{position:"relative", marginTop:5}}
-        
-      />
-          </Pressable>
           
+          <View style={{flexDirection:"row"}}>
+          <Text  style={styles.itemStylee}>{item.nome} </Text>
+          <Text style={styles.itemStylee}>{item.curtida}</Text>
+          <Ionicons
+            name="heart"
+            size={30}
+            color={"#EF8F86"}
+            style={{position:"relative", marginTop:5}}
+           
+          />
+          </View>
+          <Text style={styles.itemStylee}>{item.descricao} </Text>
+         
         </View>
       </View>
     );
@@ -232,7 +231,7 @@ export default function ({ navigation }) {
         
       </ScrollView>
       <View style={{margin:10}}>
-      <TouchableOpacity style={{alignItems:"center"}}>
+    { /* <TouchableOpacity style={{alignItems:"center"}}>
       <Image
           style={{width: 80,
             height: 80,
@@ -241,7 +240,7 @@ export default function ({ navigation }) {
           source={require("../../assets/usuario.png")}
         />
         <Text>Favoritos</Text>
-      </TouchableOpacity>
+          </TouchableOpacity>*/}
       <FlatList
         data={dadosFiltrados}
         keyExtractor={(item) => item.id}

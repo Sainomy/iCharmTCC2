@@ -36,6 +36,7 @@ export default function Profile({ navigation }) {
   const { isDarkmode, setTheme } = useTheme();
   const [addhr, setAddhr] = useState(true);
   const modalizeRef = useRef(null);
+  const [comentarios, setComentarios] = useState([]);
   const [usuario, setUsuario] = useState < Partial < Usuario >> ({});
   const [servicos, setServicos] = useState([]); // Initial empty array of users
   const [itemLista, setItemLista] = useState({
@@ -90,6 +91,27 @@ export default function Profile({ navigation }) {
     return () => subscriber();
   }, []);
 
+  useEffect(() => {
+  
+    const subscriber = firestore
+      .collection("Usuario")
+      .doc(auth.currentUser.uid)
+      .collection("Comentarios")
+      .onSnapshot((querySnapshot) => {
+        const comentarios = [];
+        querySnapshot.forEach((documentSnapshot) => {
+          comentarios.push({
+            ...documentSnapshot.data(),
+            key: documentSnapshot.id,
+          });
+
+        });
+        setComentarios(comentarios);
+      });
+    // Unsubscribe from events when no longer in use
+    return () => subscriber();
+  }, []);
+
   const ItemView = ({ item }) => {
     return (
       <View style={styles.alinhamentoLinha}>
@@ -105,6 +127,27 @@ export default function Profile({ navigation }) {
         <View style={styles.alinhamentoColuna}>
           <Text style={styles.itemStylee}>{item.nomecat}</Text>
           <Text style={styles.itemStyle}>R${item.valor} </Text>
+        </View>
+      </View>
+    );
+  };
+  const ItemViewCom = ({ item }) => {
+    return (
+      <View style={styles.alinhamentoLinha}>
+        <Image style={{  width: 50,
+    height: 50,
+    borderRadius: 150 / 2,
+    resizeMode: "cover",
+    borderColor: "#ef846c",
+    justifyContent: "center",
+    alignItems: "center",
+    margin:10,
+    left:10,}} source={{ uri: item.urlfoto }}  />
+        <View style={styles.alinhamentoColuna}>
+          <Text style={styles.itemStylee}>{item.nome}</Text>
+          <Text style={{ fontSize: 15,
+    padding: 5,
+    marginTop: 2,}}>{item.texto} </Text>
         </View>
       </View>
     );
@@ -171,7 +214,7 @@ export default function Profile({ navigation }) {
              <Button
              color="#EF8F86"
              style={{ marginTop: 20 }}
-             text="Editar Horários"
+             text="Personalizar Horários"
              onPress={() => {
                navigation.navigate("AddHorarios");
              }}
@@ -181,9 +224,9 @@ export default function Profile({ navigation }) {
              <Button
              color="#EF8F86"
              style={{ marginTop: 20 }}
-             text="Personalizar Horários"
+             text="Editar Horários"
              onPress={() => {
-               navigation.navigate("AddHorarios");
+               navigation.navigate("EditHorarios");
              }}
            />
           )}
@@ -191,7 +234,10 @@ export default function Profile({ navigation }) {
         <Text style={{color: "gray", marginTop:20}}>Sobre:</Text>
         <Text style={styles.text2}>{usuario.descricao}</Text>
 
-        <Text>Endereços</Text>
+        <View style={{flexDirection:"row", marginTop:10}}>
+          <Ionicons name="pin" size={25} color={"black"}/>
+            <Text style={{marginLeft:5, fontSize:20}}>Endereços</Text>
+            </View>
         <ScrollView
         style={{ flex: 1 }}
         directionalLockEnabled={false}
@@ -217,6 +263,10 @@ export default function Profile({ navigation }) {
               }}
             />*/}
 {/*<MeusServicos />*/}
+<View style={{flexDirection:"row", marginTop:10}}>
+          <Ionicons name="images" size={25} color={"#EF8F86"}/>
+            <Text style={{marginLeft:5, fontSize:20}}>Serviços</Text>
+            </View>
 <FlatList
           data={servicos}
           keyExtractor={(item) => item.id}
@@ -233,7 +283,17 @@ export default function Profile({ navigation }) {
             <Ionicons name="add-circle" size={60} color={"#EF8F86"} style={{ width: 70,height: 70,}}/>
           </TouchableOpacity>
           )}
+          <View style={{flexDirection:"row"}}>
+          <Ionicons name="chatbox-ellipses" size={25} color={"#EF8F86"}/>
+            <Text>Comentários</Text>
+            </View>
             
+            <FlatList
+          data={comentarios}
+          keyExtractor={(item) => item.id}
+          //  ItemSeparatorComponent={ItemSeparatorView}
+          renderItem={ItemViewCom}
+        />
         </View>
         </ScrollView>
     </SafeAreaView>
@@ -276,7 +336,7 @@ const styles = StyleSheet.create({
     //justifyContent: "center",
    // alignItems: "center",
    //marginTop:50,
-   margin: 15,
+   margin: 5,
   },
   image1: {
     height: 100,
