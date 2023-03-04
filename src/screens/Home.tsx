@@ -29,7 +29,8 @@ export default function ({ navigation }) {
 
   useEffect(() => {
     const subscriber = firestore
-      .collection("Usuario")
+    .collection("Usuario")
+    .where("pro", "==", true)
       .onSnapshot((querySnapshot) => {
         const usuarios = [];
         querySnapshot.forEach((documentSnapshot) => {
@@ -103,7 +104,6 @@ export default function ({ navigation }) {
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: isDarkmode ? themeColor.dark100 : "white" }}>
-      
       <TopNav
         style={{ borderColor: isDarkmode ? themeColor.dark100 : "white" }}
         middleContent={

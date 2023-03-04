@@ -169,21 +169,21 @@ export default function Profile({ navigation }) {
       <View style={{margin:10}}>
       <Button
               color="#EF8F86"
+              onPress={() => {
+                navigation.navigate("EditProfile");
+              }}
               rightContent={
                 <Ionicons
                     name="create"
                     size={20}
                     color={themeColor.white}
                 />}
-              text="Editar "
-              onPress={() => {
-                navigation.navigate("EditProfile");
-              }}
+              text="Editar"
               style={{
                 position: "absolute",
                 backgroundColor: "#E8A998",
-                right:1,
-                margin:10,
+                right:0,
+                marginTop:10,
               }}
             />
       </View>
@@ -210,6 +210,8 @@ export default function Profile({ navigation }) {
           )}
         <Text style={styles.text}>{usuario.numero}</Text>
         <Text style={styles.text}>{usuario.email}</Text>
+        {usuario.pro === true && (
+          <View>
         {addhr === true && (
              <Button
              color="#EF8F86"
@@ -230,13 +232,14 @@ export default function Profile({ navigation }) {
              }}
            />
           )}
-       
+          </View>
+        )}
         <Text style={{color: "gray", marginTop:20}}>Sobre:</Text>
         <Text style={styles.text2}>{usuario.descricao}</Text>
 
         <View style={{flexDirection:"row", marginTop:10}}>
           <Ionicons name="pin" size={25} color={"black"}/>
-            <Text style={{marginLeft:5, fontSize:20}}>Endereços</Text>
+            <Text fontWeight="light" style={{marginLeft:5, fontSize:20}}>Endereços</Text>
             </View>
         <ScrollView
         style={{ flex: 1 }}
@@ -244,8 +247,8 @@ export default function Profile({ navigation }) {
         horizontal={true}>
         <Mapa />
         <Ionicons
-        name="add-circle"
-        size={40}
+        name="create"
+        size={30}
         color={"black"}
         style={{ alignItems: "center", padding: 30 }}
         onPress={() => {
@@ -263,6 +266,8 @@ export default function Profile({ navigation }) {
               }}
             />*/}
 {/*<MeusServicos />*/}
+{usuario.pro === true && (
+  <View>
 <View style={{flexDirection:"row", marginTop:10}}>
           <Ionicons name="images" size={25} color={"#EF8F86"}/>
             <Text style={{marginLeft:5, fontSize:20}}>Serviços</Text>
@@ -274,7 +279,7 @@ export default function Profile({ navigation }) {
           renderItem={ItemView}
         />
            
-            {usuario.pro === true && (
+          
             <TouchableOpacity
             activeOpacity={0.7}
             onPress={() => {
@@ -282,6 +287,7 @@ export default function Profile({ navigation }) {
             }} style={{alignItems:"center"}}>
             <Ionicons name="add-circle" size={60} color={"#EF8F86"} style={{ width: 70,height: 70,}}/>
           </TouchableOpacity>
+          </View>
           )}
           <View style={{flexDirection:"row"}}>
           <Ionicons name="chatbox-ellipses" size={25} color={"#EF8F86"}/>

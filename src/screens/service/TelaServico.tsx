@@ -146,10 +146,43 @@ const enviarDados = () => {
     });
 };
 
+
+const LongClickF=(item)=>{
+  const cancelBtn: AlertButton = {
+    text: "Voltar",
+    onPress: () => {
+      navigation.goBack()
+    },
+  };
+  const deleteBtn: AlertButton = {
+    text: "Apagar",
+    onPress: () => {
+      const ApgFoto = firestore
+  .collection("Usuario")
+  .doc(auth.currentUser.uid)
+  .collection("Servico")
+  .doc(servicoID)
+  .collection("Foto")
+  .doc(item.id);
+
+  ApgFoto.delete();
+
+    },
+  };
+
+  Alert.alert(
+    `Deseja apagar a foto?`,
+    " ou voltar?",
+    [deleteBtn, cancelBtn]
+  );
+ };
+
+
   const ItemView = ({ item }) => {
     return (
         <TouchableOpacity
           activeOpacity={0.7}
+          onLongPress={() => { LongClickF(item) }}
         >
           <Image style={styles.image2} source={{ uri: item.urlfoto }} />
         </TouchableOpacity>
@@ -178,59 +211,10 @@ const enviarDados = () => {
     // Unsubscribe from events when no longer in use
     return () => subscriber();
   }, []);
-  const DATA = [
-    {
-      id: '9',
-      hora: '9:00',
-    },
-    {
-      id: '10',
-      hora: '10:00',
-    },
-    {
-      id: '11',
-      hora: '11:00',
-    },
-    {
-      id: '14',
-      hora: '14:00',
-    },
-    {
-      id: '15',
-      hora: '15:00',
-     },
-     {
-      id: '16',
-      hora: '16:00',
-     },
-     {
-      id: '17',
-      hora: '17:00',
-     },
-     {
-      id: '18',
-      hora: '18:00',
-     },
-     {
-      id: '19',
-      hora: '19:00',
-     },
-     {
-      id: '20',
-      hora: '20:00',
-     },
-  ];
  
     let [selectedId, setSelectedId] = useState(null);
   
-    const LongClick=(item)=>{
-      alert('voce pressionou longo e '+ item.hora);
-     }
-   
-     const shortClick=(item)=>{
-      alert('voce pressionou curto e '+ item.hora);
-      setHora(item.hora10);
-     };
+    
      const ItemView2 = ({ item }) => {
       return (
        <ScrollView  
@@ -238,7 +222,6 @@ const enviarDados = () => {
               horizontal={true}>
            <Pressable
         style={({ pressed }) => [{ backgroundColor: pressed ? '#f1f1f1' : 'transparent'}]}
-        onLongPress={() => { LongClick(item) }}
         onPress={() => { shortClick(item); setData(item.hora8); setNOrdem(8);}}
     >
         <View>
@@ -248,8 +231,7 @@ const enviarDados = () => {
     </Pressable>
         <Pressable
         style={({ pressed }) => [{ backgroundColor: pressed ? '#f1f1f1' : 'transparent'}]}
-        onLongPress={() => { LongClick(item) }}
-        onPress={() => { shortClick(item); setHora(item.hora9); setNOrdem(9); }}
+        onPress={() => { setHora(item.hora9); setNOrdem(9); }}
     >
         <View>
             <Text style={{margin:10, color: "gray"}}> {item.hora9} </Text>
@@ -258,8 +240,7 @@ const enviarDados = () => {
     </Pressable>
     <Pressable
         style={({ pressed }) => [{ backgroundColor: pressed ? '#f1f1f1' : 'transparent'}]}
-        onLongPress={() => { LongClick(item) }}
-        onPress={() => { shortClick(item); setHora(item.hora10); setNOrdem(10); }}
+        onPress={() => { setHora(item.hora10); setNOrdem(10); }}
     >
         <View>
             <Text style={{margin:10, color: "gray"}}>  {item.hora10}  </Text>
@@ -268,8 +249,7 @@ const enviarDados = () => {
     </Pressable>
     <Pressable
         style={({ pressed }) => [{ backgroundColor: pressed ? '#f1f1f1' : 'transparent'}]}
-        onLongPress={() => { LongClick(item) }}
-        onPress={() => { shortClick(item); setHora(item.hora11); setNOrdem(11); }}
+        onPress={() => { setHora(item.hora11); setNOrdem(11); }}
     >
         <View>
             <Text style={{margin:10, color: "gray"}}>  {item.hora11}  </Text>
@@ -278,8 +258,7 @@ const enviarDados = () => {
     </Pressable>
     <Pressable
         style={({ pressed }) => [{ backgroundColor: pressed ? '#f1f1f1' : 'transparent'}]}
-        onLongPress={() => { LongClick(item) }}
-        onPress={() => { shortClick(item); setHora(item.hora12);  setNOrdem(12);  }}
+        onPress={() => {setHora(item.hora12);  setNOrdem(12);  }}
     >
         <View>
             <Text style={{margin:10, color: "gray"}}>  {item.hora12}  </Text>
@@ -288,8 +267,7 @@ const enviarDados = () => {
     </Pressable>
     <Pressable
         style={({ pressed }) => [{ backgroundColor: pressed ? '#f1f1f1' : 'transparent'}]}
-        onLongPress={() => { LongClick(item) }}
-        onPress={() => { shortClick(item); setHora(item.hora13);  setNOrdem(13); }}
+        onPress={() => { setHora(item.hora13);  setNOrdem(13); }}
     >
         <View>
             <Text style={{margin:10, color: "gray"}}>  {item.hora13}  </Text>
@@ -298,8 +276,7 @@ const enviarDados = () => {
     </Pressable>
     <Pressable
         style={({ pressed }) => [{ backgroundColor: pressed ? '#f1f1f1' : 'transparent'}]}
-        onLongPress={() => { LongClick(item) }}
-        onPress={() => { shortClick(item); setHora(item.hora14);  setNOrdem(14);  }}
+        onPress={() => { setHora(item.hora14);  setNOrdem(14);  }}
     >
         <View>
             <Text style={{margin:10, color: "gray"}}>  {item.hora14}  </Text>
@@ -308,8 +285,7 @@ const enviarDados = () => {
     </Pressable>
     <Pressable
         style={({ pressed }) => [{ backgroundColor: pressed ? '#f1f1f1' : 'transparent'}]}
-        onLongPress={() => { LongClick(item) }}
-        onPress={() => { shortClick(item); setHora(item.hora15); setNOrdem(15);  }}
+        onPress={() => {setHora(item.hora15); setNOrdem(15);  }}
     >
         <View>
             <Text style={{margin:10, color: "gray"}}>  {item.hora15}  </Text>
@@ -318,8 +294,7 @@ const enviarDados = () => {
     </Pressable>
     <Pressable
         style={({ pressed }) => [{ backgroundColor: pressed ? '#f1f1f1' : 'transparent'}]}
-        onLongPress={() => { LongClick(item) }}
-        onPress={() => { shortClick(item); setHora(item.hora16); setNOrdem(16);  }}
+        onPress={() => { setHora(item.hora16); setNOrdem(16);  }}
     >
         <View>
             <Text style={{margin:10, color: "gray"}}>  {item.hora16}  </Text>
@@ -328,8 +303,7 @@ const enviarDados = () => {
     </Pressable>
     <Pressable
         style={({ pressed }) => [{ backgroundColor: pressed ? '#f1f1f1' : 'transparent'}]}
-        onLongPress={() => { LongClick(item) }}
-        onPress={() => { shortClick(item); setHora(item.hora17); setNOrdem(17);  }}
+        onPress={() => { setHora(item.hora17); setNOrdem(17);  }}
     >
         <View>
             <Text style={{margin:10, color: "gray"}}>  {item.hora17}  </Text>
@@ -338,8 +312,7 @@ const enviarDados = () => {
     </Pressable>
     <Pressable
         style={({ pressed }) => [{ backgroundColor: pressed ? '#f1f1f1' : 'transparent'}]}
-        onLongPress={() => { LongClick(item) }}
-        onPress={() => { shortClick(item); setHora(item.hora18);  setNOrdem(18);  }}
+        onPress={() => {setHora(item.hora18);  setNOrdem(18);  }}
     >
         <View>
             <Text style={{margin:10, color: "gray"}}>  {item.hora18}  </Text>
@@ -348,8 +321,7 @@ const enviarDados = () => {
     </Pressable>
     <Pressable
         style={({ pressed }) => [{ backgroundColor: pressed ? '#f1f1f1' : 'transparent'}]}
-        onLongPress={() => { LongClick(item) }}
-        onPress={() => { shortClick(item); setHora(item.hora19); setNOrdem(19);  }}
+        onPress={() => { setHora(item.hora19); setNOrdem(19);  }}
     >
         <View>
             <Text style={{margin:10, color: "gray"}}>  {item.hora19}  </Text>
@@ -358,8 +330,7 @@ const enviarDados = () => {
     </Pressable>
     <Pressable
         style={({ pressed }) => [{ backgroundColor: pressed ? '#f1f1f1' : 'transparent'}]}
-        onLongPress={() => { LongClick(item) }}
-        onPress={() => { shortClick(item); setHora(item.hora20); setNOrdem(20);  }}
+        onPress={() => { setHora(item.hora20); setNOrdem(20);  }}
     >
         <View>
             <Text style={{margin:10, color: "gray"}}>  {item.hora20}  </Text>
@@ -368,8 +339,7 @@ const enviarDados = () => {
     </Pressable>
     <Pressable
         style={({ pressed }) => [{ backgroundColor: pressed ? '#f1f1f1' : 'transparent'}]}
-        onLongPress={() => { LongClick(item) }}
-        onPress={() => { shortClick(item); setHora(item.hora21); setNOrdem(21);  }}
+        onPress={() => {setHora(item.hora21); setNOrdem(21);  }}
     >
         <View>
             <Text style={{margin:10, color: "gray"}}>  {item.hora21}  </Text>
@@ -378,8 +348,7 @@ const enviarDados = () => {
     </Pressable>
     <Pressable
         style={({ pressed }) => [{ backgroundColor: pressed ? '#f1f1f1' : 'transparent'}]}
-        onLongPress={() => { LongClick(item) }}
-        onPress={() => { shortClick(item); setHora(item.hora22); setNOrdem(22);  }}
+        onPress={() => { setHora(item.hora22); setNOrdem(22);  }}
     >
         <View>
             <Text style={{margin:10, color: "gray"}}>  {item.hora22}  </Text>
@@ -388,8 +357,7 @@ const enviarDados = () => {
     </Pressable>
     <Pressable
         style={({ pressed }) => [{ backgroundColor: pressed ? '#f1f1f1' : 'transparent'}]}
-        onLongPress={() => { LongClick(item) }}
-        onPress={() => { shortClick(item); setHora(item.hora23); setNOrdem(23);  }}
+        onPress={() => { setHora(item.hora23); setNOrdem(23);  }}
     >
         <View>
             <Text style={{margin:10, color: "gray"}}>  {item.hora23}  </Text>
@@ -407,7 +375,7 @@ const enviarDados = () => {
     setDatePickerVisibility(true);
   };
   const handleConfirm = (date) => {
-    console.warn("A data foi selecionada: " + date);
+   // console.warn("A data foi selecionada: " + date);
     const formattedDate =
       date.getDate().toString().padStart(2, "0") +
       "/" +
@@ -582,22 +550,7 @@ const enviarDados = () => {
                }}
             />
     </ScrollView>
-    <View style={{marginRight:60, marginLeft:60, marginTop:10}}>
-        <Button
-          color="#EF8F86"
-          text="Adicionar mais Fotos"
-          onPress={() => {
-            navigation.navigate("AddFotos",{servico:servico});
-           }}
-           leftContent={
-            <Ionicons
-              name="images"
-              size={30}
-              color={isDarkmode ? themeColor.white100 : themeColor.white}         
-            />
-        }
-        />    
-        
+    <View style={{marginRight:60, marginLeft:60, marginTop:10}}>      
         <Button
           color="#EF8F86"
           text="Marcar Horário"

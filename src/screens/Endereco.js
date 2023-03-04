@@ -8,6 +8,7 @@ import {
   Image,
   Alert,
   AlertButton,
+  FlatList,
 } from "react-native";
 import {
   Layout,
@@ -38,11 +39,61 @@ export default function SecondScreen({ navigation }) {
   const [lat, setLat] = useState("");
   const [long, setLong] = useState("");
   const [loading, setLoading] = useState(false);
+  const [enderecos, setEnderecos] = useState([]);
   const [uf, setUf] = useState("");
   const [endereco, setEndereco] = useState({
     cep: "",
     item: [],
   });
+
+  useEffect(() => {
+    const subscriber = firestore
+      .collection("Usuario")
+      .doc(auth.currentUser.uid)
+      .collection("Endereco")
+      .onSnapshot((querySnapshot) => {
+        const enderecos = [];
+        querySnapshot.forEach((documentSnapshot) => {
+          enderecos.push({
+            ...documentSnapshot.data(),
+            key: documentSnapshot.id,
+          });
+        });
+        setEnderecos(enderecos);
+        setLoading(false);
+      });
+    // Unsubscribe from events when no longer in use
+    return () => subscriber();
+  }, []);
+
+  const ItemView = ({ item }) => {
+    return (
+      <View style={styles.alinhamentoLinha}>
+        <Ionicons
+          style={{ alignItems: "center", padding: 30 }}
+          name="map"
+          size={20}
+          color={"gray"}
+        />
+
+        <View style={styles.alinhamentoColuna}>
+          <Text style={styles.itemStylee}>
+            {item.rua}, {item.numero}
+          </Text>
+          <Text style={styles.itemStyle}>{item.bairro} </Text>
+          <Text style={styles.itemStyle}>
+            {item.cidade}, {item.uf}{" "}
+          </Text>
+        </View>
+        <Ionicons
+          name="trash"
+          size={20}
+          color={isDarkmode ? themeColor.white100 : themeColor.black}
+          style={{ margin: 10 }}
+        />
+      </View>
+    );
+  };
 
   buscarCep = () => {
     Axios.get(`https://viacep.com.br/ws/${endereco.cep}/json/`)
@@ -131,6 +182,36 @@ export default function SecondScreen({ navigation }) {
           }}
         >
           <Section>
+            <SectionContent>
+              <Text
+                fontWeight="light"
+                style={{
+                  alignSelf: "center",
+                  fontSize: 22,
+                }}
+              >
+                Editando Endereços
+              </Text>
+              <ScrollView
+                style={{ flex: 1 }}
+                directionalLockEnabled={false}
+                horizontal={true}
+                vertical={false}
+              >
+                <FlatList
+                  numColumns={50}
+                  data={enderecos}
+                  keyExtractor={(item) => item.id}
+                  renderItem={ItemView}
+                />
+              </ScrollView>
+            </SectionContent>
+          </Section>
+          <Section
+            style={{
+              marginTop: 10,
+            }}
+          >
             <SectionContent
               style={{
                 borderRadius: 10,
@@ -146,15 +227,6 @@ export default function SecondScreen({ navigation }) {
                     : themeColor.white,
                 }}
               >
-                <Text
-                  fontWeight="semibold"
-                  size="h3"
-                  style={{
-                    alignSelf: "center",
-                  }}
-                >
-                  Adicionando Endereço
-                </Text>
                 <Text style={{ marginTop: 15 }}>CEP</Text>
                 <TextInput
                   placeholder="Digite o CEP"
@@ -298,3 +370,46 @@ export default function SecondScreen({ navigation }) {
     </KeyboardAvoidingView>
   );
 }
+
+const styles = StyleSheet.create({
+  containerSafeArea: {
+    flex: 1,
+  },
+  itemStylee: {
+    fontSize: 15,
+    padding: 5,
+    marginTop: 2,
+  },
+  itemStyle: {
+    fontSize: 12,
+    padding: 5,
+    color: "gray",
+  },
+  alinhamentoLinha: {
+    flexDirection: "row",
+    justifyContent: "flex-start",
+    backgroundColor: "white",
+    margin: 12,
+    borderRadius: 20,
+    shadowColor: "#171717",
+    shadowOffset: { width: -2, height: 4 },
+    shadowOpacity: 0.2,
+    shadowRadius: 3,
+  },
+  alinhamentoColuna: {
+    flexDirection: "column",
+    justifyContent: "flex-start",
+  },
+  image: {
+    height: 100,
+    width: 100,
+    alignSelf: "center",
+    resizeMode: "cover",
+    borderRadius: 15,
+  },
+
+  // separador: {
+  //   height: 1,
+  //   width: "100%",
+  // },
+});

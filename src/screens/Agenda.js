@@ -112,9 +112,8 @@ export default function ({ navigation }) {
       // console.log("text " + formattedDate);
     }
   };
-  const onRefresh = () => {
-    setRefreshing(true);
-    setdadosFiltrados([]);
+  const updateSelectedDate = (date: Date) => {
+    onDateChange?.(date);
   };
 
   const data = [
@@ -163,15 +162,9 @@ export default function ({ navigation }) {
             (date.getMonth() + 1).toString().padStart(2, "0") +
             "/" +
             date.getFullYear();
+          setSelectedDate(date);
           console.log(formattedDate);
-          //  setSelectedDate(formattedDate);
-          //  setSearch(selectedDate);
-          //    let muda = formattedDate;
           searchFilter(formattedDate);
-          //  setSearch(formattedDate);
-          // const data = formattedDate;
-          //  setSelectedDate(formattedDate);
-          //  console.log("console date agora " + formattedDate + selectedDate);
         }}
         theme={{
           primaryColor: "#D76348",

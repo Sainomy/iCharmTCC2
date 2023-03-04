@@ -46,6 +46,7 @@ export default function EditProfile({ navigation, route}) {
   // The path of the picked image
   const [pickedImagePath, setPickedImagePath] = useState("");
   const [loading, setLoading] = useState(true);
+  const [deletado, setDeletado]= useState(false);
 
   const escolhefoto = () => {
     setLoading(false);
@@ -93,7 +94,6 @@ export default function EditProfile({ navigation, route}) {
       .update({
         id: reference.id,
         nome: usuario.nome,
-        email: usuario.email,
         descricao:  usuario.descricao,
           // password: password,
         numero:  usuario.numero,
@@ -190,9 +190,63 @@ export default function EditProfile({ navigation, route}) {
       reference.update({ urlfoto: paraDonwload });
     }setLoading(true);
   };
- 
- 
+  const deleteServico = async () => {
+    const user = auth.currentUser;
+    setDeletado(true);
 
+    user.delete();
+    firestore
+    .collection("Usuario")
+      .doc(auth.currentUser.uid)
+      .delete().then(function(){
+        navigation.goBack();
+    });
+
+  {/* const ft = firestore
+    .collection("Usuario")
+      .doc(auth.currentUser.uid)
+      .collection("Foto")
+      .doc();   
+    ft.delete();
+
+    const hr = firestore
+    .collection("Usuario")
+      .doc(auth.currentUser.uid)
+      .collection("Horarios")
+      .doc();   
+    hr.delete();
+
+    const cm = firestore
+    .collection("Usuario")
+      .doc(auth.currentUser.uid)
+      .collection("Comentarios")
+      .doc();   
+    cm.delete();
+
+    const en = firestore
+    .collection("Usuario")
+      .doc(auth.currentUser.uid)
+      .collection("Endereco")
+      .doc();   
+    en.delete();
+
+    const fv = firestore
+    .collection("Usuario")
+      .doc(auth.currentUser.uid)
+      .collection("Favoritos")
+      .doc();   
+    fv.delete();
+
+    const sv = firestore
+    .collection("Usuario")
+      .doc(auth.currentUser.uid)
+      .collection("Servico")
+      .doc();   
+  sv.delete();*/}
+
+  };
+ 
+  if(deletado===false){
   return (
     <KeyboardAvoidingView behavior="height" enabled style={{ flex: 1 }}>
     <Layout>
@@ -258,17 +312,7 @@ export default function EditProfile({ navigation, route}) {
                     autoCorrect={false}
                     onChangeText={(text) => setUsuario({ ...usuario, descricao: text })}
                   />
-       <Text style={{ marginTop: 15 }}>E-mail</Text>
-            <TextInput
-              containerStyle={{ marginTop: 15 }}
-              placeholder="Digite seu e-mail"
-              value={usuario.email}
-              autoCapitalize="none"
-              autoCompleteType="off"
-              autoCorrect={false}
-              keyboardType="email-address"
-              onChangeText={(text) => setUsuario({ ...usuario, email: text })}
-            />
+      
             <Text style={{ marginTop: 15, marginVertical: 15 }}>Contato</Text>
             <MaskInput
               style={{
@@ -324,12 +368,23 @@ export default function EditProfile({ navigation, route}) {
               }}
              disabled={loading===(false)}
             />
+             <Button
+                    color={themeColor.danger}
+                    text={"Excluir"}
+                    onPress={deleteServico}
+                    style={{
+                      marginTop: 10,
+                    }}
+                  />
 </View>
     </ScrollView>
     </Layout>
   </KeyboardAvoidingView>
   );
+}else{
+  navigation.navigate("Login");
 };
+}
 
 const styles = StyleSheet.create({
   imageContainer: {

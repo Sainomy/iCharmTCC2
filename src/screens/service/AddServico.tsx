@@ -233,10 +233,11 @@ export default function SecondScreen({ navigation }) {
                   }}
                 >
                   <Text
-                    fontWeight="semibold"
-                    size="h3"
+                   fontWeight="light"
+                    
                     style={{
                       alignSelf: "center",
+                      fontSize:22,
                     }}
                   >
                     Criando Serviço

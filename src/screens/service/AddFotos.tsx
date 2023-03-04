@@ -232,7 +232,7 @@ export default function SecondScreen({ navigation }) {
                 >
 
                   <Ionicons
-                    style={{ margin: 15 }}
+                    style={{ margin: 15, alignSelf:"center" }}
                     name="add"
                     size={60}
                     color={isDarkmode ? themeColor.white100 : themeColor.black}
@@ -241,7 +241,7 @@ export default function SecondScreen({ navigation }) {
 
                   <Image
                     source={{ uri: pickedImagePath }}
-                    style={{ width: 100, height: 100 }}
+                    style={{ width: 250, height: 300, alignSelf:"center" }}
                     
                   />
                   <Button

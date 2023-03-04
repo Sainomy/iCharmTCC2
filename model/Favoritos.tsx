@@ -1,5 +1,5 @@
 
-export class Usuario {
+export class Favoritos {
     public id : string;
     public nome: string;
     public email : string;
@@ -14,7 +14,7 @@ export class Usuario {
   
         
 
-    constructor(obj?: Partial<Usuario>) {
+    constructor(obj?: Partial<Favoritos>) {
         if (obj) {
             this.id = obj.id
             this.email = obj.email

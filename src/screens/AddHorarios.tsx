@@ -162,11 +162,12 @@ export default function SecondScreen({ navigation }) {
                       : themeColor.white,
                   }}
                 >
-                  <Text
-                    fontWeight="semibold"
-                    size="h3"
+                   <Text
+                   fontWeight="regular"
+                    
                     style={{
                       alignSelf: "center",
+                      fontSize:22,
                     }}
                   >
                     Adicionando Horários

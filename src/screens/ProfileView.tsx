@@ -11,6 +11,7 @@ import {
   FlatList,
   KeyboardAvoidingView,
   TouchableOpacity,
+  AlertButton,
 } from "react-native";
 // import firebaseConfig from "./firebase";
 // import firebase from "firebase/compat/app";
@@ -30,16 +31,19 @@ import Mapa from "../screens/utils/Mapa"
 import MapView, { Marker } from "react-native-maps";
 import { ScrollView } from "react-native-gesture-handler";
 import { Modalize } from "react-native-modalize";
+import { Favoritos } from "../../model/Favoritos";
 
 export default function ProfileView({ navigation }) {
   const { isDarkmode, setTheme } = useTheme();
   const [like, setLike] = useState(false);
+  const [fav, setFav] = useState();
   const [texto, setTexto] = useState("");
   const [comentarios, setComentarios] = useState([]);
  
   const modalizeRef = useRef(null);
   const [usuariocli, setUsuariocli] = useState < Partial < Usuario >> ({});
   const [usuario, setUsuario] = useState < Partial < Usuario >> ({});
+  const [favoritos, setFavoritos] = useState < Partial < Favoritos >> ({});
   const [servicos, setServicos] = useState([]); // Initial empty array of users
   const [itemLista, setItemLista] = useState({
     ...itemLista,
@@ -117,7 +121,6 @@ export default function ProfileView({ navigation }) {
         nome: usuario.nome,
         email: usuario.email,
         descricao:  usuario.descricao,
-          // password: password,
         numero:  usuario.numero,
         data:  usuario.data,
         pro: usuario.pro,
@@ -172,11 +175,58 @@ export default function ProfileView({ navigation }) {
   const enviarDados1 = () => {
     referenceComentarios
       .set({
+        id: referenceComentarios.id,
+        comentarista: auth.currentUser.uid,
         nome: usuariocli.nome,
         texto: texto,
         urlfoto: usuariocli.urlfoto,
       })
      
+  };
+
+  const referenceFavoritos = firestore
+    .collection("Usuario")
+    .doc(auth.currentUser.uid)
+    .collection("Favoritos")
+    .doc(userID);
+
+  const enviarDadosF = () => {
+    referenceFavoritos
+      .set({
+        id: userID,
+        nome: usuario.nome,
+        email: usuario.email,
+        descricao:  usuario.descricao,
+        fav: true,
+        numero:  usuario.numero,
+        data:  usuario.data,
+        pro: usuario.pro,
+        urlfoto:  usuario.urlfoto,
+      })
+     
+  };
+
+  useEffect(() => {
+    const subscriber = firestore
+      .collection("Usuario")
+      .doc(auth.currentUser.uid)
+      .collection("Favoritos")
+      .doc(userID)
+      .onSnapshot((documentSnapshot) => {
+        setFavoritos(documentSnapshot.data());
+        if (favoritos== null) {
+          setLike(false);
+        } else {
+          setLike(true);
+        };
+       
+      });
+    return () => subscriber();
+  }, [favoritos]);
+
+
+  const UseDelete = async () => {
+      referenceFavoritos.delete();
   };
 
   const ItemView = ({ item }) => {
@@ -198,9 +248,44 @@ export default function ProfileView({ navigation }) {
       </View>
     );
   };
+
+  const LongClick=(item)=>{
+    const cancelBtn: AlertButton = {
+      text: "Voltar",
+      onPress: () => {
+        navigation.goBack()
+      },
+    };
+    const deleteBtn: AlertButton = {
+      text: "Apagar",
+      onPress: () => { { 
+        if(auth.currentUser.uid === item.comentarista)
+        {
+          const apagar = firestore
+          .collection("Usuario")
+          .doc(userID)
+          .collection("Comentarios")
+          .doc(item.id);
+          apagar.delete()
+        }else{
+          alert("Esse comentário não é seu! Peça para o autor apagar")
+        }
+      }
+      },
+    };
+
+    Alert.alert(
+      `Deseja excluir seu comentários`,
+      " ou voltar?",
+      [deleteBtn, cancelBtn]
+    );
+   }
+   
   const ItemViewCom = ({ item }) => {
     return (
+      <Pressable onLongPress={() => { LongClick(item) }} >
       <View style={styles.alinhamentoLinha}>
+      
         <Image style={{  width: 50,
     height: 50,
     borderRadius: 150 / 2,
@@ -216,7 +301,9 @@ export default function ProfileView({ navigation }) {
     padding: 5,
     marginTop: 2,}}>{item.texto} </Text>
         </View>
+       
       </View>
+      </Pressable>
     );
   };
   
@@ -273,6 +360,7 @@ export default function ProfileView({ navigation }) {
      <View style={{flexDirection:"row"}}>
   
      <Text style={{marginTop:10, fontSize:20}}>{usuario.curtida}</Text>
+    
         {like === true && (
             <Ionicons
             name="heart"
@@ -280,10 +368,11 @@ export default function ProfileView({ navigation }) {
             color={"#EF8F86"}
             style={{position:"relative", marginTop:5}}
             onPress={() => {
-              setLike(false);
               const diminui = usuario.curtida - 1;
               setCurtida(diminui);
               salvar(diminui);
+              UseDelete();
+              setLike(false);
             }}
           />          
           )}
@@ -294,11 +383,12 @@ export default function ProfileView({ navigation }) {
             size={30}
             color={"gray"}
             style={{position:"relative", marginTop:5}}
-            onPress={() => {
-              setLike(true);
+            onPress={() => {     
               const diminui = usuario.curtida + 1;
               setCurtida(diminui);
               salvar(diminui);
+               enviarDadosF();
+               setLike(true);
             }}
           />
           

@@ -40,31 +40,31 @@ export default function EditServico({ navigation }) {
   const route = useRoute();
   const [deletado, setDeletado]= useState(false);
   
-  //if(deletado===false){
    
     let {servicoID}=  route.params
-    const referenceServico = firestore
-    .collection("Usuario")
-    .doc(auth.currentUser.uid)
-    .collection("Servico")
-    .doc(servicoID);
-   useEffect(() => {
-    const subscriber = firestore
+   
+      const referenceServico = firestore
       .collection("Usuario")
       .doc(auth.currentUser.uid)
       .collection("Servico")
-      .doc(servicoID)
-      .onSnapshot((documentSnapshot) => {
-        setServico(documentSnapshot.data());
-        if (servico.urlfoto == null) {
-          setPickedImagePath("");
-        } else {
-          setPickedImagePath(servico.urlfoto);
-        }
-      });
-    return () => subscriber();
-  }, [servico]);
-  
+      .doc(servicoID);
+     useEffect(() => {
+      const subscriber = firestore
+        .collection("Usuario")
+        .doc(auth.currentUser.uid)
+        .collection("Servico")
+        .doc(servicoID)
+        .onSnapshot((documentSnapshot) => {
+          setServico(documentSnapshot.data());
+          if (servico.urlfoto == null) {
+            setPickedImagePath("");
+          } else {
+            setPickedImagePath(servico.urlfoto);
+          }
+        });
+      return () => subscriber();
+    }, [servico]);
+    
   const escolhefoto = () => {
     Alert.alert(
       "Alert Title",
@@ -189,23 +189,30 @@ export default function EditServico({ navigation }) {
         })
         .catch((error) => alert(error.message));
     };
- // }
  
+
   const deleteServico = async () => {
-    const delserv =
-      firestore
-      .collection("Usuario")
+    setDeletado(true);
+   const ft = firestore
+    .collection("Usuario")
       .doc(auth.currentUser.uid)
       .collection("Servico")
-      .doc(servicoID);
+      .doc(servicoID)
+      .collection("Foto")
+      .doc();
+    ft.delete();
 
-      delserv.delete().then(function(){
+    firestore
+    .collection("Usuario")
+      .doc(auth.currentUser.uid)
+      .collection("Servico")
+      .doc(servicoID)
+      .delete().then(function(){
         navigation.goBack();
-        setDeletado(true);
-   
-    //User deleted.
-    }).catch(function(error){});
+    });
   };
+ 
+  if(deletado===false){
   return (
     <KeyboardAvoidingView behavior="height" enabled style={{ flex: 1 }}>
     <Layout>
@@ -378,7 +385,10 @@ export default function EditServico({ navigation }) {
     
     </Layout>
     </KeyboardAvoidingView>
-  ); 
+     ); 
+  }else{
+    navigation.navigate("Profile");
+};
 }
 const styles = StyleSheet.create({
   imageContainer: {
