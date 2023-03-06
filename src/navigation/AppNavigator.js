@@ -17,6 +17,7 @@ import UseDelete from "../screens/UseDelete";
 import ProfileView from "../screens/ProfileView";
 import AddHorarios from "../screens/AddHorarios";
 import EditHorarios from "../screens/EditHorarios";
+import Favoritos from "../screens/Favoritos";
 //import Agendamento from "../screens/Agendamento";
 //Service
 import AddServico from "../screens/service/AddServico";
@@ -25,6 +26,7 @@ import TelaServico from "../screens/service/TelaServico";
 import AddFotos from "../screens/service/AddFotos";
 import EditProfile from "../screens/EditProfile";
 import EditServico from "../screens/service/EditServico";
+import ViewServico from "../screens/service/ViewServico";
 //Endereco
 import Mapa from "../components/utils/Mapa";
 import Endereco from "../screens/Endereco";
@@ -84,7 +86,9 @@ const Main = () => {
       <MainStack.Screen name="EditServico" component={EditServico} />
       <MainStack.Screen name="UseDelete" component={UseDelete} />
       <MainStack.Screen name="ProfileView" component={ProfileView} />
+      <MainStack.Screen name="ViewServico" component={ViewServico} />
       <MainStack.Screen name="AddHorarios" component={AddHorarios} />
+      <MainStack.Screen name="Favoritos" component={Favoritos} />
       <MainStack.Screen name="EditHorarios" component={EditHorarios} />
     </MainStack.Navigator>
   );

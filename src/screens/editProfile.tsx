@@ -368,14 +368,7 @@ export default function EditProfile({ navigation, route}) {
               }}
              disabled={loading===(false)}
             />
-             <Button
-                    color={themeColor.danger}
-                    text={"Excluir"}
-                    onPress={deleteServico}
-                    style={{
-                      marginTop: 10,
-                    }}
-                  />
+           
 </View>
     </ScrollView>
     </Layout>

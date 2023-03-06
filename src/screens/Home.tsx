@@ -121,6 +121,13 @@ export default function ({ navigation }) {
           />
         }
         leftAction={onOpen}
+        rightContent={
+          <Ionicons
+            name="heart"
+            size={25}
+            color={"#EF8F86"}
+          />}
+          rightAction={() => navigation.navigate("Favoritos")}
       />
       <Modalize ref={modalizeRef} snapPoint={220}>
         <View
@@ -231,16 +238,21 @@ export default function ({ navigation }) {
         
       </ScrollView>
       <View style={{margin:10}}>
-    { /* <TouchableOpacity style={{alignItems:"center"}}>
-      <Image
+        <View style={{ margin:10}}>
+     <TouchableOpacity onPress={() =>
+            navigation.navigate("Favoritos")
+          } >
+    <Image
           style={{width: 80,
             height: 80,
             borderRadius: 150 / 2,
-            left:10, }}
+             }}
           source={require("../../assets/usuario.png")}
-        />
-        <Text>Favoritos</Text>
-          </TouchableOpacity>*/}
+          />
+          
+        <Text style={{fontSize:13}}>Categorias</Text>
+          </TouchableOpacity>
+          </View>
       <FlatList
         data={dadosFiltrados}
         keyExtractor={(item) => item.id}

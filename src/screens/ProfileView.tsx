@@ -235,7 +235,7 @@ export default function ProfileView({ navigation }) {
         <TouchableOpacity
           activeOpacity={0.7}
         onPress={()=>//Abrir({servicoID:item.id}) 
-                navigation.navigate("TelaServico", { servicoID: item.id, userpro:item.pro, userID:userID })
+                navigation.navigate("ViewServico", { servicoID: item.id, userpro:item.pro, userID:userID })
            }
         >
           <Image style={styles.image1} source={{ uri: item.urlfoto }} />

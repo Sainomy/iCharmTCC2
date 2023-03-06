@@ -9,6 +9,7 @@ import {
   Alert,
   AlertButton,
   FlatList,
+  Pressable,
 } from "react-native";
 import {
   Layout,
@@ -85,14 +86,46 @@ export default function SecondScreen({ navigation }) {
             {item.cidade}, {item.uf}{" "}
           </Text>
         </View>
-        <Ionicons
-          name="trash"
-          size={20}
-          color={isDarkmode ? themeColor.white100 : themeColor.black}
-          style={{ margin: 10 }}
-        />
+        <Pressable
+          onPress={() => {
+            LongClick(item);
+          }}
+        >
+          <Ionicons
+            name="trash"
+            size={20}
+            color={isDarkmode ? themeColor.white100 : themeColor.black}
+            style={{ margin: 10 }}
+          />
+        </Pressable>
       </View>
     );
+  };
+
+  const LongClick = (item) => {
+    const cancelBtn: AlertButton = {
+      text: "Voltar",
+      onPress: () => {
+        navigation.goBack();
+      },
+    };
+    const deleteBtn: AlertButton = {
+      text: "Apagar",
+      onPress: () => {
+        const user = auth.currentUser.uid;
+        const apagar = firestore
+          .collection("Usuario")
+          .doc(user)
+          .collection("Endereco")
+          .doc(item.id);
+        apagar.delete();
+      },
+    };
+
+    Alert.alert(`Deseja excluir seu comentários`, " ou voltar?", [
+      deleteBtn,
+      cancelBtn,
+    ]);
   };
 
   buscarCep = () => {

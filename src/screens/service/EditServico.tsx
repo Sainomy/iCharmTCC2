@@ -207,9 +207,7 @@ export default function EditServico({ navigation }) {
       .doc(auth.currentUser.uid)
       .collection("Servico")
       .doc(servicoID)
-      .delete().then(function(){
-        navigation.goBack();
-    });
+      .delete();
   };
  
   if(deletado===false){

@@ -31,12 +31,12 @@ export default function UseDelete({ navigation }) {
     }).catch(function(error){});
   }*/}
   const deletarUsuario = async () => {
-    var user = auth.currentUser;
-    const reference =
-     await firestore.collection("Usuario")
-      .doc(auth.currentUser.uid);
+    const user = auth.currentUser;
+  //  const reference =
+ //    await firestore.collection("Usuario")
+   //   .doc(auth.currentUser.uid);
 
-      reference.delete();
+   //   reference.delete();
       user.delete().then(function(){
         signOut(auth);
    
