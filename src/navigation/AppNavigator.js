@@ -16,7 +16,6 @@ import Profile from "../screens/Profile";
 import UseDelete from "../screens/UseDelete";
 import ProfileView from "../screens/ProfileView";
 import AddHorarios from "../screens/AddHorarios";
-import EditHorarios from "../screens/EditHorarios";
 import Favoritos from "../screens/Favoritos";
 //import Agendamento from "../screens/Agendamento";
 //Service
@@ -89,7 +88,6 @@ const Main = () => {
       <MainStack.Screen name="ViewServico" component={ViewServico} />
       <MainStack.Screen name="AddHorarios" component={AddHorarios} />
       <MainStack.Screen name="Favoritos" component={Favoritos} />
-      <MainStack.Screen name="EditHorarios" component={EditHorarios} />
     </MainStack.Navigator>
   );
 };

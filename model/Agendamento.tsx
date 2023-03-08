@@ -6,6 +6,7 @@ export class Agendamento {
     public servico: string;
     public pro: string;
     public cli: string;
+    public nomecli: string;
         
 
     constructor(obj?: Partial<Agendamento>) {
@@ -16,6 +17,7 @@ export class Agendamento {
             this.servico = obj.servico
             this.pro = obj.pro
             this.cli = obj.cli
+            this.nomecli = obj.nomecli
         }
     }
 
@@ -27,6 +29,7 @@ export class Agendamento {
             "servico": "${this.data}"
             "pro": "${this.pro}"
             "cli": "${this.cli}"
+            "nomecli": "${this.nomecli}"
         }`
 
         //const fields = Object.values(this).join(', ')

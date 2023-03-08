@@ -354,8 +354,7 @@ export default function ProfileView({ navigation }) {
           )}
         <Text style={styles.text}>{usuario.numero}</Text>
         <Text style={styles.text}>{usuario.email}</Text>
-        <Text style={{color: "gray", marginTop:20}}>Sobre:</Text>
-        <Text style={styles.text2}>{usuario.descricao}</Text>
+       
       
      <View style={{flexDirection:"row"}}>
   
@@ -366,7 +365,7 @@ export default function ProfileView({ navigation }) {
             name="heart"
             size={30}
             color={"#EF8F86"}
-            style={{position:"relative", marginTop:5}}
+            style={{position:"relative", marginTop:5, marginLeft:10}}
             onPress={() => {
               const diminui = usuario.curtida - 1;
               setCurtida(diminui);
@@ -382,7 +381,7 @@ export default function ProfileView({ navigation }) {
             name="heart-outline"
             size={30}
             color={"gray"}
-            style={{position:"relative", marginTop:5}}
+            style={{position:"relative", marginTop:5, marginLeft:10}}
             onPress={() => {     
               const diminui = usuario.curtida + 1;
               setCurtida(diminui);
@@ -396,6 +395,8 @@ export default function ProfileView({ navigation }) {
           )}
           
           </View>
+          <Text style={{color: "gray", marginTop:20}}>Sobre:</Text>
+        <Text style={styles.text2}>{usuario.descricao}</Text>
           <View style={{flexDirection:"row", marginTop:10}}>
           <Ionicons name="pin" size={25} color={"black"}/>
             <Text style={{marginLeft:5, fontSize:20}}>Endereços</Text>

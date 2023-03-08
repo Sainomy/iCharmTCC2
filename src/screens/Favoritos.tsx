@@ -11,11 +11,14 @@ import { Text, TopNav, useTheme, themeColor } from "react-native-rapi-ui";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { auth, firestore } from "../../firebase";
 import { Ionicons } from "@expo/vector-icons";
+import { Usuario } from "../../model/Usuario";
 
 export default function Favoritos({ navigation }) {
   const { isDarkmode, setTheme } = useTheme();
   const [loading, setLoading] = useState(true); // Set loading to true on component mount
-  const [favoritos, setFavoritos] = useState ([ ]);
+  const [favoritos, setFavoritos] = useState([ ]);
+  const [usuario, setUsuario] = useState < Partial < Usuario >> ({});
+  const [pickedImagePath, setPickedImagePath] = useState("");
  
   useEffect(() => {
     const subscriber = firestore
@@ -35,9 +38,26 @@ export default function Favoritos({ navigation }) {
       });
     // Unsubscribe from events when no longer in use
     return () => subscriber();
-  }, []);
+  }, [favoritos]);
+
+  const buscar = (item) => {
+    useEffect(() => {
+      const subscriber = firestore
+        .collection("Usuario")
+        .doc(item.id)
+        .onSnapshot((documentSnapshot) => {
+          setUsuario(documentSnapshot.data());
+  
+         
+        });
+      return () => subscriber();
+    }, [usuario]);
+  }
+  
 
   const ItemView = ({ item }) => {
+  
+  
     return (
       // Flat List Item
       // coloca alinhamento em linha justificado flex-start
@@ -52,7 +72,8 @@ export default function Favoritos({ navigation }) {
         {/* // coloca alinhamento em coluna justificado flex-start */}
         <View style={styles.alinhamentoColuna}>
           <Text style={styles.itemStylee}>{item.nome}</Text>
-          <Text style={styles.itemStyle}>{item.descricao} </Text>
+          <Text style={styles.itemStylee1}>{item.descricao} </Text>
+          <Text>{usuario.nome}</Text>
           {/* fecha alinhamento colunas */}
           {/* <Stars stars={item.stars} showNumber={true} />*/}
           {/*  <RatingBar />*/}
@@ -98,6 +119,7 @@ export default function Favoritos({ navigation }) {
     //  ItemSeparatorComponent={ItemSeparatorView}
     renderItem={ItemView}
   />
+   
     </SafeAreaView>
   );
 }
@@ -108,6 +130,11 @@ const styles = StyleSheet.create({
   },
   itemStylee: {
     fontSize: 20,
+    padding: 5,
+    marginTop: 2,
+  },
+  itemStylee1: {
+    fontSize: 12,
     padding: 5,
     marginTop: 2,
   },

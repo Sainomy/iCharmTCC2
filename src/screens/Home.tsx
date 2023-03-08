@@ -91,7 +91,7 @@ export default function ({ navigation }) {
            
           />
           </View>
-          <Text style={styles.itemStylee}>{item.descricao} </Text>
+          <Text style={styles.itemStylee1}>{item.descricao} </Text>
          
         </View>
       </View>
@@ -277,6 +277,11 @@ const styles = StyleSheet.create({
   },
   containerSafeArea: {
     flex: 1,
+  },
+  itemStylee1: {
+    fontSize: 12,
+    padding: 5,
+    marginTop: 2,
   },
   itemStylee: {
     fontSize: 20,

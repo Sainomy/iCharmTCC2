@@ -189,28 +189,6 @@ export default function ({ navigation }) {
             placeholder="Dia/Mês/Ano"
           ></TextInput>
 
-          <Timeline
-            data={dadosFiltrados}
-            circleSize={20}
-            circleColor="#D76348"
-            lineColor="#ff9797"
-            timeContainerStyle={{ minWidth: 52, marginTop: -5 }}
-            timeStyle={{
-              textAlign: "center",
-              backgroundColor: "#D76348",
-              color: "white",
-              padding: 10,
-              borderRadius: 13,
-              marginTop: 10,
-              marginLeft: 10,
-            }}
-            descriptionStyle={{ color: "gray" }}
-            options={{
-              style: { paddingTop: 5 },
-            }}
-            isUsingFlatlist={true}
-          />
-
           {/*   <AgendaScreen />*/}
           {/* <FlatList
             data={dadosFiltrados}

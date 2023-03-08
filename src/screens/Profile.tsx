@@ -30,14 +30,15 @@ import Mapa from "../screens/utils/Mapa"
 import MapView, { Marker } from "react-native-maps";
 import { ScrollView } from "react-native-gesture-handler";
 import { Modalize } from "react-native-modalize";
-import MeusServicos from "./service/MeusServicos";
+import { Horarios } from "../../model/Horarios";
 
 export default function Profile({ navigation }) {
   const { isDarkmode, setTheme } = useTheme();
-  const [addhr, setAddhr] = useState(true);
+
   const modalizeRef = useRef(null);
   const [comentarios, setComentarios] = useState([]);
   const [usuario, setUsuario] = useState < Partial < Usuario >> ({});
+  const [horarios, setHorarios] =  useState < Partial < Horarios >> ({});
   const [servicos, setServicos] = useState([]); // Initial empty array of users
   const [itemLista, setItemLista] = useState({
     ...itemLista,
@@ -46,14 +47,7 @@ export default function Profile({ navigation }) {
   });
   const [pickedImagePath, setPickedImagePath] = useState("");
   const route = useRoute();
-  const editado = (route.params); 
-  
-  {  /*if (editado == null) {
-      setAddhr(false);
-    } else {
-      setAddhr(true);
-    };*/}
-  
+
   useEffect(() => {
     const subscriber = firestore
       .collection("Usuario")
@@ -112,6 +106,29 @@ export default function Profile({ navigation }) {
     return () => subscriber();
   }, []);
 
+
+    useEffect(() => {
+      const subscriber = firestore
+        .collection("Usuario")
+        .doc(auth.currentUser.uid)
+        .collection("Horarios")
+        .onSnapshot((querySnapshot) => {
+          const horarios = [];
+          querySnapshot.forEach((documentSnapshot) => {
+            horarios.push({
+              ...documentSnapshot.data(),
+              key: documentSnapshot.id,
+            });
+          });
+          setHorarios(horarios);
+        
+        });
+      // Unsubscribe from events when no longer in use
+      return () => subscriber();
+    }, [horarios]);
+
+  
+ 
   const ItemView = ({ item }) => {
     return (
       <View style={styles.alinhamentoLinha}>
@@ -210,28 +227,26 @@ export default function Profile({ navigation }) {
           )}
         <Text style={styles.text}>{usuario.numero}</Text>
         <Text style={styles.text}>{usuario.email}</Text>
+        <Text style={styles.text1}>{usuario.curtida}{  <Ionicons
+            name="heart"
+            size={26}
+            color={"#EF8F86"}
+            style={{  position:"absolute", marginTop:50}}
+           
+          /> }</Text>
+        
         {usuario.pro === true && (
           <View>
-        {addhr === true && (
+       
              <Button
              color="#EF8F86"
              style={{ marginTop: 20 }}
              text="Personalizar Horários"
              onPress={() => {
-               navigation.navigate("AddHorarios");
+               navigation.navigate("AddHorarios", {idhora:horarios.id});
              }}
-           />
-          )}
-          {addhr === null && (
-             <Button
-             color="#EF8F86"
-             style={{ marginTop: 20 }}
-             text="Editar Horários"
-             onPress={() => {
-               navigation.navigate("EditHorarios");
-             }}
-           />
-          )}
+           /> 
+         
           </View>
         )}
         <Text style={{color: "gray", marginTop:20}}>Sobre:</Text>
@@ -379,6 +394,11 @@ const styles = StyleSheet.create({
     marginTop: 10,
     textAlign: "right",
     
+    position:"relative"
+  },
+  text1: {
+    fontSize: 22,
+    textAlign: "left",
     position:"relative"
   },
   text2: {

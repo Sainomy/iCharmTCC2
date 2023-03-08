@@ -31,7 +31,7 @@ import * as ImagePicker from "expo-image-picker";
 export default function SecondScreen({ navigation }) {
   const { isDarkmode } = useTheme();
   const [pro, setPro] = useState(auth.currentUser.uid);
-  const [hora8, setHora8] = useState(false);
+  const [hora8, setHora8] = useState(true);
   const [hora8t, setHora8t] = useState("08:00");
   const [hora9, setHora9] = useState(true);
   const [hora9t, setHora9t] = useState("09:00");
@@ -69,13 +69,13 @@ export default function SecondScreen({ navigation }) {
     .collection("Usuario")
     .doc(auth.currentUser.uid)
     .collection("Horarios")
-    .doc();
+    .doc("1");
 
   const enviarDados = () => {
    
     referenceHorarios
       .set({
-        id: 1,
+        editado: true,
         hora8: hora8t,
         hora9: hora9t,
         hora10: hora10t,
@@ -351,7 +351,8 @@ export default function SecondScreen({ navigation }) {
                  
                     color="#EF8F86"
                     text={"Adicionar"}
-                    onPress={() => { enviarDados(); setEditado(true) }}
+                    onPress={() => { enviarDados(); setEditado(true); 
+                     }}
                     style={{
                       marginTop: 20,
                     }}
