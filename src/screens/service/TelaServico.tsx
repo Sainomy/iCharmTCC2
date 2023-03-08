@@ -26,21 +26,12 @@ export default function TelaServico({navigation} ) {
   const [pro, setPro] = useState("");
   const [cli, setCli] = useState(auth.currentUser.uid);
   const [nomecli, setNomeCli] = useState("");
-  const [agendamento, setAgendamento] = useState({
-    id: "",
-    item: [],
-  });
 
   const [servico, setServico] = useState  < Servico >({});
   const [usuario, setUsuario] = useState  < Usuario >({});
   const [usuariocli, setUsuarioCli] = useState  < Usuario >({});
   const [horarios, setHorarios] = useState ([ ]);
   const [fotos, setFotos] = useState < Foto > ({});
-  const [itemLista, setItemLista] = useState({
-    ...itemLista,
-    id: "",
-    title: "",
-  });
 
  { /*function onOpen() {
     modalizeRef.current?.open();
@@ -48,9 +39,6 @@ export default function TelaServico({navigation} ) {
   const route = useRoute();
   const {servicoID}=  route.params
   const {userpro} = route.params
-  const {userID} = route.params
-  const [service, setService] = useState(servicoID);
-
 
   const [pickedImagePath, setPickedImagePath] = useState("");
   const [pickedImagePath2, setPickedImagePath2] = useState("");
@@ -109,13 +97,6 @@ export default function TelaServico({navigation} ) {
     return () => subscriber();
   }, [usuario]);
 
-  const referenceAgendamentoPro = 
-  firestore.collection("Usuario")
-  .doc(userpro)
-  .collection("Agendamento")
-  .doc();
-
-
   useEffect(() => {
     const subscriber = firestore
       .collection("Usuario")
@@ -127,85 +108,6 @@ export default function TelaServico({navigation} ) {
       });
     return () => subscriber();
   }, [usuariocli]);
- 
-
- {/* const referenceAgendamento = firestore
-  .collection("Usuario")
-  .doc(auth.currentUser.uid)
-  .collection("Agendamento")
-  .doc();
-*/ }
- 
-
-{/*const enviarDados = () => {
-  referenceAgendamento
-    .set({
-      id: referenceAgendamento.id,
-      description: usuario.nome,
-      time: hora,
-      title:servico.nomecat,
-      data: dataString,
-      NOrdem: NOrdem,
-      pro: userpro,
-      cli: nomecli,
-    }) 
-    .then(() => {
-      const cancelBtn: AlertButton = {
-        text: "Acompanhar agendamento",
-        onPress: () => {
-          navigation.navigate("Agenda");
-        },
-      };
-      const deleteBtn: AlertButton = {
-        text: "Voltar",
-        onPress: () => {
-          navigation.goBack()
-        },
-      };
-
-      Alert.alert(
-        `Aguarde a confirmação do agendamento!`,
-        " ou voltar?",
-        [deleteBtn, cancelBtn]
-      );
-    });
-};*/}
-const enviarDadosPro = () => {
-  referenceAgendamentoPro.set({
-      id: referenceAgendamentoPro.id,
-      description: nomecli,
-      time: hora,
-      title:servico.nomecat,
-      data: dataString,
-      NOrdem: NOrdem,
-      pro: userpro,
-      cli: cli,
-      nomecli: nomecli,
-    }).then(() => {
-      console.log(data);
-      const cancelBtn: AlertButton = {
-        text: "Aguarde a confirmacao do agendamento",
-        onPress: () => {
-          navigation.navigate("Agenda");
-        },
-      };
-      const deleteBtn: AlertButton = {
-        text: "Voltar",
-        onPress: () => {
-          navigation.goBack()
-        },
-      };
-
-      Alert.alert(
-        `Aguarde a confirmação do agendamento!`,
-        " ou voltar?",
-        [deleteBtn, cancelBtn]
-      );
-    });
-
-};
-
-
 
 const LongClickF=(item)=>{
   const cancelBtn: AlertButton = {
@@ -249,205 +151,7 @@ const LongClickF=(item)=>{
     );
   };
 
-  function onOpen() {
-    modalizeRef.current?.open();
-  }
-  useEffect(() => {
-    const subscriber = firestore
-      .collection("Usuario")
-      .doc(userpro)
-      .collection("Horarios")
-      .onSnapshot((querySnapshot) => {
-        const horarios = [];
-        querySnapshot.forEach((documentSnapshot) => {
-          horarios.push({
-            ...documentSnapshot.data(),
-            key: documentSnapshot.id,
-          });
-        });
-        setHorarios(horarios);
-      
-      });
-    // Unsubscribe from events when no longer in use
-    return () => subscriber();
-  }, []);
  
-    let [selectedId, setSelectedId] = useState(null);
-  
-    
-     const ItemView2 = ({ item }) => {
-      return (
-       <ScrollView  
-        directionalLockEnabled={false}
-              horizontal={true}>
-           <Pressable
-        style={({ pressed }) => [{ backgroundColor: pressed ? '#f1f1f1' : 'transparent'}]}
-        onPress={() => {  setData(item.hora8); setNOrdem(8);}}
-    >
-        <View>
-            <Text style={{margin:10, color: "gray"}}>  {item.hora8}  </Text>
-           
-        </View>
-    </Pressable>
-        <Pressable
-        style={({ pressed }) => [{ backgroundColor: pressed ? '#f1f1f1' : 'transparent'}]}
-        onPress={() => { setHora(item.hora9); setNOrdem(9); }}
-    >
-        <View>
-            <Text style={{margin:10, color: "gray"}}> {item.hora9} </Text>
-           
-        </View>
-    </Pressable>
-    <Pressable
-        style={({ pressed }) => [{ backgroundColor: pressed ? '#f1f1f1' : 'transparent'}]}
-        onPress={() => { setHora(item.hora10); setNOrdem(10); }}
-    >
-        <View>
-            <Text style={{margin:10, color: "gray"}}>  {item.hora10}  </Text>
-           
-        </View>
-    </Pressable>
-    <Pressable
-        style={({ pressed }) => [{ backgroundColor: pressed ? '#f1f1f1' : 'transparent'}]}
-        onPress={() => { setHora(item.hora11); setNOrdem(11); }}
-    >
-        <View>
-            <Text style={{margin:10, color: "gray"}}>  {item.hora11}  </Text>
-           
-        </View>
-    </Pressable>
-    <Pressable
-        style={({ pressed }) => [{ backgroundColor: pressed ? '#f1f1f1' : 'transparent'}]}
-        onPress={() => {setHora(item.hora12);  setNOrdem(12);  }}
-    >
-        <View>
-            <Text style={{margin:10, color: "gray"}}>  {item.hora12}  </Text>
-           
-        </View>
-    </Pressable>
-    <Pressable
-        style={({ pressed }) => [{ backgroundColor: pressed ? '#f1f1f1' : 'transparent'}]}
-        onPress={() => { setHora(item.hora13);  setNOrdem(13); }}
-    >
-        <View>
-            <Text style={{margin:10, color: "gray"}}>  {item.hora13}  </Text>
-           
-        </View>
-    </Pressable>
-    <Pressable
-        style={({ pressed }) => [{ backgroundColor: pressed ? '#f1f1f1' : 'transparent'}]}
-        onPress={() => { setHora(item.hora14);  setNOrdem(14);  }}
-    >
-        <View>
-            <Text style={{margin:10, color: "gray"}}>  {item.hora14}  </Text>
-           
-        </View>
-    </Pressable>
-    <Pressable
-        style={({ pressed }) => [{ backgroundColor: pressed ? '#f1f1f1' : 'transparent'}]}
-        onPress={() => {setHora(item.hora15); setNOrdem(15);  }}
-    >
-        <View>
-            <Text style={{margin:10, color: "gray"}}>  {item.hora15}  </Text>
-           
-        </View>
-    </Pressable>
-    <Pressable
-        style={({ pressed }) => [{ backgroundColor: pressed ? '#f1f1f1' : 'transparent'}]}
-        onPress={() => { setHora(item.hora16); setNOrdem(16);  }}
-    >
-        <View>
-            <Text style={{margin:10, color: "gray"}}>  {item.hora16}  </Text>
-           
-        </View>
-    </Pressable>
-    <Pressable
-        style={({ pressed }) => [{ backgroundColor: pressed ? '#f1f1f1' : 'transparent'}]}
-        onPress={() => { setHora(item.hora17); setNOrdem(17);  }}
-    >
-        <View>
-            <Text style={{margin:10, color: "gray"}}>  {item.hora17}  </Text>
-           
-        </View>
-    </Pressable>
-    <Pressable
-        style={({ pressed }) => [{ backgroundColor: pressed ? '#f1f1f1' : 'transparent'}]}
-        onPress={() => {setHora(item.hora18);  setNOrdem(18);  }}
-    >
-        <View>
-            <Text style={{margin:10, color: "gray"}}>  {item.hora18}  </Text>
-           
-        </View>
-    </Pressable>
-    <Pressable
-        style={({ pressed }) => [{ backgroundColor: pressed ? '#f1f1f1' : 'transparent'}]}
-        onPress={() => { setHora(item.hora19); setNOrdem(19);  }}
-    >
-        <View>
-            <Text style={{margin:10, color: "gray"}}>  {item.hora19}  </Text>
-           
-        </View>
-    </Pressable>
-    <Pressable
-        style={({ pressed }) => [{ backgroundColor: pressed ? '#f1f1f1' : 'transparent'}]}
-        onPress={() => { setHora(item.hora20); setNOrdem(20);  }}
-    >
-        <View>
-            <Text style={{margin:10, color: "gray"}}>  {item.hora20}  </Text>
-           
-        </View>
-    </Pressable>
-    <Pressable
-        style={({ pressed }) => [{ backgroundColor: pressed ? '#f1f1f1' : 'transparent'}]}
-        onPress={() => {setHora(item.hora21); setNOrdem(21);  }}
-    >
-        <View>
-            <Text style={{margin:10, color: "gray"}}>  {item.hora21}  </Text>
-           
-        </View>
-    </Pressable>
-    <Pressable
-        style={({ pressed }) => [{ backgroundColor: pressed ? '#f1f1f1' : 'transparent'}]}
-        onPress={() => { setHora(item.hora22); setNOrdem(22);  }}
-    >
-        <View>
-            <Text style={{margin:10, color: "gray"}}>  {item.hora22}  </Text>
-           
-        </View>
-    </Pressable>
-    <Pressable
-        style={({ pressed }) => [{ backgroundColor: pressed ? '#f1f1f1' : 'transparent'}]}
-        onPress={() => { setHora(item.hora23); setNOrdem(23);  }}
-    >
-        <View>
-            <Text style={{margin:10, color: "gray"}}>  {item.hora23}  </Text>
-           
-        </View>
-    </Pressable>
-    </ScrollView>
-      );
-    };
-    
-  const hideDatePicker = () => {
-    setDatePickerVisibility(false);
-  };
-  const showDatePicker = () => {
-    setDatePickerVisibility(true);
-  };
-  const handleConfirm = (date) => {
-   // console.warn("A data foi selecionada: " + date);
-    const formattedDate =
-      date.getDate().toString().padStart(2, "0") +
-      "/" +
-      (date.getMonth() + 1).toString().padStart(2, "0") +
-      "/" +
-      date.getFullYear();
-    console.log(formattedDate);
-    setDataString(formattedDate);
-    setData(date.toString());
-    hideDatePicker();
-  };
-    
   return (
     <Layout>
       <TopNav
@@ -468,80 +172,6 @@ const LongClickF=(item)=>{
         leftAction={() => navigation.goBack()}
       />
  
-   <Modalize ref={modalizeRef} snapPoint={560}>
-    
-      <View
-        style={{
-          flex: 1,
-          height: 560,
-          backgroundColor: isDarkmode ? themeColor.dark : themeColor.white,
-        }}
-      >
-        <View style={{ alignItems:"center", marginTop:15}}>
-         {usuario.urlfoto !== "" && (
-            <Image source={{ uri: usuario.urlfoto }} style={styles.image3} />
-          )}
-          {usuario.urlfoto === "" && (
-            <Image
-              source={require("../../../assets/usuario.png")}
-              style={styles.image3}
-            />
-          )}
-        
-        <Text style={{fontSize:18}}>{usuario.nome}</Text>
-        <Divider style={{width:"100%", margin:5, marginTop:20}}/>
-        
-        <Text style={{ fontSize:20, margin:10}}>{servico.nomecat} ....................             
-         R${servico.valor}</Text>
-         </View>
-        <Divider style={{width:"100%", margin:5, marginTop:20}}/>
-        <Text style={{margin:10, fontSize:20}}> Data: {dataString}</Text>
-        <Button
-              title="Calendário"
-              style={{ width: 25 }}
-              text="Calendário"
-              color={"#EF8F86"}
-              leftContent={
-                <Ionicons name="calendar" size={20} color={"white"}>
-                  {" "}
-                </Ionicons>
-              }
-              onPress={showDatePicker}
-            />
-            <DateTimePickerModal
-              isVisible={isDatePickerVisible}
-              mode="date"
-              onConfirm={handleConfirm}
-              onCancel={hideDatePicker}
-            />
-       
-       
-        
-
-        <View style={{margin:10}}>
-        <Divider />
-        <Text style={{fontSize:20, marginTop:15}}>Horário: {hora}</Text>
-
-    { /*   <ScrollView  
-      directionalLockEnabled={false}
-            horizontal={true}>*/}
-        <FlatList
-        numColumns={5}
-        data={horarios}
-        renderItem={ItemView2}
-        keyExtractor={item => item.id}
-        extraData={selectedId}
-      />
-    {  /*</ScrollView>*/}
-        <Button
-              color="#EF8F86"
-              style={{ marginTop: 20 }}
-              text="Agendar"
-              onPress={enviarDadosPro}
-            />
-        </View>
-      </View>
-    </Modalize>
     <ScrollView style={styles.screen}>
     <View style={ {shadowColor: "#171717",
     shadowOffset: { width: -2, height: 4 },
@@ -610,24 +240,7 @@ const LongClickF=(item)=>{
                }}
             />
     </ScrollView>
-    <View style={{marginRight:60, marginLeft:60, marginTop:10}}>      
-        <Button
-          color="#EF8F86"
-          text="Marcar Horário"
-          onPress={onOpen}
-          style={{
-            marginTop: 10,
-            backgroundColor: "#E8A998",
-          }}
-          leftContent={
-            <Ionicons
-              name="calendar"
-              size={30}
-              color={isDarkmode ? themeColor.white100 : themeColor.white}  
-            />
-        }
-        />
-        </View>
+   
       </ScrollView>
     </Layout>
   );

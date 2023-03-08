@@ -2,7 +2,7 @@ import { useNavigation, useRoute} from "@react-navigation/core";
 import React, {  useState, useEffect, useRef } from "react";
 import { Dimensions,View, StyleSheet, Image, Alert, Pressable, TouchableOpacity, TextInput,
   FlatList,  AlertButton,} from "react-native";
-import { auth, firestore, storage } from "../../../firebase";
+import { auth, firestore, storage,} from "../../../firebase";
 import { Usuario } from "../../../model/Usuario";
 import { Servico } from "../../../model/Servico";
 import { Foto } from "../../../model/Foto"
@@ -14,7 +14,7 @@ import { Agendamento } from "../../../model/Agendamento";
 import { Divider} from 'react-native-paper';
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 
-export default function ViewServico({navigation} ) {
+export default function TelaServico({navigation} ) {
   const { isDarkmode } = useTheme();
   const modalizeRef = useRef(null);
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
@@ -25,20 +25,14 @@ export default function ViewServico({navigation} ) {
   const [NOrdem, setNOrdem] = useState(Number);
   const [pro, setPro] = useState("");
   const [cli, setCli] = useState(auth.currentUser.uid);
-  const [agendamento, setAgendamento] = useState({
-    id: "",
-    item: [],
-  });
+  const [nomecli, setNomeCli] = useState("");
+  const [nomepro, setNomePro] = useState("");
 
   const [servico, setServico] = useState  < Servico >({});
   const [usuario, setUsuario] = useState  < Usuario >({});
+  const [usuariocli, setUsuarioCli] = useState  < Usuario >({});
   const [horarios, setHorarios] = useState ([ ]);
   const [fotos, setFotos] = useState < Foto > ({});
-  const [itemLista, setItemLista] = useState({
-    ...itemLista,
-    id: "",
-    title: "",
-  });
 
  { /*function onOpen() {
     modalizeRef.current?.open();
@@ -48,6 +42,7 @@ export default function ViewServico({navigation} ) {
   const {userpro} = route.params
   const {userID} = route.params
   const [service, setService] = useState(servicoID);
+
 
   const [pickedImagePath, setPickedImagePath] = useState("");
   const [pickedImagePath2, setPickedImagePath2] = useState("");
@@ -106,15 +101,29 @@ export default function ViewServico({navigation} ) {
     return () => subscriber();
   }, [usuario]);
 
-  const referenceAgendamento = firestore
+  
+
+
+  useEffect(() => {
+    const subscriber = firestore
+      .collection("Usuario")
+      .doc(auth.currentUser.uid)
+      .onSnapshot((documentSnapshot) => {
+        setUsuarioCli(documentSnapshot.data());
+       setNomeCli(usuariocli.nome)
+       
+      });
+    return () => subscriber();
+  }, [usuariocli]);
+ 
+  
+const enviarDados = () => {
+  const referenceAgendamento =  firestore
   .collection("Usuario")
   .doc(auth.currentUser.uid)
   .collection("Agendamento")
   .doc();
-
-const enviarDados = () => {
-  referenceAgendamento
-    .set({
+  referenceAgendamento.set({
       id: referenceAgendamento.id,
       description: usuario.nome,
       time: hora,
@@ -123,10 +132,10 @@ const enviarDados = () => {
       NOrdem: NOrdem,
       pro: userpro,
       cli: cli,
-    })
-    .then(() => {
+      nomecli: usuariocli.nome,
+    }).then(() => {
       const cancelBtn: AlertButton = {
-        text: "Acompanhar agendamento",
+        text: "Visualizar o agendamento",
         onPress: () => {
           navigation.navigate("Agenda");
         },
@@ -144,7 +153,48 @@ const enviarDados = () => {
         [deleteBtn, cancelBtn]
       );
     });
+
 };
+
+const enviarDadosPro = () => {
+  const referenceAgendamentoPro =  firestore
+  .collection("Usuario")
+  .doc(userpro)
+  .collection("Agendamento")
+  .doc();
+  referenceAgendamentoPro.set({
+      id: referenceAgendamentoPro.id,
+      description: usuariocli.nome,
+      time: hora,
+      title:servico.nomecat,
+      data: dataString,
+      NOrdem: NOrdem,
+      pro: userpro,
+      cli: cli,
+      nomepro: usuario.nome,
+    }).then(() => {
+      const cancelBtn: AlertButton = {
+        text: "Aguarde a confirmacao do agendamento",
+        onPress: () => {
+          navigation.navigate("Agenda");
+        },
+      };
+      const deleteBtn: AlertButton = {
+        text: "Voltar",
+        onPress: () => {
+          navigation.goBack()
+        },
+      };
+
+      Alert.alert(
+        `Aguarde a confirmação do agendamento!`,
+        " ou voltar?",
+        [deleteBtn, cancelBtn]
+      );
+    });
+
+};
+
 
 
 const LongClickF=(item)=>{
@@ -222,7 +272,7 @@ const LongClickF=(item)=>{
               horizontal={true}>
            <Pressable
         style={({ pressed }) => [{ backgroundColor: pressed ? '#f1f1f1' : 'transparent'}]}
-        onPress={() => { shortClick(item); setData(item.hora8); setNOrdem(8);}}
+        onPress={() => {  setHora(item.hora8); setNOrdem(8);}}
     >
         <View>
             <Text style={{margin:10, color: "gray"}}>  {item.hora8}  </Text>
@@ -477,7 +527,7 @@ const LongClickF=(item)=>{
               color="#EF8F86"
               style={{ marginTop: 20 }}
               text="Agendar"
-              onPress={enviarDados}
+              onPress={() => {enviarDados(); enviarDadosPro();}}
             />
         </View>
       </View>
@@ -506,7 +556,7 @@ const LongClickF=(item)=>{
             <Text style={{color:"gray"}}>{servico.descricao}</Text>
             <Text style={{color:"green", textAlign:"left"}}>R${servico.valor}</Text>
             <Text style={{color:"gray", textAlign:"right", marginTop:-22 }}>Tempo: {servico.tempo}</Text>
-           
+            
             </SectionContent>
             </Section>
             </View>
@@ -522,7 +572,7 @@ const LongClickF=(item)=>{
         data={fotos}
         renderItem={ ItemView}
       />
-     
+    
     </ScrollView>
     <View style={{marginRight:60, marginLeft:60, marginTop:10}}>      
         <Button

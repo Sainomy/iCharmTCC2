@@ -9,6 +9,7 @@ import {
   TextInput,
   StyleSheet,
   RefreshControl,
+  Alert,
 } from "react-native";
 import {
   Layout,
@@ -29,6 +30,7 @@ export default function ({ navigation }) {
   const [refreshing, setRefreshing] = useState(false);
   const [selectedDate, setSelectedDate] = React.useState(new Date());
   const [search, setSearch] = useState("");
+  const [user, setUser] = useState(auth.currentUser.uid);
 
   const [dadosFiltrados, setdadosFiltrados] = useState([]);
   const { isDarkmode, setTheme } = useTheme();
@@ -54,27 +56,6 @@ export default function ({ navigation }) {
     return () => subscriber();
   }, []);
 
-  {
-    /* useEffect(() => {
-    const subscriber = firestore
-      .collection("Usuario")
-      .doc(auth.currentUser.uid)
-      .collection("Agendamento")
-      .onSnapshot((querySnapshot) => {
-        const agendamentos = [];
-        querySnapshot.forEach((documentSnapshot) => {
-          agendamentos.push({
-            ...documentSnapshot.data(),
-            key: documentSnapshot.id,
-          });
-        });
-        setAgendamentos(agendamentos);
-      });
-    // Unsubscribe from events when no longer in use
-    return () => subscriber();
-  }, []);
-*/
-  }
   const ItemView = ({ item }) => {
     return (
       <View style={styles.alinhamentoLinha}>
@@ -114,6 +95,28 @@ export default function ({ navigation }) {
   };
   const updateSelectedDate = (date: Date) => {
     onDateChange?.(date);
+  };
+  const alert = () => {
+    const cancelBtn: AlertButton = {
+      text: "Voltar",
+      onPress: () => {
+        navigation.goBack();
+      },
+    };
+    const deleteBtn: AlertButton = {
+      text: "Apagar",
+      onPress: () => {
+        {
+          const apagar = firestore.collection("Usuario").doc();
+          apagar.delete();
+        }
+      },
+    };
+
+    Alert.alert(`Deseja excluir seu comentários`, " ou voltar?", [
+      deleteBtn,
+      cancelBtn,
+    ]);
   };
 
   const data = [
@@ -198,9 +201,11 @@ export default function ({ navigation }) {
             //  }
           />*/}
         </View>
+
         <Timeline
           data={dadosFiltrados}
           circleSize={20}
+          onEventPress={alert()}
           circleColor="#D76348"
           lineColor="#ff9797"
           timeContainerStyle={{ minWidth: 52, marginTop: -5 }}
