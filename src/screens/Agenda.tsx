@@ -19,12 +19,11 @@ import {
   themeColor,
 } from "react-native-rapi-ui";
 import { Ionicons } from "@expo/vector-icons";
-import AgendaScreen from "./AgendaScreen";
 import Timeline from "react-native-timeline-flatlist";
-import { auth, firestore, firebase } from "../../firebase";
+import { auth, firestore } from "../../firebase";
 import { DatePicker } from "react-native-week-month-date-picker";
-import { addDays } from "date-fns";
-import { todayString } from "react-native-calendars/src/expandableCalendar/commons";
+import { Modalize } from "react-native-modalize";
+import { Agendamento } from "../../model/Agendamento";
 
 export default function ({ navigation }) {
   const [refreshing, setRefreshing] = useState(false);
@@ -35,6 +34,7 @@ export default function ({ navigation }) {
   const [dadosFiltrados, setdadosFiltrados] = useState([]);
   const { isDarkmode, setTheme } = useTheme();
   const [agendamentos, setAgendamentos] = useState([]);
+  const [agendamento, setAgendamento] = useState < Partial < Agendamento >> ({});
 
   useEffect(() => {
     const subscriber = firestore
@@ -55,19 +55,6 @@ export default function ({ navigation }) {
     // Unsubscribe from events when no longer in use
     return () => subscriber();
   }, []);
-
-  const ItemView = ({ item }) => {
-    return (
-      <View style={styles.alinhamentoLinha}>
-        <Text style={{ padding: 20, color: "#D76348" }}>{item.time}</Text>
-
-        <View style={styles.alinhamentoColuna}>
-          <Text style={styles.itemStylee}>{item.title} </Text>
-          <Text style={styles.itemStyle}>{item.description} </Text>
-        </View>
-      </View>
-    );
-  };
 
   const searchFilter = (formattedDate) => {
     if (formattedDate) {
@@ -96,40 +83,113 @@ export default function ({ navigation }) {
   const updateSelectedDate = (date: Date) => {
     onDateChange?.(date);
   };
-  const alert = () => {
+
+  const enviarDadosConf = () => {
+    const referenceNotificacaoPro =  firestore
+    .collection("Usuario")
+    .doc(agendamento.pro)
+    .collection("Notificacao")
+    .doc();
+    referenceNotificacaoPro.set({
+        id: referenceNotificacaoPro.id,
+        text: "Horário foi confirmado!",
+        servico: agendamento.title,
+        data: agendamento.data,
+        hora: agendamento.time,
+        pro: agendamento.pro,
+        nome: agendamento.description,
+        cli: agendamento.cli,
+        confir: true,
+      })
+      const referenceNotificacaoCli =  firestore
+    .collection("Usuario")
+    .doc(agendamento.cli)
+    .collection("Notificacao")
+    .doc();
+    referenceNotificacaoCli.set({
+        id: referenceNotificacaoCli.id,
+        text: "Horário foi confirmado!",
+        servico: agendamento.title,
+        data: agendamento.data,
+        hora: agendamento.time,
+        pro: agendamento.pro,
+        nome: agendamento.description,
+        cli: agendamento.cli,
+        confir: true,
+      })
+  };
+  const enviarDadosCancel = () => {
+    const referenceNotificacaoPro =  firestore
+    .collection("Usuario")
+    .doc(agendamento.pro)
+    .collection("Notificacao")
+    .doc();
+    referenceNotificacaoPro.set({
+        id: referenceNotificacaoPro.id,
+        text: "Horário foi cancelado!",
+        servico: agendamento.title,
+        data: agendamento.data,
+        hora: agendamento.time,
+        pro: agendamento.pro,
+        nome: agendamento.description,
+        cli: agendamento.cli,
+        confir: false,
+      })
+      const referenceNotificacaoCli =  firestore
+      .collection("Usuario")
+      .doc(agendamento.cli)
+      .collection("Notificacao")
+      .doc();
+      referenceNotificacaoCli.set({
+          id: referenceNotificacaoCli.id,
+          text: "Horário foi cancelado!",
+          servico: agendamento.title,
+        data: agendamento.data,
+        hora: agendamento.time,
+        pro: agendamento.pro,
+        nome: agendamento.description,
+        cli: agendamento.cli,
+        confir: false,
+        })
+  };
+  
+  const EventPress = (dadosFiltrados) => {
+    setAgendamento(dadosFiltrados);
+    console.log(agendamento.id);
     const cancelBtn: AlertButton = {
-      text: "Voltar",
-      onPress: () => {
-        navigation.goBack();
-      },
+      text: "Confirmar",
+      onPress: () => {{console.log(agendamento.cli); enviarDadosConf();}},
+      style: 'default',
     };
     const deleteBtn: AlertButton = {
-      text: "Apagar",
+      text: "Desmarcar",
+      style: 'destructive',
       onPress: () => {
         {
-          const apagar = firestore.collection("Usuario").doc();
-          apagar.delete();
+         enviarDadosCancel();
+      const apagar = firestore
+      .collection("Usuario")
+      .doc(agendamento.pro)
+      .collection("Agendamento")
+      .doc(agendamento.id);
+    apagar.delete();
+    const apagar2 = firestore
+      .collection("Usuario")
+      .doc(agendamento.cli)
+      .collection("Agendamento")
+      .doc(agendamento.id);
+    apagar2.delete();
         }
       },
     };
 
-    Alert.alert(`Deseja excluir seu comentários`, " ou voltar?", [
+    Alert.alert((agendamento.title) + "\n" + (agendamento.data)+ "\n" + (agendamento.time),   (agendamento.description), [
       deleteBtn,
       cancelBtn,
     ]);
+    
   };
 
-  const data = [
-    {
-      time: "09/05",
-      title: "Maquiagem",
-      description: "09:00",
-    },
-    { time: "10:45", title: "Event 2", description: "Event 2 Description" },
-    { time: "12:00", title: "Event 3", description: "Event 3 Description" },
-    { time: "14:00", title: "Event 4", description: "Event 4 Description" },
-    { time: "16:30", title: "Event 5", description: "Event 5 Description" },
-  ];
   return (
     <SafeAreaView
       style={{
@@ -192,20 +252,11 @@ export default function ({ navigation }) {
             placeholder="Dia/Mês/Ano"
           ></TextInput>
 
-          {/*   <AgendaScreen />*/}
-          {/* <FlatList
-            data={dadosFiltrados}
-            renderItem={ItemView}
-            //  refreshControl={
-            //    <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-            //  }
-          />*/}
         </View>
 
         <Timeline
           data={dadosFiltrados}
           circleSize={20}
-          onEventPress={alert()}
           circleColor="#D76348"
           lineColor="#ff9797"
           timeContainerStyle={{ minWidth: 52, marginTop: -5 }}
@@ -223,6 +274,7 @@ export default function ({ navigation }) {
             style: { paddingTop: 5, marginLeft: 20 },
           }}
           isUsingFlatlist={true}
+          onEventPress={EventPress}
         />
       </DatePicker>
     </SafeAreaView>

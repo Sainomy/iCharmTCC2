@@ -101,9 +101,7 @@ export default function EditProfile({ navigation, route}) {
         pro: usuario.pro,
         urlfoto:  usuario.urlfoto,
       })
-      .then(() => {
-        alert("Salvo com sucesso");
-      })
+     
       .catch((error) => alert(error.message));
   };
 

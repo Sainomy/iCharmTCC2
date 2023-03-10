@@ -6,6 +6,9 @@ export class Agendamento {
     public servico: string;
     public pro: string;
     public cli: string;
+    public title: string;
+    public time: string;
+    public description: string;
     public nomecli: string;
         
 
@@ -17,6 +20,9 @@ export class Agendamento {
             this.servico = obj.servico
             this.pro = obj.pro
             this.cli = obj.cli
+            this.title = obj.title
+            this.description = obj.description
+            this.time = obj.time
             this.nomecli = obj.nomecli
         }
     }
@@ -29,6 +35,9 @@ export class Agendamento {
             "servico": "${this.data}"
             "pro": "${this.pro}"
             "cli": "${this.cli}"
+            "title": "${this.title}"
+            "time": "${this.time}"
+            "description": "${this.description}"
             "nomecli": "${this.nomecli}"
         }`
 

@@ -26,6 +26,7 @@ export default function ({ navigation }) {
   const { isDarkmode, setTheme } = useTheme();
   const auth = getAuth();
   const [usuarios, setUsuarios] = useState([]);
+  const [favoritos, setFavoritos] = useState([ ]);
 
   useEffect(() => {
     const subscriber = firestore
@@ -97,6 +98,45 @@ export default function ({ navigation }) {
       </View>
     );
   };
+  useEffect(() => {
+    const subscriber = firestore
+      .collection("Usuario")
+      .doc(auth.currentUser.uid)
+      .collection("Favoritos")
+      .onSnapshot((querySnapshot) => {
+        const favoritos = [];
+        querySnapshot.forEach((documentSnapshot) => {
+          favoritos.push({
+            ...documentSnapshot.data(),
+            key: documentSnapshot.id,
+          });
+        });
+        setFavoritos(favoritos);
+        setLoading(false);
+      });
+    // Unsubscribe from events when no longer in use
+    return () => subscriber();
+  }, [favoritos]);
+
+  const ItemViewFav = ({ item }) => {
+    return (
+      <View style={{alignItems:"center"}}>
+        <TouchableOpacity
+          activeOpacity={0.7}
+          onPress={() =>
+            //Abrir({servicoID:item.id})
+            navigation.navigate("ProfileView", { userID: item.id })
+          }>
+          <Image style={{width: 50,
+            height: 50,
+            borderRadius: 150 / 2,}} source={{ uri: item.urlfoto }} />
+        </TouchableOpacity>
+        <View >
+          <Text style={{fontSize: 10, padding: 5}}>{item.nome}</Text>      
+        </View>  
+      </View>
+    );
+  };
 
   function onOpen() {
     modalizeRef.current?.open();
@@ -123,9 +163,9 @@ export default function ({ navigation }) {
         leftAction={onOpen}
         rightContent={
           <Ionicons
-            name="heart"
+            name="notifications-outline"
             size={25}
-            color={"#EF8F86"}
+            color={"black"}
           />}
           rightAction={() => navigation.navigate("Favoritos")}
       />
@@ -200,7 +240,7 @@ export default function ({ navigation }) {
           </TouchableOpacity>
         </View>
       </Modalize>
-      <ScrollView style={{marginTop:10}}>
+      <ScrollView style={{marginTop:5}}>
         <View style={{margin:10}}>
       <TextInput
           borderRadius={15}
@@ -217,9 +257,10 @@ export default function ({ navigation }) {
           }
         />
         </View>
+       
         
       <ScrollView
-        style={{ marginTop: 15 }}
+        style={{ marginTop: 5 }}
         directionalLockEnabled={false}
         horizontal={true}
       >
@@ -237,22 +278,103 @@ export default function ({ navigation }) {
         />
         
       </ScrollView>
+      <Text fontWeight="light" style={{marginTop: 5, fontSize:18}}>  <Ionicons
+              name="heart"
+              size={20}
+              color={"#EF8F86"}
+            />Favoritos</Text>
+        <ScrollView
+  style={{ flex: 1, marginTop:5, marginVertical:5 }}
+  directionalLockEnabled={false}
+  horizontal={true}>
+    <FlatList
+     numColumns={2}
+    data={favoritos}
+    keyExtractor={(item) => item.id}
+    //  ItemSeparatorComponent={ItemSeparatorView}
+    renderItem={ItemViewFav}
+  />
+   </ScrollView>
+   <Text fontWeight="light" style={{marginTop: 5, fontSize:18}}>  <Ionicons
+              name="list"
+              size={20}
+              color={"#EF8F86"}
+            />Categorias</Text>
       <View style={{margin:10}}>
-        <View style={{ margin:10}}>
+        
+      <ScrollView
+       
+        directionalLockEnabled={false}
+        horizontal={true}
+      >
+        
      <TouchableOpacity onPress={() =>
             navigation.navigate("Favoritos")
-          } >
+          } style={{alignItems:"center", marginRight: 15}}>
     <Image
-          style={{width: 80,
-            height: 80,
+          style={{width: 50,
+            height: 50,
             borderRadius: 150 / 2,
              }}
-          source={require("../../assets/usuario.png")}
+          source={require("../../assets/make.png")}
           />
           
-        <Text style={{fontSize:13}}>Categorias</Text>
+        <Text style={{fontSize:10}}>Maquiagem</Text>
           </TouchableOpacity>
-          </View>
+          <TouchableOpacity onPress={() =>
+            navigation.navigate("Favoritos")
+          }  style={{alignItems:"center", marginRight: 15}}>
+          <Image
+          style={{width: 50,
+            height: 50,
+            borderRadius: 150 / 2,
+             }}
+          source={require("../../assets/cabelo.png")}
+          />
+          
+        <Text style={{fontSize:10}}>Cabelo</Text>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() =>
+            navigation.navigate("Favoritos")
+          }  style={{alignItems:"center", marginRight: 15}}>
+          <Image
+          style={{width: 50,
+            height: 50,
+            borderRadius: 150 / 2,
+             }}
+          source={require("../../assets/unha.png")}
+          />
+          
+        <Text style={{fontSize:10}}>Unhas</Text>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() =>
+            navigation.navigate("Favoritos")
+          }  style={{alignItems:"center", marginRight: 15}}>
+          <Image
+          style={{width: 50,
+            height: 50,
+            borderRadius: 150 / 2,
+             }}
+          source={require("../../assets/cilios.png")}
+          />
+          
+        <Text style={{fontSize:10}}>Cilíos</Text>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() =>
+            navigation.navigate("Favoritos")
+          }  style={{alignItems:"center", marginRight: 15}}>
+          <Image
+          style={{width: 50,
+            height: 50,
+            borderRadius: 150 / 2,
+             }}
+          source={require("../../assets/pele.png")}
+          />
+          
+        <Text style={{fontSize:10}}>Limpeza Facial</Text>
+          </TouchableOpacity>
+          
+          </ScrollView>
       <FlatList
         data={dadosFiltrados}
         keyExtractor={(item) => item.id}
@@ -270,8 +392,8 @@ export default function ({ navigation }) {
 const styles = StyleSheet.create({
   image1: {
     width: 320,
-    height: 220,
-    borderRadius: 20,
+    height: 180,
+    borderRadius: 5,
     borderColor: "#ef846c",
     marginRight: 10,
   },

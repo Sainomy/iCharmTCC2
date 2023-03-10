@@ -169,21 +169,113 @@ export default function Profile({ navigation }) {
       </View>
     );
   };
+  function onOpen() {
+    modalizeRef.current?.open();
+  }
+
  
   
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: isDarkmode ? themeColor.dark100 : "white"}}>
-       <TopNav style={{position:"relative"}}
-        middleContent={
-          <Image
-            source={require("../../assets/nome.png")}
-            style={{ width: 110, height: 110 }}
-            resizeMode="contain"
-          />
-        }
-      />
+    <SafeAreaView style={{ flex: 1, backgroundColor: isDarkmode ? themeColor.dark100 : "white" }}>
+    <TopNav
+      style={{ borderColor: isDarkmode ? themeColor.dark100 : "white" }}
+      middleContent={
+        <Image
+          source={require("../../assets/nome.png")}
+          style={{ width: 110, height: 110 }}
+          resizeMode="contain"
+        />
+      }
+      leftContent={
+        <Ionicons
+          name="menu"
+          size={30}
+          color={isDarkmode ? themeColor.dark100 : "black"}
+        />
+      }
+      leftAction={onOpen}
+      rightContent={
+        <Ionicons
+          name="notifications-outline"
+          size={25}
+          color={"black"}
+        />}
+        rightAction={() => navigation.navigate("Favoritos")}
+    />
+    <Modalize ref={modalizeRef} snapPoint={220}>
+      <View
+        style={{
+          flex: 1,
+          height: 220,
+         
+          backgroundColor: isDarkmode ? themeColor.dark : themeColor.white,
+        }}
+      >
+        <TouchableOpacity
+          onPress={() => {
+            if (isDarkmode) {
+              setTheme("light");
+            } else {
+              setTheme("dark");
+            }
+          }}
+          style={{
+            backgroundColor: isDarkmode ? themeColor.dark100 : "white",
+            borderRadius: 6,
+            padding: 15,
+            borderWidth: 1,
+            borderColor: "rgba(0,0,0, 0.2)",
+            marginTop: 25,
+            marginHorizontal: 30,
+            marginVertical: 6,
+            alignItems:"center"
+          }}
+        >
+          <Text style={isDarkmode ? themeColor.dark100 : "white"}>
+            {isDarkmode ? "Modo Claro" : "Modo Escuro"}
+          </Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => {
+            navigation.navigate("UseDelete");
+          }}
+          style={{
+            backgroundColor: isDarkmode ? themeColor.dark100 : "white",
+            borderRadius: 6,
+            padding: 15,
+            borderWidth: 1,
+            borderColor: "rgba(0,0,0, 0.2)",
+            marginTop: 2,
+            marginHorizontal: 30,
+            marginVertical: 6,
+            alignItems:"center"
+          }}
+        >
+          <Text>Configurações</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => {
+            signOut(auth);
+          }}
+          style={{
+            backgroundColor: isDarkmode ? themeColor.dark100 : "white",
+            borderRadius: 6,
+            padding: 15,
+            borderWidth: 1,
+            borderColor: "rgba(0,0,0, 0.2)",
+            marginTop: 2,
+            marginHorizontal: 30,
+            marginVertical: 6,
+            alignItems:"center"
+          }}
+        >
+          <Text style={{ color: "red" }}>Sair</Text>
+        </TouchableOpacity>
+      </View>
+    </Modalize>
       <ScrollView >
       <View style={{margin:10}}>
+       
       <Button
               color="#EF8F86"
               onPress={() => {
@@ -194,6 +286,9 @@ export default function Profile({ navigation }) {
                     name="create"
                     size={20}
                     color={themeColor.white}
+                    onPress={() => {
+                      navigation.navigate("EditProfile");
+                    }}
                 />}
               text="Editar"
               style={{
@@ -203,6 +298,7 @@ export default function Profile({ navigation }) {
                 marginTop:10,
               }}
             />
+         
       </View>
     
     <View style={styles.screen}>
@@ -285,7 +381,7 @@ export default function Profile({ navigation }) {
   <View>
 <View style={{flexDirection:"row", marginTop:10}}>
           <Ionicons name="images" size={25} color={"#EF8F86"}/>
-            <Text style={{marginLeft:5, fontSize:20}}>Serviços</Text>
+            <Text fontWeight="light" style={{marginLeft:5, fontSize:20}}>Serviços</Text>
             </View>
 <FlatList
           data={servicos}

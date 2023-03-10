@@ -356,16 +356,16 @@ export default function ProfileView({ navigation }) {
         <Text style={styles.text}>{usuario.email}</Text>
        
       
-     <View style={{flexDirection:"row"}}>
+     <View style={{flexDirection:"row", marginTop:40}}>
   
-     <Text style={{marginTop:10, fontSize:20}}>{usuario.curtida}</Text>
+     <Text style={{ fontSize:20}}>{usuario.curtida}</Text>
     
         {like === true && (
             <Ionicons
             name="heart"
             size={30}
             color={"#EF8F86"}
-            style={{position:"relative", marginTop:5, marginLeft:10}}
+            style={{position:"relative", marginTop:-5, marginLeft:5}}
             onPress={() => {
               const diminui = usuario.curtida - 1;
               setCurtida(diminui);
@@ -381,7 +381,7 @@ export default function ProfileView({ navigation }) {
             name="heart-outline"
             size={30}
             color={"gray"}
-            style={{position:"relative", marginTop:5, marginLeft:10}}
+            style={{position:"relative", marginTop:-5, marginLeft:5}}
             onPress={() => {     
               const diminui = usuario.curtida + 1;
               setCurtida(diminui);

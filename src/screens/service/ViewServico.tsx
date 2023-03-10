@@ -172,26 +172,7 @@ const enviarDadosPro = () => {
       pro: userpro,
       cli: cli,
       nomepro: usuario.nome,
-    }).then(() => {
-      const cancelBtn: AlertButton = {
-        text: "Aguarde a confirmacao do agendamento",
-        onPress: () => {
-          navigation.navigate("Agenda");
-        },
-      };
-      const deleteBtn: AlertButton = {
-        text: "Voltar",
-        onPress: () => {
-          navigation.goBack()
-        },
-      };
-
-      Alert.alert(
-        `Aguarde a confirmação do agendamento!`,
-        " ou voltar?",
-        [deleteBtn, cancelBtn]
-      );
-    });
+    })
 
 };
 
