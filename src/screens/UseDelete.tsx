@@ -16,6 +16,7 @@ import {
 import { auth, firestore, storage } from "../../firebase";
 import { Divider} from 'react-native-paper';
 import Ionicons from '@expo/vector-icons/Ionicons';
+import { fontSize } from "react-native-rapi-ui/constants/typography";
 
 export default function UseDelete({ navigation }) {
   const auth = getAuth();
@@ -52,11 +53,7 @@ export default function UseDelete({ navigation }) {
       </View>
     <TopNav style={{marginTop:60}}
     middleContent={
-      <Image
-        source={require("../../assets/nome.png")}
-        style={{ width: 110, height: 110 }}
-        resizeMode="contain"
-      />
+      <Text style={{margin:15, fontSize:14}}>C O N F I G U R A C Õ E S</Text>
     }
     leftContent={
       <Ionicons
@@ -66,6 +63,12 @@ export default function UseDelete({ navigation }) {
       />
     }
     leftAction={() => navigation.goBack()}
+    rightContent={
+      <Ionicons
+        name="cog"
+        size={25}
+        color={"black"}
+      />}
   />
      <Section style={{justifyContent:"center",
       alignItems:"center", margin:60}}>
@@ -73,8 +76,7 @@ export default function UseDelete({ navigation }) {
         <SectionContent style={{justifyContent:"center", 
         alignItems:"center"
         }}>
-          <Text style={{fontSize:25, marginVertical:20}}>Configurações</Text>
-
+         
           <TouchableOpacity
             onPress={() => {
               navigation.goBack()
@@ -92,7 +94,7 @@ export default function UseDelete({ navigation }) {
               deletarUsuario();
             }}
             >
-            <Text style={{color:"red"}}>{"Excluir Conta"}</Text>
+            <Text style={{color:"red", marginTop:5}}>{"Excluir Conta"}</Text>
           </TouchableOpacity>
 
         </SectionContent>

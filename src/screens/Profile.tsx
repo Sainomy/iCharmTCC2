@@ -202,19 +202,21 @@ const save = () => {
       }
       leftContent={
         <Ionicons
-          name="menu"
-          size={30}
+          name="create"
+          size={25}
           color={isDarkmode ? themeColor.dark100 : "black"}
         />
       }
-      leftAction={onOpen}
+      leftAction={ () =>
+        navigation.navigate("EditProfile")
+      }
       rightContent={
         <Ionicons
           name="notifications-outline"
           size={25}
           color={"black"}
         />}
-        rightAction={() => navigation.navigate("Favoritos")}
+        rightAction={() => navigation.navigate("Notificacoes")}
     />
     <Modalize ref={modalizeRef} snapPoint={250}>
       <View
@@ -303,7 +305,8 @@ const save = () => {
       <ScrollView >
       <View style={{margin:10}}>
        
-      <Button
+     
+ { /*    <Button
               color="#EF8F86"
               onPress={() => {
                 navigation.navigate("EditProfile");
@@ -325,7 +328,7 @@ const save = () => {
                 marginTop:10,
               }}
             />
-         
+            */ }
       </View>
     
     <View style={styles.screen}>
@@ -341,7 +344,7 @@ const save = () => {
           )}
          
         
-        <Text style={{ fontSize: 18, marginTop: 50, textAlign: "right", marginLeft:100,}}>
+        <Text style={{ fontSize: 18, marginTop: 20, textAlign: "right", marginLeft:100,}}>
           {usuario.nome}
           </Text>
           {usuario.pro === true && (
@@ -350,6 +353,7 @@ const save = () => {
           )}
         <Text style={styles.text}>{usuario.numero}</Text>
         <Text style={styles.text}>{usuario.email}</Text>
+        <View style={{alignItems:"flex-end"}}>
         <Text style={styles.text1}>{usuario.curtida}{  <Ionicons
             name="heart"
             size={26}
@@ -357,7 +361,7 @@ const save = () => {
             style={{  position:"absolute", marginTop:50}}
            
           /> }</Text>
-        
+        </View>
         {usuario.pro === true && (
           <View style={{flexDirection:"row"}}>
        
@@ -383,7 +387,7 @@ const save = () => {
          
           </View>
         )}
-        <Text style={{color: "gray", marginTop:20}}>Sobre:</Text>
+        <Text style={{color: "gray", marginTop:20}}>Status:</Text>
         <Text style={styles.text2}>{usuario.descricao}</Text>
 
         <View style={{flexDirection:"row", marginTop:10}}>

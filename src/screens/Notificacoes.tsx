@@ -112,11 +112,7 @@ export default function Notificacacoes({ navigation }) {
     <SafeAreaView style={{flex: 1, backgroundColor:"white"}}>
     <TopNav
     middleContent={
-      <Image
-        source={require("../../assets/nome.png")}
-        style={{ width: 110, height: 110 }}
-        resizeMode="contain"
-      />
+      <Text style={{margin:15}}>N O T I F I C A Ç Õ E S</Text>
     }
     leftContent={
       <Ionicons
@@ -125,7 +121,13 @@ export default function Notificacacoes({ navigation }) {
         color={isDarkmode ? themeColor.white100 : themeColor.black}
       />
     }
-    leftAction={() => navigation.goBack()}></TopNav>
+    leftAction={() => navigation.goBack()}
+    rightContent={
+      <Ionicons
+        name="notifications"
+        size={25}
+        color={"black"}
+      />}></TopNav>
 
     <FlatList 
     data={notificacoes}

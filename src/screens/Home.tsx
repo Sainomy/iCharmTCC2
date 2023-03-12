@@ -383,7 +383,7 @@ export default function ({ navigation }) {
           
           </ScrollView>
       <FlatList
-        data={dadosFiltrados}
+        data={usuarios}
         keyExtractor={(item) => item.id}
         //  ItemSeparatorComponent={ItemSeparatorView}
         renderItem={ItemView}
@@ -394,7 +394,7 @@ export default function ({ navigation }) {
       </ScrollView>
         )}
         {close === true && (
-          <View>
+          <ScrollView>
  <FlatList
  data={dadosFiltrados}
  keyExtractor={(item) => item.id}
@@ -409,7 +409,7 @@ export default function ({ navigation }) {
   <Text style={{marginTop:10}}>Voltar ao ínicio</Text>
  <Ionicons name="arrow-back" size={40} color={"black"} style={{ width: 70,height: 70, padding:10}}/>
 </TouchableOpacity>
-</View>
+</ScrollView>
         )}
 
     </SafeAreaView>

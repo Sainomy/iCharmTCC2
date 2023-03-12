@@ -198,6 +198,7 @@ export default function ({ navigation }) {
       }}
     >
       <TopNav
+        style={{ borderColor: isDarkmode ? themeColor.dark100 : "white" }}
         middleContent={
           <Image
             source={require("../../assets/nome.png")}
@@ -212,6 +213,14 @@ export default function ({ navigation }) {
             color={isDarkmode ? themeColor.dark100 : "black"}
           />
         }
+      //  leftAction={onOpen}
+        rightContent={
+          <Ionicons
+            name="notifications-outline"
+            size={25}
+            color={"black"}
+          />}
+          rightAction={() => navigation.navigate("Notificacoes")}
       />
       <DatePicker
         startDate={new Date()}

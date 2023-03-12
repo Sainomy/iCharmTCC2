@@ -300,12 +300,12 @@ export default function EditProfile({ navigation, route}) {
               keyboardType="text"
               onChangeText={(text) => setUsuario({ ...usuario, nome: text })}
              />
-             <Text style={{ marginTop: 15 }}>Descrição</Text>
+             <Text style={{ marginTop: 15 }}>Status</Text>
                   <TextInput
                     containerStyle={{ marginTop: 15 }}
                     multiline
                     numberOfLines={10}
-                    placeholder="(opcional)"
+                    placeholder="Descrição"
                     value={usuario.descricao}
                     autoCorrect={false}
                     onChangeText={(text) => setUsuario({ ...usuario, descricao: text })}

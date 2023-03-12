@@ -395,7 +395,7 @@ export default function ProfileView({ navigation }) {
           )}
           
           </View>
-          <Text style={{color: "gray", marginTop:20}}>Sobre:</Text>
+          <Text style={{color: "gray", marginTop:20}}>Status:</Text>
         <Text style={styles.text2}>{usuario.descricao}</Text>
           <View style={{flexDirection:"row", marginTop:10}}>
           <Ionicons name="pin" size={25} color={"black"}/>
