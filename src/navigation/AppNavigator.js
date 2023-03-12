@@ -16,7 +16,7 @@ import Profile from "../screens/Profile";
 import UseDelete from "../screens/UseDelete";
 import ProfileView from "../screens/ProfileView";
 import AddHorarios from "../screens/AddHorarios";
-import Favoritos from "../screens/Favoritos";
+import Notificacoes from "../screens/Notificacoes";
 //import Agendamento from "../screens/Agendamento";
 //Service
 import AddServico from "../screens/service/AddServico";
@@ -30,11 +30,18 @@ import ViewServico from "../screens/service/ViewServico";
 import Mapa from "../components/utils/Mapa";
 import Endereco from "../screens/Endereco";
 //import Welcome from "../screens/layout/Welcome";
+//Categorias
+import Maquiagem from "../screens/Categorias/Maquiagem";
+import Unha from "../screens/Categorias/Unhas";
+import Cabelo from "../screens/Categorias/Cabelo";
+import Pele from "../screens/Categorias/Pele";
+import Cilios from "../screens/Categorias/Cilios";
 // Auth screens
 import Login from "../screens/auth/Login";
 import Register from "../screens/auth/Register";
 import ForgetPassword from "../screens/auth/ForgetPassword";
 import { AuthContext } from "../provider/AuthProvider";
+import Notificacao from "../screens/Notificacoes";
 
 // Better put your these secret keys in .env file
 const firebaseConfig = {
@@ -87,7 +94,12 @@ const Main = () => {
       <MainStack.Screen name="ProfileView" component={ProfileView} />
       <MainStack.Screen name="ViewServico" component={ViewServico} />
       <MainStack.Screen name="AddHorarios" component={AddHorarios} />
-      <MainStack.Screen name="Favoritos" component={Favoritos} />
+      <MainStack.Screen name="Notificacoes" component={Notificacoes} />
+      <MainStack.Screen name="Maquiagem" component={Maquiagem} />
+      <MainStack.Screen name="Pele" component={Pele} />
+      <MainStack.Screen name="Cabelo" component={Cabelo} />
+      <MainStack.Screen name="Cilios" component={Cilios} />
+      <MainStack.Screen name="Unha" component={Unha} />
     </MainStack.Navigator>
   );
 };
@@ -111,7 +123,7 @@ const MainTabs = () => {
         component={Home}
         options={{
           tabBarLabel: ({ focused }) => (
-            <TabBarText focused={focused} title="Home" />
+            <TabBarText focused={focused} title="Ínicio" />
           ),
           tabBarIcon: ({ focused }) => (
             <TabBarIcon focused={focused} icon={"md-home"} />
@@ -123,7 +135,7 @@ const MainTabs = () => {
         component={Profile}
         options={{
           tabBarLabel: ({ focused }) => (
-            <TabBarText focused={focused} title="Profile" />
+            <TabBarText focused={focused} title="Perfil" />
           ),
           tabBarIcon: ({ focused }) => (
             <TabBarIcon focused={focused} icon={"person"} />

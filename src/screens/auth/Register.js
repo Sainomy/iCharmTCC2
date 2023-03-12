@@ -19,6 +19,7 @@ import {
   Button,
   useTheme,
   themeColor,
+  CheckBox,
 } from "react-native-rapi-ui";
 import DatePicker from "react-native-datepicker";
 import { DatePickerInput } from "react-native-paper-dates";

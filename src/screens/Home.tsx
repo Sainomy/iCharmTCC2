@@ -19,7 +19,7 @@ import { Usuario } from "../../model/Usuario";
 
 export default function ({ navigation }) {
   const [search, setSearch] = useState("");
-  const [like, setLike] = useState(false);
+  const [close, setClose] = useState(false);
   const [dadosFiltrados, setdadosFiltrados] = useState([]);
   const modalizeRef = useRef(null);
   const [loading, setLoading] = useState(true);
@@ -51,17 +51,19 @@ export default function ({ navigation }) {
   const searchFilter = (text) => {
     if (text) {
       const newData = usuarios.filter(function (item) {
-        if (item.data) {
-          const itemData = item.data.toUpperCase();
+        if (item.nome) {
+          const itemData = item.nome.toUpperCase();
           const textData = text.toUpperCase();
           return itemData.indexOf(textData) > -1;
         }
       });
       setdadosFiltrados(newData);
       setSearch(text);
+     // setClose(true);
     } else {
       setdadosFiltrados(usuarios);
       setSearch(text);
+    //  setClose(true);
     }
   };
 
@@ -167,7 +169,7 @@ export default function ({ navigation }) {
             size={25}
             color={"black"}
           />}
-          rightAction={() => navigation.navigate("Favoritos")}
+          rightAction={() => navigation.navigate("Notificacoes")}
       />
       <Modalize ref={modalizeRef} snapPoint={220}>
         <View
@@ -240,11 +242,10 @@ export default function ({ navigation }) {
           </TouchableOpacity>
         </View>
       </Modalize>
-      <ScrollView style={{marginTop:5}}>
-        <View style={{margin:10}}>
+      <View style={{margin:10}}>
       <TextInput
           borderRadius={15}
-          onChangeText={(text) => searchFilter(text)}
+          onChangeText={(text) => {searchFilter(text); setClose(true);}}
           value={search}
           underlineColorAndroid="transparent"
           placeholder="Procure Aqui"
@@ -257,6 +258,11 @@ export default function ({ navigation }) {
           }
         />
         </View>
+      {close === false && (
+          
+            
+        
+      <ScrollView style={{marginTop:5}}>
        
         
       <ScrollView
@@ -264,6 +270,7 @@ export default function ({ navigation }) {
         directionalLockEnabled={false}
         horizontal={true}
       >
+       
         <Image
           style={styles.image1}
           source={require("../../assets/4.png")}
@@ -309,7 +316,7 @@ export default function ({ navigation }) {
       >
         
      <TouchableOpacity onPress={() =>
-            navigation.navigate("Favoritos")
+    navigation.navigate("Maquiagem")
           } style={{alignItems:"center", marginRight: 15}}>
     <Image
           style={{width: 50,
@@ -322,7 +329,7 @@ export default function ({ navigation }) {
         <Text style={{fontSize:10}}>Maquiagem</Text>
           </TouchableOpacity>
           <TouchableOpacity onPress={() =>
-            navigation.navigate("Favoritos")
+            navigation.navigate("Cabelo")
           }  style={{alignItems:"center", marginRight: 15}}>
           <Image
           style={{width: 50,
@@ -335,7 +342,7 @@ export default function ({ navigation }) {
         <Text style={{fontSize:10}}>Cabelo</Text>
           </TouchableOpacity>
           <TouchableOpacity onPress={() =>
-            navigation.navigate("Favoritos")
+            navigation.navigate("Unha")
           }  style={{alignItems:"center", marginRight: 15}}>
           <Image
           style={{width: 50,
@@ -348,7 +355,7 @@ export default function ({ navigation }) {
         <Text style={{fontSize:10}}>Unhas</Text>
           </TouchableOpacity>
           <TouchableOpacity onPress={() =>
-            navigation.navigate("Favoritos")
+            navigation.navigate("Cilios")
           }  style={{alignItems:"center", marginRight: 15}}>
           <Image
           style={{width: 50,
@@ -361,7 +368,7 @@ export default function ({ navigation }) {
         <Text style={{fontSize:10}}>Cilíos</Text>
           </TouchableOpacity>
           <TouchableOpacity onPress={() =>
-            navigation.navigate("Favoritos")
+            navigation.navigate("Pele")
           }  style={{alignItems:"center", marginRight: 15}}>
           <Image
           style={{width: 50,
@@ -385,6 +392,26 @@ export default function ({ navigation }) {
       
       {/*<ListarUsuario />*/}
       </ScrollView>
+        )}
+        {close === true && (
+          <View>
+ <FlatList
+ data={dadosFiltrados}
+ keyExtractor={(item) => item.id}
+ //  ItemSeparatorComponent={ItemSeparatorView}
+ renderItem={ItemView}
+/>
+ <TouchableOpacity
+ activeOpacity={0.7}
+ onPress={() => {
+  setClose(false);
+ }} style={{alignItems:"center"}}>
+  <Text style={{marginTop:10}}>Voltar ao ínicio</Text>
+ <Ionicons name="arrow-back" size={40} color={"black"} style={{ width: 70,height: 70, padding:10}}/>
+</TouchableOpacity>
+</View>
+        )}
+
     </SafeAreaView>
 
   );

@@ -163,7 +163,7 @@ export default function SecondScreen({ navigation }) {
                   }}
                 >
                    <Text
-                   fontWeight="regular"
+                   fontWeight="light"
                     
                     style={{
                       alignSelf: "center",

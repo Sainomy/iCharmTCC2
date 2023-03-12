@@ -19,7 +19,7 @@ import { Notificacao } from "../../model/Notificacao";
 import { listAll } from "firebase/storage";
 import { Agendamento } from "../../model/Agendamento";
 
-export default function Favoritos({ navigation }) {
+export default function Notificacacoes({ navigation }) {
   const { isDarkmode, setTheme } = useTheme();
   const [loading, setLoading] = useState(true); // Set loading to true on component mount
   const [notificacoes, setNotificacoes] = useState < Partial < Notificacao >> ({});

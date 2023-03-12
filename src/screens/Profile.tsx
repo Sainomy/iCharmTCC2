@@ -24,7 +24,7 @@ import { Usuario } from "../../model/Usuario";
 import { Servico } from "../../model/Servico"
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { Layout, TopNav, Button, Text,  useTheme,
-  themeColor,} from "react-native-rapi-ui";
+  themeColor, CheckBox} from "react-native-rapi-ui";
 //import ListarServico from "./service/ListarServico";
 import Mapa from "../screens/utils/Mapa"
 import MapView, { Marker } from "react-native-maps";
@@ -34,7 +34,11 @@ import { Horarios } from "../../model/Horarios";
 
 export default function Profile({ navigation }) {
   const { isDarkmode, setTheme } = useTheme();
-
+  const [make, setMake] = useState(false);
+  const [cabelo, setCabelo] = useState(false);
+  const [cilios, setCilios] = useState(false);
+  const [unhas, setUnhas] = useState(false);
+  const [pele, setPele] = useState(false);
   const modalizeRef = useRef(null);
   const [comentarios, setComentarios] = useState([]);
   const [usuario, setUsuario] = useState < Partial < Usuario >> ({});
@@ -106,7 +110,6 @@ export default function Profile({ navigation }) {
     return () => subscriber();
   }, []);
 
-
     useEffect(() => {
       const subscriber = firestore
         .collection("Usuario")
@@ -172,9 +175,20 @@ export default function Profile({ navigation }) {
   function onOpen() {
     modalizeRef.current?.open();
   }
+  const referenceCategorias = firestore
+  .collection("Usuario")
+  .doc(auth.currentUser.uid);
 
- 
-  
+const save = () => {
+  referenceCategorias
+    .update({
+    make: make,
+    cabelo: cabelo,
+    cilios: cilios,
+    pele: pele,
+    unhas: unhas,
+    })
+};
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: isDarkmode ? themeColor.dark100 : "white" }}>
     <TopNav
@@ -202,75 +216,88 @@ export default function Profile({ navigation }) {
         />}
         rightAction={() => navigation.navigate("Favoritos")}
     />
-    <Modalize ref={modalizeRef} snapPoint={220}>
+    <Modalize ref={modalizeRef} snapPoint={250}>
       <View
         style={{
           flex: 1,
-          height: 220,
-         
+          height: 250,
           backgroundColor: isDarkmode ? themeColor.dark : themeColor.white,
         }}
       >
-        <TouchableOpacity
-          onPress={() => {
-            if (isDarkmode) {
-              setTheme("light");
-            } else {
-              setTheme("dark");
-            }
-          }}
-          style={{
-            backgroundColor: isDarkmode ? themeColor.dark100 : "white",
-            borderRadius: 6,
-            padding: 15,
-            borderWidth: 1,
-            borderColor: "rgba(0,0,0, 0.2)",
-            marginTop: 25,
-            marginHorizontal: 30,
-            marginVertical: 6,
-            alignItems:"center"
-          }}
-        >
-          <Text style={isDarkmode ? themeColor.dark100 : "white"}>
-            {isDarkmode ? "Modo Claro" : "Modo Escuro"}
-          </Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => {
-            navigation.navigate("UseDelete");
-          }}
-          style={{
-            backgroundColor: isDarkmode ? themeColor.dark100 : "white",
-            borderRadius: 6,
-            padding: 15,
-            borderWidth: 1,
-            borderColor: "rgba(0,0,0, 0.2)",
-            marginTop: 2,
-            marginHorizontal: 30,
-            marginVertical: 6,
-            alignItems:"center"
-          }}
-        >
-          <Text>Configurações</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => {
-            signOut(auth);
-          }}
-          style={{
-            backgroundColor: isDarkmode ? themeColor.dark100 : "white",
-            borderRadius: 6,
-            padding: 15,
-            borderWidth: 1,
-            borderColor: "rgba(0,0,0, 0.2)",
-            marginTop: 2,
-            marginHorizontal: 30,
-            marginVertical: 6,
-            alignItems:"center"
-          }}
-        >
-          <Text style={{ color: "red" }}>Sair</Text>
-        </TouchableOpacity>
+     <Text fontWeight="light" style={{ marginTop: 20, fontSize:20, textAlign:"center" }}>
+             Categorias
+            </Text>
+            <View style={{ flexDirection: "row", alignItems: "center", marginLeft:100, marginTop:5  }}>
+              <CheckBox
+              style={{marginTop:20,}}
+                checkedColor={"#EF8F86"}
+                value={make}
+                onValueChange={(val) => {
+                  setMake(val);
+                }}
+              />
+              <Text size="md" style={{ marginLeft: 10, color: "gray", marginTop:20 }}>
+                Maquiagem
+              </Text>
+              </View>
+              <View style={{ flexDirection: "row", alignItems: "center", marginLeft:100, marginTop:5   }}>
+              <CheckBox
+                checkedColor={"#EF8F86"}
+                value={cabelo}
+                onValueChange={(val) => {
+                  setCabelo(val);
+                }}
+              />
+              <Text size="md" style={{ marginLeft: 10, color: "gray" }}>
+                Cabelo
+              </Text>
+              </View>
+              <View style={{ flexDirection: "row", alignItems: "center", marginLeft:100, marginTop:5  }}>
+              <CheckBox
+                checkedColor={"#EF8F86"}
+                value={unhas}
+                onValueChange={(val) => {
+                  setUnhas(val);
+                }}
+              />
+              <Text size="md" style={{ marginLeft: 10, color: "gray" }}>
+                Unhas
+              </Text>
+              </View>
+               <View style={{ flexDirection: "row", alignItems: "center", marginLeft:100, marginTop:5 }}>
+              <CheckBox
+                checkedColor={"#EF8F86"}
+                value={pele}
+                onValueChange={(val) => {
+                  setPele(val);
+                }}
+              />
+              <Text size="md" style={{ marginLeft: 10, color: "gray" }}>
+                Limpeza de pele
+              </Text>
+            </View>
+            <View style={{ flexDirection: "row", alignItems: "center", marginLeft:100, marginTop:5 }}>
+              <CheckBox
+                checkedColor={"#EF8F86"}
+                value={cilios}
+                onValueChange={(val) => {
+                  setCilios(val);
+                }}
+              />
+              <Text size="md" style={{ marginLeft: 10, color: "gray" }}>
+                Cilíos
+              </Text>
+            </View>
+<Pressable  style={{ position:"absolute",   right:0,
+             padding:15 }}>
+  <Ionicons
+                  name="checkmark"
+                  size={30}
+                  color={"black"}
+                  onPress={save} 
+                  
+              /></Pressable>
+
       </View>
     </Modalize>
       <ScrollView >
@@ -332,15 +359,26 @@ export default function Profile({ navigation }) {
           /> }</Text>
         
         {usuario.pro === true && (
-          <View>
+          <View style={{flexDirection:"row"}}>
        
              <Button
              color="#EF8F86"
-             style={{ marginTop: 20 }}
-             text="Personalizar Horários"
+             style={{ marginTop: 20, marginRight:2 }}
+             text="        Horários         "
              onPress={() => {
                navigation.navigate("AddHorarios", {idhora:horarios.id});
              }}
+             outline 
+             outlineWidth={1}
+            
+           /> 
+             <Button
+             color="#EF8F86"
+             style={{ marginTop: 20 }}
+             text="      Categorias        "
+             onPress={onOpen}
+             outline
+             outlineWidth={1}
            /> 
          
           </View>
